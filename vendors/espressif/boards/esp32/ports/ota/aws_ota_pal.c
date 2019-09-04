@@ -431,11 +431,17 @@ OTA_Err_t prvPAL_CheckFileSignature( OTA_FileContext_t * const C )
 
     ESP_LOGI( TAG, "ota data map\n\r" );
 
+    ESP_LOGI( TAG, "C->pxSignature->usSize \n\r %s", pucSignerCert);
+
+    ESP_LOGI( TAG, "C->pxSignature->usSize \n\r %d", ulSignerCertSize);
+
+    ESP_LOGI( TAG, "C->pxSignature->usSize \n\r %s", C->pxSignature->ucData);
+
     ESP_LOGI( TAG, "C->pxSignature->usSize \n\r %d", C->pxSignature->usSize );
 
     if( CRYPTO_SignatureVerificationFinal( pvSigVerifyContext, ( char * ) pucSignerCert, ulSignerCertSize,
                                            C->pxSignature->ucData, C->pxSignature->usSize ) == pdFALSE )
-    {
+    { 
         ESP_LOGE( TAG, "signature verification failed" );
         result = kOTA_Err_SignatureCheckFailed;
     }
