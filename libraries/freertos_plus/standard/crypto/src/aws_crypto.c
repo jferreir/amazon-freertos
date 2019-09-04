@@ -105,6 +105,8 @@ static BaseType_t prvVerifySignature( char * pcSignerCertificate,
      */
     mbedtls_x509_crt_init( &xCertCtx );
 
+    CRYPTO_PRINT( ( "Done mbedtls_x509_crt_init.\r\n" ) );
+
     if( 0 != mbedtls_x509_crt_parse(
             &xCertCtx, ( const unsigned char * ) pcSignerCertificate, xSignerCertificateLength ) )
     {
@@ -117,6 +119,7 @@ static BaseType_t prvVerifySignature( char * pcSignerCertificate,
      */
     if( pdTRUE == xResult )
     {
+        CRYPTO_PRINT( ( "calling mbedtls_pk_verify.\r\n" ) );
         if( 0 != mbedtls_pk_verify(
                 &xCertCtx.pk,
                 xMbedHashAlg,
