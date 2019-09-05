@@ -431,11 +431,11 @@ OTA_Err_t prvPAL_CheckFileSignature( OTA_FileContext_t * const C )
 
     ESP_LOGI( TAG, "ota data map\n\r" );
 
-    ESP_LOGI( TAG, "C->pxSignature->usSize \n\r %s", pucSignerCert);
+    ESP_LOGI( TAG, "pucSignerCert \n\r %s", pucSignerCert);
 
-    ESP_LOGI( TAG, "C->pxSignature->usSize \n\r %d", ulSignerCertSize);
+    ESP_LOGI( TAG, "ulSignerCertSize\n\r %d", ulSignerCertSize);
 
-    ESP_LOGI( TAG, "C->pxSignature->usSize \n\r %s", C->pxSignature->ucData);
+    ESP_LOGI( TAG, "C->pxSignature->ucData\n\r %s", C->pxSignature->ucData);
 
     ESP_LOGI( TAG, "C->pxSignature->usSize \n\r %d", C->pxSignature->usSize );
 
