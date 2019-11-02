@@ -270,7 +270,7 @@ UDPPacket_t *pxUDPPacket = (UDPPacket_t *) pxNetworkBuffer->pucEthernetBuffer;
 				destinationAddress.sin_port = usPort;
 				destinationAddress.sin_addr = pxUDPPacket->xIPHeader.ulDestinationIPAddress;
 
-				if( xHandler( ( Socket_t * ) pxSocket, ( void* ) pcData, ( size_t ) pxNetworkBuffer->xDataLength,
+				if( xHandler( ( Socket_t ) pxSocket, ( void* ) pcData, ( size_t ) pxNetworkBuffer->xDataLength,
 					&xSourceAddress, &destinationAddress ) )
 				{
 					xReturn = pdFAIL; /* FAIL means that we did not consume or release the buffer */
@@ -349,6 +349,19 @@ UDPPacket_t *pxUDPPacket = (UDPPacket_t *) pxNetworkBuffer->pucEthernetBuffer;
 	{
 		/* There is no socket listening to the target port, but still it might
 		be for this node. */
+
+		#if( ipconfigUSE_DNS == 1 ) && ( ipconfigDNS_USE_CALLBACKS == 1 )
+			/* A DNS reply, check for the source port.  Although the DNS client
+			does open a UDP socket to send a messages, this socket will be
+			closed after a short timeout.  Messages that come late (after the
+			socket is closed) will be treated here. */
+			if( FreeRTOS_ntohs( pxUDPPacket->xUDPHeader.usSourcePort ) == ipDNS_PORT )
+			{
+				vARPRefreshCacheEntry( &( pxUDPPacket->xEthernetHeader.xSourceAddress ), pxUDPPacket->xIPHeader.ulSourceIPAddress );
+				xReturn = ( BaseType_t )ulDNSHandlePacket( pxNetworkBuffer );
+			}
+			else
+		#endif
 
 		#if( ipconfigUSE_LLMNR == 1 )
 			/* a LLMNR request, check for the destination port. */

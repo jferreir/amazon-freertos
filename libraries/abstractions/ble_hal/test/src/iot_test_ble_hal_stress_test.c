@@ -33,6 +33,7 @@
 extern BTService_t _xSrvcA;
 extern BTService_t _xSrvcB;
 extern BTInterface_t * _pxBTInterface;
+extern BTCallbacks_t _xBTManagerCb;
 
 /*-----------------------------------------------------------*/
 
@@ -93,17 +94,17 @@ TEST_GROUP_RUNNER( Full_BLE_Stress_Test )
 
 TEST( Full_BLE_Stress_Test, BLE_Stack_Init )
 {
-    prvBLEManagerInit();
+    IotTestBleHal_BLEManagerInit( &_xBTManagerCb );
 }
 
 TEST( Full_BLE_Stress_Test, BLE_Stack_Enable )
 {
-    prvBLEEnable( true );
+    IotTestBleHal_BLEEnable( true );
 }
 
 TEST( Full_BLE_Stress_Test, BLE_Stack_Disable )
 {
-    prvBLEEnable( false );
+    IotTestBleHal_BLEEnable( false );
 }
 
 TEST( Full_BLE_Stress_Test, BLE_Stack_Deinit )
@@ -116,19 +117,19 @@ TEST( Full_BLE_Stress_Test, BLE_Stack_Deinit )
 
 TEST( Full_BLE_Stress_Test, BLE_Service_Delete )
 {
-    prvDeleteService( &_xSrvcA );
-    prvDeleteService( &_xSrvcB );
+    IotTestBleHal_DeleteService( &_xSrvcA );
+    IotTestBleHal_DeleteService( &_xSrvcB );
 }
 
 TEST( Full_BLE_Stress_Test, BLE_Teardown )
 {
-    prvBTUnregister();
+    IotTestBleHal_BTUnregister();
 }
 
 TEST( Full_BLE_Stress_Test, BLE_Service_Create )
 {
-    prvCreateServiceA();
-    prvCreateServiceB();
+    IotTestBleHal_CreateServiceA();
+    IotTestBleHal_CreateServiceB();
 }
 
 TEST( Full_BLE_Stress_Test, BLE_Service_Restart )
@@ -143,9 +144,9 @@ TEST( Full_BLE_Stress_Test, BLE_Connection_ReConnect )
 
     for( loop = 0; loop < RECONNECT_NUMBER_STRESS_TEST; loop++ )
     {
-        prvStartAdvertisement();
-        prvWaitConnection( true );
-        prvWaitConnection( false );
+        IotTestBleHal_StartAdvertisement();
+        IotTestBleHal_WaitConnection( true );
+        IotTestBleHal_WaitConnection( false );
     }
 }
 
@@ -155,7 +156,7 @@ void prvRestartService( BTService_t * xRefSrvc )
 
     for( loop = 0; loop < RESTART_NUMBER_STRESS_TEST; loop++ )
     {
-        prvStartService( xRefSrvc );
-        prvStopService( xRefSrvc );
+        IotTestBleHal_StartService( xRefSrvc );
+        IotTestBleHal_StopService( xRefSrvc );
     }
 }
