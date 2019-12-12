@@ -112,8 +112,8 @@ TEST_GROUP( Full_PKCS11_EC );
 
 /* #define PKCS11_TEST_MEMORY_LEAK */
 #ifdef PKCS11_TEST_MEMORY_LEAK
-    BaseType_t xHeapBefore;
-    BaseType_t xHeapAfter;
+extern    BaseType_t xHeapBefore;
+extern     BaseType_t xHeapAfter;
 #endif
 
 TEST_SETUP( Full_PKCS11_StartFinish )
@@ -845,6 +845,9 @@ TEST( Full_PKCS11_Capabilities, AFQP_Capabilities )
     #if ( 1 == pkcs11testIMPORT_PRIVATE_KEY_SUPPORT )
         configPRINTF( ( "The PKCS #11 module supports private key import.\r\n" ) );
     #endif
+
+    vPortFree(pxSlotId);
+
 }
 
 /*--------------------------------------------------------*/
