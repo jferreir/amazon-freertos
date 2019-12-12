@@ -1744,6 +1744,8 @@ uint8_t ucProtocol;
 		pxIPHeader->ulDestinationIPAddress = pxIPHeader->ulSourceIPAddress;
 		pxIPHeader->ulSourceIPAddress = *ipLOCAL_IP_ADDRESS_POINTER;
 
+#if( ipconfigDRIVER_INCLUDED_TX_IP_CHECKSUM == 0 )
+
 		/* Update the checksum because the ucTypeOfMessage member in the header
 		has been changed to ipICMP_ECHO_REPLY.  This is faster than calling
 		usGenerateChecksum(). */
@@ -1764,6 +1766,10 @@ uint8_t ucProtocol;
 				( ( ( uint32_t ) pxICMPHeader->usChecksum ) +
 					FreeRTOS_htons( usRequest ) );
 		}
+#else
+		pxICMPHeader->usChecksum = 0;
+#endif
+
 		return eReturnEthernetFrame;
 	}
 
