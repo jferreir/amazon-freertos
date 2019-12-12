@@ -183,7 +183,6 @@
 									<listOptionValue builtIn="false" value="XMC_ETH_PHY_KSZ8081RNB"/>
 									<listOptionValue builtIn="false" value="UNITY_INCLUDE_CONFIG_H"/>
 									<listOptionValue builtIn="false" value="AMAZON_FREERTOS_ENABLE_UNIT_TESTS"/>
-									<listOptionValue builtIn="false" value="configUSE_OPTIGA=1"/>
 									<listOptionValue builtIn="false" value="USE_CMDLIB_WITH_RTOS"/>
 									<listOptionValue builtIn="false" value="MBEDTLS_ECDSA_SIGN_ALT"/>
 									<listOptionValue builtIn="false" value="MBEDTLS_ECDSA_VERIFY_ALT"/>

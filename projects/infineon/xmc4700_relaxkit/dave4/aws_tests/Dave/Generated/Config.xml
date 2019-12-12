@@ -100,7 +100,6 @@
         <Compiler_Symbol>XMC_ETH_PHY_KSZ8081RNB=</Compiler_Symbol>
         <Compiler_Symbol>UNITY_INCLUDE_CONFIG_H=</Compiler_Symbol>
         <Compiler_Symbol>AMAZON_FREERTOS_ENABLE_UNIT_TESTS=</Compiler_Symbol>
-        <Compiler_Symbol>configUSE_OPTIGA=1</Compiler_Symbol>
         <Compiler_Symbol>USE_CMDLIB_WITH_RTOS=</Compiler_Symbol>
         <Compiler_Symbol>MBEDTLS_ECDSA_SIGN_ALT=</Compiler_Symbol>
         <Compiler_Symbol>MBEDTLS_ECDSA_VERIFY_ALT=</Compiler_Symbol>
