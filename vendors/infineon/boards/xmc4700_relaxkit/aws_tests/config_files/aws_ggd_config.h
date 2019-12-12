@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS V1.4.7
+ * Amazon FreeRTOS V1.1.4
  * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -23,29 +23,24 @@
  * http://www.FreeRTOS.org
  */
 
-/**
- * @file aws_secure_sockets_config.h
- * @brief Secure sockets configuration options.
- */
-
-#ifndef _AWS_SECURE_SOCKETS_CONFIG_H_
-#define _AWS_SECURE_SOCKETS_CONFIG_H_
 
 /**
- * @brief Byte order of the target MCU.
- *
- * Valid values are pdLITTLE_ENDIAN and pdBIG_ENDIAN.
+ * @file aws_ggd_config.h
+ * @brief GGD config options.
  */
-#define socketsconfigBYTE_ORDER              pdLITTLE_ENDIAN
+
+#ifndef _AWS_GGD_CONFIG_H_
+#define _AWS_GGD_CONFIG_H_
+
 
 /**
- * @brief Default socket send timeout.
+ * @brief The number of your network interface here.
  */
-#define socketsconfigDEFAULT_SEND_TIMEOUT    ( 10000 )
+#define ggdconfigCORE_NETWORK_INTERFACE     ( 0 )
 
 /**
- * @brief Default socket receive timeout.
+ * @brief Size of the array used by jsmn to store the tokens.
  */
-#define socketsconfigDEFAULT_RECV_TIMEOUT    ( 10000 )
+#define ggdconfigJSON_MAX_TOKENS            ( 128 )
 
-#endif /* _AWS_SECURE_SOCKETS_CONFIG_H_ */
+#endif /* _AWS_GGD_CONFIG_H_ */

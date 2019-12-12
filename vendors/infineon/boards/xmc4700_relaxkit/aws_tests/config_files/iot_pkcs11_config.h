@@ -32,6 +32,10 @@
 #ifndef _AWS_PKCS11_CONFIG_H_
 #define _AWS_PKCS11_CONFIG_H_
 
+/* A non-standard version of C_INITIALIZE should be used by this port. */
+/* FIX ME: If NOT using Optiga HSM uncomment following line. */
+//#define pkcs11configC_INITIALIZE_ALT
+
 /**
  * @brief PKCS #11 default user PIN.
  *
@@ -128,6 +132,7 @@
 /**
  * @brief Set to 1 if importing device private key via C_CreateObject is supported. 0 if not.
  */
+/* FIX ME: If using Optiga HSM uncomment following line. */
 #define pkcs11configIMPORT_PRIVATE_KEYS_SUPPORTED          0
 
 #endif /* _AWS_PKCS11_CONFIG_H_ include guard. */

@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS V1.4.7
+ * Amazon FreeRTOS+POSIX V1.0.3
  * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -23,29 +23,36 @@
  * http://www.FreeRTOS.org
  */
 
-/**
- * @file aws_secure_sockets_config.h
- * @brief Secure sockets configuration options.
+ /**
+  * @file FreeRTOS_POSIX_portable.h
+  * @brief Port-specific configuration of FreeRTOS+POSIX.
+  */
+
+#ifndef _FREERTOS_POSIX_PORTABLE_H_
+#define _FREERTOS_POSIX_PORTABLE_H_
+
+#include <sys/types.h>
+
+#define posixconfigENABLE_MODE_T            0
+
+/*
+ * Following POSIX config overrides are required for older GCC versions. 
  */
+#ifdef __clockid_t_defined
+#define posixconfigENABLE_CLOCKID_T         0
+#endif
 
-#ifndef _AWS_SECURE_SOCKETS_CONFIG_H_
-#define _AWS_SECURE_SOCKETS_CONFIG_H_
+#ifdef __time_t_defined
+#define posixconfigENABLE_TIME_T            0
+#endif
 
-/**
- * @brief Byte order of the target MCU.
- *
- * Valid values are pdLITTLE_ENDIAN and pdBIG_ENDIAN.
- */
-#define socketsconfigBYTE_ORDER              pdLITTLE_ENDIAN
+#ifdef __timer_t_defined
+#define posixconfigENABLE_TIMER_T           0
+#endif
 
-/**
- * @brief Default socket send timeout.
- */
-#define socketsconfigDEFAULT_SEND_TIMEOUT    ( 10000 )
+#ifdef __timespec_defined
+#define posixconfigENABLE_ITIMERSPEC        0
+#define posixconfigENABLE_TIMESPEC          0
+#endif
 
-/**
- * @brief Default socket receive timeout.
- */
-#define socketsconfigDEFAULT_RECV_TIMEOUT    ( 10000 )
-
-#endif /* _AWS_SECURE_SOCKETS_CONFIG_H_ */
+#endif /* _FREERTOS_POSIX_PORTABLE_H_ */

@@ -38,7 +38,6 @@
  */
 #define pkcs11testMULTI_THREAD_TASK_COUNT     ( 2 )
 
-#define pkcs11testMULTI_TASK_STACK_SIZE       ( configMINIMAL_STACK_SIZE * 10 )
 /**
  * @brief The number of iterations of the test that will run in multithread tests.
  *
@@ -64,7 +63,7 @@
 /*
  * @brief Set to 1 if RSA private keys are supported by the platform.  0 if not.
  */
-#define pkcs11testRSA_KEY_SUPPORT                     ( 0 )
+#define pkcs11testRSA_KEY_SUPPORT             ( 1 )
 
 /*
  * @brief Set to 1 if elliptic curve private keys are supported by the platform.  0 if not.
@@ -74,7 +73,7 @@
 /*
  * @brief Set to 1 if importing device private key via C_CreateObject is supported.  0 if not.
  */
-#define pkcs11testIMPORT_PRIVATE_KEY_SUPPORT          ( 0 )
+#define pkcs11testIMPORT_PRIVATE_KEY_SUPPORT       ( pkcs11configIMPORT_PRIVATE_KEYS_SUPPORTED )
 
 /*
  * @brief Set to 1 if generating a device private-public key pair via C_GenerateKeyPair. 0 if not.
@@ -88,7 +87,7 @@
  * For devices with secure elements or hardware limitations, this may be defined
  * to a different label to preserve AWS IoT credentials for other test suites.
  */
-#define pkcs11testLABEL_DEVICE_PRIVATE_KEY_FOR_TLS    "0xE0F2"
+#define pkcs11testLABEL_DEVICE_PRIVATE_KEY_FOR_TLS       pkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLS
 
 /**
  * @brief The PKCS #11 label for device public key.
@@ -97,7 +96,7 @@
  * For devices with secure elements or hardware limitations, this may be defined
  * to a different label to preserve AWS IoT credentials for other test suites.
  */
-#define pkcs11testLABEL_DEVICE_PUBLIC_KEY_FOR_TLS     "0xF1D2"
+#define pkcs11testLABEL_DEVICE_PUBLIC_KEY_FOR_TLS        pkcs11configLABEL_DEVICE_PUBLIC_KEY_FOR_TLS
 
 /**
  * @brief The PKCS #11 label for the device certificate.
@@ -106,7 +105,7 @@
  * For devices with secure elements or hardware limitations, this may be defined
  * to a different label to preserve AWS IoT credentials for other test suites.
  */
-#define pkcs11testLABEL_DEVICE_CERTIFICATE_FOR_TLS    "0xE0E2"
+#define pkcs11testLABEL_DEVICE_CERTIFICATE_FOR_TLS       pkcs11configLABEL_DEVICE_CERTIFICATE_FOR_TLS
 
 /**
  * @brief The PKCS #11 label for the object to be used for code verification.

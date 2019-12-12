@@ -1,12 +1,13 @@
 /**
- * @file XMC4400x512.ld
+ * @file XMC4700x2048.ld
  * @date 2017-04-20
  *
  * @cond
  *********************************************************************************************************************
- * Linker file for the GNU C Compiler v1.8
- * Supported devices: XMC4400-F100x512
- *                    XMC4400-F64x512
+ * Linker file for the GNU C Compiler v1.3
+ * Supported devices: XMC4700-E196x2048
+ *                    XMC4700-F144x2048
+ *                    XMC4700-F100x2048
  *
  * Copyright (c) 2015-2017, Infineon Technologies AG
  * All rights reserved.                        
@@ -38,17 +39,13 @@
  * Change History
  * --------------
  *
- * 2015-07-07:
- *     - Product splitting
- *     - Copyright notice update
- *      
- * 2015-11-24:
- *     - Compatibility with GCC 4.9 2015q2
+ * 2015-09-03:
+ *     - Initial version
  *
  * 2016-03-08:
  *     - Fix size of BSS and DATA sections to be multiple of 4
- *     - Add assertion to check that region SRAM_combined does not overflowed no_init section  
- *   
+ *     - Add assertion to check that region SRAM_combined does not overflowed no_init section
+ *      
  * 2017-04-07:
  *     - Added new symbols __text_size and eText
  * 
@@ -63,18 +60,18 @@ OUTPUT_FORMAT("elf32-littlearm")
 OUTPUT_ARCH(arm)
 ENTRY(Reset_Handler)
 
-MEMORY
-{
-    FLASH_1_cached(RX) : ORIGIN = 0x08000000, LENGTH = 0x80000
-    FLASH_1_uncached(RX) : ORIGIN = 0x0C000000, LENGTH = 0x80000
-    PSRAM_1(!RX) : ORIGIN = 0x1FFFC000, LENGTH = 0x4000
-    DSRAM_1_system(!RX) : ORIGIN = 0x20000000, LENGTH = 0x8000
-    DSRAM_2_comm(!RX) : ORIGIN = 0x20008000, LENGTH = 0x8000
-    SRAM_combined(!RX) : ORIGIN = 0x1FFFC000, LENGTH = 0x14000
-}
-
 stack_size = DEFINED(stack_size) ? stack_size : 2048;
 no_init_size = 64;
+
+MEMORY
+{
+    FLASH_1_cached(RX) : ORIGIN = 0x08000000, LENGTH = 0x00200000
+    FLASH_1_uncached(RX) : ORIGIN = 0x0C000000, LENGTH = 0x00200000
+    PSRAM_1(!RX) : ORIGIN = 0x1FFE8000, LENGTH = 0x18000
+    DSRAM_1_system(!RX) : ORIGIN = 0x20000000, LENGTH = 0x20000
+    DSRAM_2_comm(!RX) : ORIGIN = 0x20020000, LENGTH = 0x20000
+    SRAM_combined(!RX) : ORIGIN = 0x1FFE8000, LENGTH = 0x00058000
+}
 
 SECTIONS
 {
@@ -107,8 +104,7 @@ SECTIONS
         *(.rodata .rodata.*)
         *(.gnu.linkonce.r*)
         
-        *(vtable)
-                
+        *(vtable)        
         . = ALIGN(4);        
     } > FLASH_1_cached AT > FLASH_1_uncached
 
@@ -123,14 +119,14 @@ SECTIONS
     } > FLASH_1_cached AT > FLASH_1_uncached
 
     /* Exception handling, exidx needs a dedicated section */
-    .ARM.extab : ALIGN (4)
+    .ARM.extab : ALIGN(4)
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > FLASH_1_cached AT > FLASH_1_uncached
 
     . = ALIGN(4);
     __exidx_start = .;
-    .ARM.exidx : ALIGN (4)
+    .ARM.exidx : ALIGN(4)
     {
         *(.ARM.exidx* .gnu.linkonce.armexidx.*)
     } > FLASH_1_cached AT > FLASH_1_uncached
@@ -196,7 +192,7 @@ SECTIONS
         
     __text_size = (__exidx_end - sText) + __data_size + __ram_code_size;
     eText = sText + __text_size;
-        
+
     /* BSS section */
     .bss (NOLOAD) : 
     {
@@ -236,7 +232,7 @@ SECTIONS
     } > SRAM_combined
     ETH_RAM_size = ETH_RAM_end - ETH_RAM_start;
 
-    /* .no_init section contains chipid, SystemCoreClock and trimming data. See system.c file */
+    /* .no_init section contains chipid, SystemCoreClock and trimming data. See system.c file*/
     .no_init ORIGIN(SRAM_combined) + LENGTH(SRAM_combined) - no_init_size (NOLOAD) : 
     {
         Heap_Bank1_End = .;

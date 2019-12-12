@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS V1.4.8
+ * Amazon FreeRTOS V1.1.4
  * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -73,33 +73,41 @@
  * @defgroup MQTTTask MQTT task configuration parameters.
  */
 /** @{ */
-#define mqttconfigMQTT_TASK_STACK_DEPTH    ( configMINIMAL_STACK_SIZE * 4 )
-#define mqttconfigMQTT_TASK_PRIORITY       ( configMAX_PRIORITIES - 3 )
+#define mqttconfigMQTT_TASK_STACK_DEPTH     ( configMINIMAL_STACK_SIZE * 4 )
+#define mqttconfigMQTT_TASK_PRIORITY        ( configMAX_PRIORITIES - 3 )
+
+/**
+ * @brief The maximum time in ticks for which the MQTT task is permitted to block.
+ *
+ * The MQTT task blocks until the user initiates any action or until it receives
+ * any data from the broker. This macro controls the maximum time the MQTT task can
+ * block. It should be set to a low number for the platforms which do not have any
+ * mechanism to wake up the MQTT task whenever data is received on a connected socket.
+ * This ensures that the MQTT task keeps waking up frequently and processes the
+ * publish messages received from the broker, if any.
+ */
+#define mqttconfigMQTT_TASK_MAX_BLOCK_TICKS ( 100 )
 /** @} */
 
 /**
  * @brief Maximum number of MQTT clients that can exist simultaneously.
  */
-#define mqttconfigMAX_BROKERS                  ( 4 )
+#define mqttconfigMAX_BROKERS            ( 4 )
 
 /**
  * @brief Maximum number of parallel operations per client.
  */
-#define mqttconfigMAX_PARALLEL_OPS             ( 5 )
+#define mqttconfigMAX_PARALLEL_OPS       ( 5 )
 
 /**
  * @brief Time in milliseconds after which the TCP send operation should timeout.
  */
-#define mqttconfigTCP_SEND_TIMEOUT_MS          ( 2000 )
+#define mqttconfigTCP_SEND_TIMEOUT_MS    ( 2000 )
 
 /**
  * @brief Length of the buffer used to receive data.
  */
-#define mqttconfigRX_BUFFER_SIZE               ( 128 )
+#define mqttconfigRX_BUFFER_SIZE         ( 128 )
 
-/**
- * @brief The maximum time in ticks for which the MQTT task is permitted to block.
- */
-#define mqttconfigMQTT_TASK_MAX_BLOCK_TICKS    ( 100 )
 
 #endif /* _AWS_MQTT_AGENT_CONFIG_H_ */

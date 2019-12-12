@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS V1.4.7
+ * Amazon FreeRTOS V1.1.4
  * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -24,28 +24,21 @@
  */
 
 /**
- * @file aws_secure_sockets_config.h
- * @brief Secure sockets configuration options.
+ * @file aws_bufferpool_config.h
+ * @brief Buffer Pool config options.
  */
 
-#ifndef _AWS_SECURE_SOCKETS_CONFIG_H_
-#define _AWS_SECURE_SOCKETS_CONFIG_H_
+#ifndef _AWS_BUFFER_POOL_CONFIG_H_
+#define _AWS_BUFFER_POOL_CONFIG_H_
 
 /**
- * @brief Byte order of the target MCU.
- *
- * Valid values are pdLITTLE_ENDIAN and pdBIG_ENDIAN.
+ * @brief The number of buffers in the static buffer pool.
  */
-#define socketsconfigBYTE_ORDER              pdLITTLE_ENDIAN
+#define bufferpoolconfigNUM_BUFFERS    ( 8 )
 
 /**
- * @brief Default socket send timeout.
+ * @brief The size of each buffer in the static buffer pool.
  */
-#define socketsconfigDEFAULT_SEND_TIMEOUT    ( 10000 )
+#define bufferpoolconfigBUFFER_SIZE    ( 1024 )
 
-/**
- * @brief Default socket receive timeout.
- */
-#define socketsconfigDEFAULT_RECV_TIMEOUT    ( 10000 )
-
-#endif /* _AWS_SECURE_SOCKETS_CONFIG_H_ */
+#endif /* _AWS_BUFFER_POOL_CONFIG_H_ */

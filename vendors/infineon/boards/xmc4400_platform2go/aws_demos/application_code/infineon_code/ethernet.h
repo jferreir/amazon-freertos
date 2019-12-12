@@ -14,17 +14,39 @@
  *
  */
 
-#ifndef ENTROPY_HARDWARE_H
-#define ENTROPY_HARDWARE_H
+#ifndef ETHERNET_H
+#define ETHERNET_H
+
+#include "xmc_eth_mac.h"
+#include "xmc_eth_phy.h"
+
+#define ETH_PHY_ADDR 0
+
+#define RXD1     P2_3
+#define RXD0     P2_2
+#define RXER     P2_4
+#define CLK_RMII P15_8
+#define CRS_DV   P15_9
+
+#define TX_EN    P0_4
+#define TXD1     P2_9
+#define TXD0     P2_8
+
+#define MDIO     P2_0
+#define MDC      P2_7
+
+
+#define ETH_MAC_NUM_RX_BUF (4)
+#define ETH_MAC_NUM_TX_BUF (4)
+#define ETH_IRQ_PRIO 62
+
+extern XMC_ETH_MAC_t eth_mac;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/**
- *
- */
-void ENTROPY_HARDWARE_Init(void);
+int32_t ETEHRNET_Init(void);
 
 #ifdef __cplusplus
 }

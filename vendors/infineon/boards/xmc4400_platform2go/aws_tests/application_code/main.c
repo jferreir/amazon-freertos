@@ -53,13 +53,12 @@
 
 #include <string.h>
 
-#include "console_io.h"
-#include "entropy_hardware.h"
-
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
 #include "task.h"
+
 #include "FreeRTOS_IP.h"
+#include "FreeRTOS_Sockets.h"
 
 /* Test includes */
 #include "aws_test_runner.h"
@@ -67,11 +66,12 @@
 /* AWS library includes. */
 #include "iot_system_init.h"
 #include "iot_logging_task.h"
-#if 0
 #include "iot_wifi.h"
-#endif
 #include "aws_clientcredential.h"
 #include "aws_dev_mode_key_provisioning.h"
+
+#include "console_io.h"
+#include "ethernet.h"
 
 /* Logging Task Defines. */
 #define mainLOGGING_MESSAGE_QUEUE_LENGTH    ( 15 )
@@ -171,6 +171,23 @@ __attribute__((aligned(4))) uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
 
 /*-----------------------------------------------------------*/
 
+static void vOptigaTask(void* pvParameters)
+{
+  (void)pvParameters;
+
+  if (vDevModeKeyProvisioning() == CKR_OK)
+  {
+	    FreeRTOS_IPInit( ucIPAddress,
+	                     ucNetMask,
+	                     ucGatewayAddress,
+	                     ucDNSServerAddress,
+	                     ucMACAddress );
+
+  }
+
+  vTaskDelete(NULL);
+}
+
 /**
  * @brief Application runtime entry point.
  */
@@ -185,12 +202,16 @@ int main( void )
                             tskIDLE_PRIORITY,
                             mainLOGGING_MESSAGE_QUEUE_LENGTH );
 
+#if 0
     FreeRTOS_IPInit( ucIPAddress,
                      ucNetMask,
                      ucGatewayAddress,
                      ucDNSServerAddress,
                      ucMACAddress );
     
+#endif
+
+    xTaskCreate(vOptigaTask, NULL, configMINIMAL_STACK_SIZE * 10, NULL, tskIDLE_PRIORITY, NULL);
 
     /* Start the scheduler.  Initialization that requires the OS to be running,
      * including the Wi-Fi initialization, is performed in the RTOS daemon task
@@ -204,6 +225,12 @@ int main( void )
 static void prvMiscInitialization( void )
 {
 	CONSOLE_IO_Init();
+	if (ETEHRNET_Init() != 0)
+	{
+		configPRINT_STRING("ERROR: ETHERNET initialization failed\r\n");
+		while(1);
+	}
+
 }
 /*-----------------------------------------------------------*/
 
@@ -211,7 +238,7 @@ void vApplicationDaemonTaskStartupHook( void )
 {
     /* FIX ME: Perform any hardware initialization, that require the RTOS to be
      * running, here. */
-    vDevModeKeyProvisioning();
+    //vDevModeKeyProvisioning();
 
     /* FIX ME: If your MCU is using Wi-Fi, delete surrounding compiler directives to 
      * enable the unit tests and after MQTT, Bufferpool, and Secure Sockets libraries 
@@ -237,33 +264,35 @@ void vApplicationDaemonTaskStartupHook( void )
 
 void vApplicationIPNetworkEventHook( eIPCallbackEvent_t eNetworkEvent )
 {
-    if (eNetworkEvent == eNetworkUp)
-    {
-      configPRINT("Network connection successful. \n\r");
-    }    
-    /* FIX ME: If your application is using Ethernet network connections and the 
-     * FreeRTOS+TCP stack, delete the surrounding compiler directives to enable the 
-     * unit tests and after MQTT, Bufferpool, and Secure Sockets libraries have been 
-     * imported into the project. If you are not using Ethernet see the 
-     * vApplicationDaemonTaskStartupHook function. */
-    #if 0
+	  uint32_t ulIPAddress, ulNetMask, ulGatewayAddress, ulDNSServerAddress;
+	  char cBuffer[ 16 ];
+
     static BaseType_t xTasksAlreadyCreated = pdFALSE;
 
     /* If the network has just come up...*/
     if( eNetworkEvent == eNetworkUp )
     {
+    	configPRINT("Network connection successful. \n\r");
+
+    	/* Print out the network configuration, which may have come from a DHCP server. */
+    	FreeRTOS_GetAddressConfiguration( &ulIPAddress, &ulNetMask, &ulGatewayAddress, &ulDNSServerAddress );
+    	FreeRTOS_inet_ntoa( ulIPAddress, cBuffer );
+    	configPRINTF( ( "\r\n\r\nIP Address: %s\r\n", cBuffer ) );
+    	FreeRTOS_inet_ntoa( ulGatewayAddress, cBuffer );
+    	configPRINTF( ( "\r\n\r\nIP Address: %s\r\n", cBuffer ) );
+
         if( ( xTasksAlreadyCreated == pdFALSE ) && ( SYSTEM_Init() == pdPASS ) )
         {
             xTaskCreate( TEST_RUNNER_RunTests_task,
-                         "TestRunner",
-                         TEST_RUNNER_TASK_STACK_SIZE,
+                         "RunTests_task",
+						 mainTEST_RUNNER_TASK_STACK_SIZE,
                          NULL,
-                         tskIDLE_PRIORITY, NULL );
+                         tskIDLE_PRIORITY,
+						 NULL );
 
             xTasksAlreadyCreated = pdTRUE;
         }
     }
-    #endif /* if 0 */
 }
 /*-----------------------------------------------------------*/
 

@@ -1,5 +1,4 @@
 /*
- * Amazon FreeRTOS V1.4.7
  * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -18,34 +17,17 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- * http://aws.amazon.com/freertos
- * http://www.FreeRTOS.org
  */
 
-/**
- * @file aws_secure_sockets_config.h
- * @brief Secure sockets configuration options.
- */
+/* This file contains configuration settings for the demos. */
 
-#ifndef _AWS_SECURE_SOCKETS_CONFIG_H_
-#define _AWS_SECURE_SOCKETS_CONFIG_H_
+#ifndef IOT_CONFIG_H_
+#define IOT_CONFIG_H_
 
-/**
- * @brief Byte order of the target MCU.
- *
- * Valid values are pdLITTLE_ENDIAN and pdBIG_ENDIAN.
- */
-#define socketsconfigBYTE_ORDER              pdLITTLE_ENDIAN
+/* Platform thread priority. */
+#define IOT_THREAD_DEFAULT_PRIORITY      5
 
-/**
- * @brief Default socket send timeout.
- */
-#define socketsconfigDEFAULT_SEND_TIMEOUT    ( 10000 )
+/* Include the common configuration file for FreeRTOS. */
+#include "iot_config_common.h"
 
-/**
- * @brief Default socket receive timeout.
- */
-#define socketsconfigDEFAULT_RECV_TIMEOUT    ( 10000 )
-
-#endif /* _AWS_SECURE_SOCKETS_CONFIG_H_ */
+#endif /* ifndef IOT_CONFIG_H_ */

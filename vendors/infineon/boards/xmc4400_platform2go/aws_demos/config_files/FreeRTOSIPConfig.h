@@ -61,6 +61,9 @@ extern void vLoggingPrintf( const char * pcFormatString,
  * on).  Valid options are pdFREERTOS_BIG_ENDIAN and pdFREERTOS_LITTLE_ENDIAN. */
 #define ipconfigBYTE_ORDER                         pdFREERTOS_LITTLE_ENDIAN
 
+#define ipconfigZERO_COPY_RX_DRIVER 1
+#define ipconfigZERO_COPY_TX_DRIVER 1
+
 /* If the network card/driver includes checksum offloading (IP/TCP/UDP checksums)
  * then set ipconfigDRIVER_INCLUDED_RX_IP_CHECKSUM to 1 to prevent the software
  * stack repeating the checksum calculations. */
@@ -79,10 +82,10 @@ extern void vLoggingPrintf( const char * pcFormatString,
 
 /* Include support for LLMNR: Link-local Multicast Name Resolution
  * (non-Microsoft) */
-#define ipconfigUSE_LLMNR                          ( 1 )
+#define ipconfigUSE_LLMNR                          ( 0 )
 
 /* Include support for NBNS: NetBIOS Name Service (Microsoft) */
-#define ipconfigUSE_NBNS                           ( 1 )
+#define ipconfigUSE_NBNS                           ( 0 )
 
 /* Include support for DNS caching.  For TCP, having a small DNS cache is very
  * useful.  When a cache is present, ipconfigDNS_REQUEST_ATTEMPTS can be kept low
@@ -207,7 +210,9 @@ extern uint32_t ulRand();
  * are available to the IP stack.  The total number of network buffers is limited
  * to ensure the total amount of RAM that can be consumed by the IP stack is capped
  * to a pre-determinable value. */
-#define ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS    60
+#define ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS    16
+#define configNUM_RX_DESCRIPTORS 8
+#define configNUM_TX_DESCRIPTORS 8
 
 /* A FreeRTOS queue is used to send events from application tasks to the IP
  * stack.  ipconfigEVENT_QUEUE_LENGTH sets the maximum number of events that can
@@ -239,14 +244,14 @@ extern uint32_t ulRand();
 #define ipconfigUSE_TCP                                ( 1 )
 
 /* USE_WIN: Let TCP use windowing mechanism. */
-#define ipconfigUSE_TCP_WIN                            ( 1 )
+#define ipconfigUSE_TCP_WIN                            ( 0 )
 
 /* The MTU is the maximum number of bytes the payload of a network frame can
  * contain.  For normal Ethernet V2 frames the maximum MTU is 1500.  Setting a
  * lower value can save RAM, depending on the buffer management scheme used.  If
  * ipconfigCAN_FRAGMENT_OUTGOING_PACKETS is 1 then (ipconfigNETWORK_MTU - 28) must
  * be divisible by 8. */
-#define ipconfigNETWORK_MTU                            1500
+#define ipconfigNETWORK_MTU                            586
 
 /* Set ipconfigUSE_DNS to 1 to include a basic DNS client/resolver.  DNS is used
  * through the FreeRTOS_gethostbyname() API function. */
@@ -295,12 +300,14 @@ extern uint32_t ulRand();
  * simultaneously, one could define TCP_WIN_SEG_COUNT as 120. */
 #define ipconfigTCP_WIN_SEG_COUNT                      240
 
-/* Each TCP socket has a circular buffers for Rx and Tx, which have a fixed
- * maximum size.  Define the size of Rx buffer for TCP sockets. */
-#define ipconfigTCP_RX_BUFFER_LENGTH                   ( 3000 )
+ /* Each TCP socket has a circular buffers for Rx and Tx, which have a fixed
+  * maximum size.  Define the size of Rx buffer for TCP sockets. */
+ #define ipconfigTCP_RX_BUFFER_LENGTH                   ( 4 * ipconfigTCP_MSS )
 
-/* Define the size of Tx buffer for TCP sockets. */
-#define ipconfigTCP_TX_BUFFER_LENGTH                   ( 3000 )
+ /* Define the size of Tx buffer for TCP sockets. */
+ #define ipconfigTCP_TX_BUFFER_LENGTH   				( 4 * ipconfigTCP_MSS )
+
+
 
 /* When using call-back handlers, the driver may check if the handler points to
  * real program memory (RAM or flash) or just has a random non-zero value. */
@@ -320,6 +327,8 @@ extern uint32_t ulRand();
 
 #define ipconfigSOCKET_HAS_USER_WAKE_CALLBACK    ( 1 )
 #define ipconfigUSE_CALLBACKS                    ( 0 )
+
+#define portINLINE                               __inline
 
 void vApplicationMQTTGetKeys( const char ** ppcRootCA,
                               const char ** ppcClientCert,

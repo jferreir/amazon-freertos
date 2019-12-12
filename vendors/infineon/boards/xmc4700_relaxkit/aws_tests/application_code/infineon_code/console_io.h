@@ -14,32 +14,20 @@
  *
  */
 
-#include <stdlib.h>
+#ifndef CONSOLE_IO_H
+#define CONSOLE_IO_H
 
-#include "xmc_common.h"
-#include "mbedtls/entropy_poll.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-int mbedtls_hardware_poll(void *data, unsigned char *output, size_t len, size_t *olen)
-{
-  (void)data;
+/**
+ *
+ */
+void CONSOLE_IO_Init(void);
 
-  for (int32_t i = 0; i < len / 4; i++, output+=4)
-  {
-	*(uint32_t *)output = lrand48();
-  }
-
-  if ((len % 4) != 0)
-  {
-  	uint32_t last = lrand48();
-  	for (int32_t i = 0; i < len % 4; i++, output += 1) {
-  		*output = (unsigned char)(last & 0xff);
-  		last = last >> 8;
-  	}
-  }
-
-  *olen = len;
-
-  return 0;
+#ifdef __cplusplus
 }
+#endif
 
-
+#endif

@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS V1.4.7
+ * Amazon FreeRTOS V1.1.4
  * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -24,28 +24,49 @@
  */
 
 /**
- * @file aws_secure_sockets_config.h
- * @brief Secure sockets configuration options.
+ * @file aws_mqtt_config.h
+ * @brief MQTT config options.
  */
 
-#ifndef _AWS_SECURE_SOCKETS_CONFIG_H_
-#define _AWS_SECURE_SOCKETS_CONFIG_H_
+#ifndef _AWS_MQTT_CONFIG_H_
+#define _AWS_MQTT_CONFIG_H_
+
+/* Unity includes. */
+#include "unity_internals.h"
 
 /**
- * @brief Byte order of the target MCU.
+ * @brief Define assert for test project.
+ */
+#define mqttconfigASSERT( x )    if( ( x ) == 0 ) TEST_ABORT()
+
+/**
+ * @brief Enable subscription management.
  *
- * Valid values are pdLITTLE_ENDIAN and pdBIG_ENDIAN.
+ * This gives the user flexibility of registering a callback per subscription.
  */
-#define socketsconfigBYTE_ORDER              pdLITTLE_ENDIAN
+#define mqttconfigENABLE_SUBSCRIPTION_MANAGEMENT            ( 1 )
 
 /**
- * @brief Default socket send timeout.
+ * @brief Maximum length of the topic which can be stored in subscription
+ * manager.
  */
-#define socketsconfigDEFAULT_SEND_TIMEOUT    ( 10000 )
+#define mqttconfigSUBSCRIPTION_MANAGER_MAX_TOPIC_LENGTH     ( 128 )
 
 /**
- * @brief Default socket receive timeout.
+ * @brief Maximum number of subscriptions which can be stored in subscription
+ * manager.
  */
-#define socketsconfigDEFAULT_RECV_TIMEOUT    ( 10000 )
+#define mqttconfigSUBSCRIPTION_MANAGER_MAX_SUBSCRIPTIONS    ( 8 )
 
-#endif /* _AWS_SECURE_SOCKETS_CONFIG_H_ */
+/*
+ * Uncomment the following two lines to enable asserts.
+ */
+/* extern void vAssertCalled( const char *pcFile, uint32_t ulLine ); */
+/* #define mqttconfigASSERT( x ) if( ( x ) == 0 ) vAssertCalled( __FILE__, __LINE__ ) */
+
+/**
+ * @brief Set this macro to 1 for enabling debug logs.
+ */
+#define mqttconfigENABLE_DEBUG_LOGS                 ( 0 )
+
+#endif /* _AWS_MQTT_CONFIG_H_ */

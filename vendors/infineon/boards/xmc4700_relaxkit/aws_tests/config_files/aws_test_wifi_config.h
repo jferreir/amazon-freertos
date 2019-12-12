@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS V1.4.7
+ * Amazon FreeRTOS V1.1.4
  * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -24,28 +24,26 @@
  */
 
 /**
- * @file aws_secure_sockets_config.h
- * @brief Secure sockets configuration options.
+ * @file aws_test_wifi_config.h
+ * @brief Port-specific variables for Wi-Fi tests.
  */
-
-#ifndef _AWS_SECURE_SOCKETS_CONFIG_H_
-#define _AWS_SECURE_SOCKETS_CONFIG_H_
+#ifndef _AWS_TEST_WIFI_CONFIG_H_
+#define _AWS_TEST_WIFI_CONFIG_H_
 
 /**
- * @brief Byte order of the target MCU.
- *
- * Valid values are pdLITTLE_ENDIAN and pdBIG_ENDIAN.
+ * @brief The task stack size used in all Wi-Fi multi-task tests.
  */
-#define socketsconfigBYTE_ORDER              pdLITTLE_ENDIAN
+#define testwifiTASK_STACK_SIZE             ( configMINIMAL_STACK_SIZE * 4 )
 
 /**
- * @brief Default socket send timeout.
+ * @brief The task priority used in all Wi-Fi mulit-task tests. 
  */
-#define socketsconfigDEFAULT_SEND_TIMEOUT    ( 10000 )
+#define testwifiTASK_PRIORITY               ( tskIDLE_PRIORITY )
 
-/**
- * @brief Default socket receive timeout.
- */
-#define socketsconfigDEFAULT_RECV_TIMEOUT    ( 10000 )
 
-#endif /* _AWS_SECURE_SOCKETS_CONFIG_H_ */
+#define testwifiCONNECTION_DELAY    pdMS_TO_TICKS( 4000 )
+
+#define testwifiMULTITASK_TEST_TIMEOUT    pdMS_TO_TICKS( 300000 )
+
+
+#endif /* _AWS_TEST_WIFI_CONFIG_H_ */

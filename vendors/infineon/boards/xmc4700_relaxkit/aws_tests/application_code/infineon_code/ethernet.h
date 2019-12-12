@@ -14,32 +14,39 @@
  *
  */
 
-#include <stdlib.h>
+#ifndef ETHERNET_H
+#define ETHERNET_H
 
-#include "xmc_common.h"
-#include "mbedtls/entropy_poll.h"
+#include "xmc_eth_mac.h"
+#include "xmc_eth_phy.h"
 
-int mbedtls_hardware_poll(void *data, unsigned char *output, size_t len, size_t *olen)
-{
-  (void)data;
+#define ETH_PHY_ADDR 0
 
-  for (int32_t i = 0; i < len / 4; i++, output+=4)
-  {
-	*(uint32_t *)output = lrand48();
-  }
+#define RXD1     P2_3
+#define RXD0     P2_2
+#define RXER     P2_4
+#define CLK_RMII P15_8
+#define CRS_DV   P15_9
 
-  if ((len % 4) != 0)
-  {
-  	uint32_t last = lrand48();
-  	for (int32_t i = 0; i < len % 4; i++, output += 1) {
-  		*output = (unsigned char)(last & 0xff);
-  		last = last >> 8;
-  	}
-  }
+#define TX_EN    P2_5
+#define TXD1     P2_9
+#define TXD0     P2_8
 
-  *olen = len;
+#define MDIO     P2_0
+#define MDC      P2_7
 
-  return 0;
+#define ETH_IRQ_PRIO 62
+
+extern XMC_ETH_MAC_t eth_mac;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+int32_t ETEHRNET_Init(void);
+
+#ifdef __cplusplus
 }
+#endif
 
-
+#endif

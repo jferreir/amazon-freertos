@@ -82,8 +82,8 @@
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION    1
 #define configMAX_PRIORITIES                       ( 7 )
 #define configTICK_RATE_HZ                         ( 1000 )                  
-#define configMINIMAL_STACK_SIZE                   ( ( unsigned short ) 256 )
-#define configTOTAL_HEAP_SIZE                      ( ( size_t ) ( 32 * 1024 ) )
+#define configMINIMAL_STACK_SIZE                   ( ( unsigned short ) 160 )
+#define configTOTAL_HEAP_SIZE                      ( ( size_t ) ( 54 * 1024 ) )
 #define configAPPLICATION_ALLOCATED_HEAP           1
 #define configMAX_TASK_NAME_LEN                    ( 15 )
 #define configUSE_TRACE_FACILITY                   1
