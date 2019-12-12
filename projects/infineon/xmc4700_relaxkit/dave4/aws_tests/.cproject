@@ -85,8 +85,11 @@
 							<tool id="com.ifx.xmc4000.printsize.1293452309" name="ARM-GCC Print Size" superClass="com.ifx.xmc4000.printsize"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.ifx.xmc4000.appRelease.2062882733.448732223" name="entropy_hardware_alt.c" rcbsApplicability="disable" resourcePath="application_code/infineon_code/entropy_hardware_alt.c" toolsToInvoke="com.ifx.xmc4000.appRelease.compiler.381318303.1317126996">
+						<tool id="com.ifx.xmc4000.appRelease.compiler.381318303.1317126996" name="ARM-GCC C Compiler" superClass="com.ifx.xmc4000.appRelease.compiler.381318303"/>
+					</fileInfo>
 					<sourceEntries>
-						<entry excluding="Dave/Model" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="application_code/infineon_code/entropy_hardware_alt.c|libraries/abstractions/pkcs11/mbedtls/iot_pkcs11_mbedtls.c|vendors/infineon/boards/xmc4700_relaxkit/ports/pkcs11/iot_pkcs11_pal.c|Dave/Model" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -281,8 +284,11 @@
 							<tool id="com.ifx.xmc4000.printsize.1438836355" name="ARM-GCC Print Size" superClass="com.ifx.xmc4000.printsize.56007435"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.ifx.xmc4000.appDebug.1066359332.1986498757" name="entropy_hardware_alt.c" rcbsApplicability="disable" resourcePath="application_code/infineon_code/entropy_hardware_alt.c" toolsToInvoke="com.ifx.xmc4000.appDebug.compiler.347856241.1152865865">
+						<tool id="com.ifx.xmc4000.appDebug.compiler.347856241.1152865865" name="ARM-GCC C Compiler" superClass="com.ifx.xmc4000.appDebug.compiler.347856241"/>
+					</fileInfo>
 					<sourceEntries>
-						<entry excluding="Dave/Model" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="application_code/infineon_code/entropy_hardware_alt.c|libraries/abstractions/pkcs11/mbedtls/iot_pkcs11_mbedtls.c|vendors/infineon/boards/xmc4700_relaxkit/ports/pkcs11/iot_pkcs11_pal.c|Dave/Model" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
