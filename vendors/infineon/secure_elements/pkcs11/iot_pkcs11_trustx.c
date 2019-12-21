@@ -740,7 +740,7 @@ CK_RV prvOPTIGATrustX_Initialize( void )
 
 //        CRYPTO_Init();
 
-        //pal_gpio_init(&optiga_reset_0);
+        pal_gpio_init(&optiga_reset_0);
         pal_os_lock_init();
 
         pal_os_event_init();
