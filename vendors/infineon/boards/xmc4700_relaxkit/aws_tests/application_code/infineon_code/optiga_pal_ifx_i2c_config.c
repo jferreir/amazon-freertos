@@ -46,6 +46,35 @@
 #include "Driver_I2C.h"
 extern ARM_DRIVER_I2C            Driver_I2C3;
 
+const XMC_GPIO_CONFIG_t optiga_reset_gpio_config =
+{
+  .mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL,
+  .output_level = XMC_GPIO_OUTPUT_LEVEL_HIGH,
+  .output_strength = XMC_GPIO_OUTPUT_STRENGTH_MEDIUM
+};
+
+static void optiga_reset_gpio_init(void)
+{
+  XMC_GPIO_Init(P1_8, &optiga_reset_gpio_config);
+}
+
+static void optiga_reset_set_high(void)
+{
+  XMC_GPIO_SetOutputHigh(P1_8);
+}
+
+static void optiga_reset_set_low(void)
+{
+  XMC_GPIO_SetOutputLow(P1_8);
+}
+
+pal_platform_gpio_t optiga_reset =
+{
+  .gpio_init = optiga_reset_gpio_init,
+  .set_high = optiga_reset_set_high,
+  .set_low = optiga_reset_set_low
+};
+
 /*********************************************************************************************************************
  * pal ifx i2c instance
  *********************************************************************************************************************/
@@ -77,7 +106,7 @@ pal_gpio_t optiga_vdd_0 =
  */
 pal_gpio_t optiga_reset_0 =
 {
-    NULL
+    &optiga_reset
 };
 
 
