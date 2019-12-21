@@ -1,6 +1,6 @@
 /**
  * @file xmc_vadc.c
- * @date 2019-05-07
+ * @date 2019-12-16
  *
  * @cond
  *****************************************************************************
@@ -106,6 +106,9 @@
  * 2019-10-18:
  *     - Changed XMC_VADC_GLOBAL_StartupCalibration() to ensure calibration has started
  * 
+ * 2019-12-16:
+ *     - Fix including files following the convention: angle brackets are used for standard includes and double quotes for everything else.
+ *
  * @endcond 
  *
  */
@@ -113,7 +116,7 @@
 /*********************************************************************************************************************
  * HEADER FILES
  ********************************************************************************************************************/
-#include <xmc_vadc.h>
+#include "xmc_vadc.h"
 
 /*********************************************************************************************************************
  * MACROS

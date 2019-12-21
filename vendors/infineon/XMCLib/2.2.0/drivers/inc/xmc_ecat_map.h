@@ -48,7 +48,7 @@
  *     - Added XMC_ECAT_PORT_CTRL_LATCHIN0_P9_0 and XMC_ECAT_PORT_CTRL_LATCHIN0_P9_1
  *
  * 2019-10-10:
- *     - Complete definitions for input multiplexer settings
+ *     - Update definitions for input multiplexer settings adding GND settings
  * 
  * @endcond
  */

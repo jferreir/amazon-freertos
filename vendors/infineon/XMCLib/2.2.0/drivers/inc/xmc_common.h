@@ -1,6 +1,6 @@
 /**
  * @file xmc_common.h
- * @date 2019-07-12
+ * @date 2019-12-16
  *
  * @cond
  *****************************************************************************
@@ -77,6 +77,9 @@
  *
  * 2019-11-19:
  *     - Updated XMC_LIB_VERSION macro to v2.2.0
+ *
+ * 2019-12-16: 
+ *     - Added include for inttypes.h
  *
  * @endcond 
  *

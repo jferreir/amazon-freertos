@@ -1,14 +1,14 @@
 /**
  * @file xmc1_scu.c
- * @date 2019-10-14
+ * @date 2019-12-16
  *
  * @cond
  *****************************************************************************
  * XMClib v2.2.0 - XMC Peripheral Driver Library 
  *
  * Copyright (c) 2015-2019, Infineon Technologies AG
- * All rights reserved.
- *
+ * All rights reserved.                        
+ *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
  * 
  * Permission is hereby granted, free of charge, to any person or organization
@@ -32,7 +32,7 @@
  * FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
+ *                                                                              
  * To improve the quality of the software, users are encouraged to share 
  * modifications, enhancements or bug fixes with Infineon Technologies AG 
  * at XMCSupport@infineon.com.
@@ -99,6 +99,9 @@
  * 2019-10-14:
  *     - Added XMC_SCU_CLOCK_SetAdcClockSrc()
  * 
+ * 2019-12-16:
+ *     - Fix including files following the convention: angle brackets are used for standard includes and double quotes for everything else.
+ *
  * @endcond
  *
  */
@@ -126,7 +129,7 @@
 /*********************************************************************************************************************
  * HEADER FILES
  ********************************************************************************************************************/
-#include <xmc_scu.h>
+#include "xmc_scu.h"
 
 #if UC_FAMILY == XMC1
 

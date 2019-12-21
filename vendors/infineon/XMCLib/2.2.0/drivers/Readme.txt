@@ -76,7 +76,7 @@ To start a project from scratch follow the steps:
    - ${ProjName}/CMSIS/Include
    - ${ProjName}/CMSIS/Infineon/XMC4400_series/Include
 4. Select the device for which your compiling defining a preprocessor symbol, i.e. XMC4500_F144x1024
-5. Include into your source the header files of the peripherals you want to use, i.e. #include <xmc_vadc.h>
+5. Include into your source the header files of the peripherals you want to use, i.e. #include "xmc_vadc.h"
 6. Configure the peripheral and make use of the APIs described in the documentation.
 
 

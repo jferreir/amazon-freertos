@@ -95,8 +95,11 @@
  *     - Changed XMC_USIC_CH_SetBaudrateEx() input parameter types
  *
  * 2019-09-30:
- *     - Added XMC_USIC_CH_InvalidateReadData(), XMC_USIC_CH_EnableWordLengthControl() and XMC_USIC_CH_DisableWordLengthControl
+ *     - Added XMC_USIC_CH_InvalidateReadData(), XMC_USIC_CH_EnableWordLengthControl() and XMC_USIC_CH_DisableWordLengthControl()
  *
+ * 2019-12-05:
+ *     - Added XMC_USIC_CH_TXFIFO_PutDataEx()
+ * 
  * @endcond
  *
  */
@@ -1368,9 +1371,9 @@ __STATIC_INLINE void XMC_USIC_CH_EnableFrameLengthControl(XMC_USIC_CH_t *const c
  * @return None
  *
  * \par<b>Description</b><br>
- * Enables automatic update of frame length. \n\n
- * When the automatic update of frame length is enabled, frame length is configured based on the 
- * index of the TBUF[]/IN[] register array. When the data is written to TBUF[x], frame length is configured
+ * Enables automatic update of word length. \n\n
+ * When the automatic update of word length is enabled, word length is configured based on the 
+ * index of the TBUF[]/IN[] register array. When the data is written to TBUF[x], word length is configured
  * with the mask value of \a x at the last 5 bit positions. Same logic is applicable if data is written to
  * IN[x] register.
  *
@@ -1397,7 +1400,7 @@ __STATIC_INLINE void XMC_USIC_CH_EnableWordLengthControl(XMC_USIC_CH_t *const ch
  * Frame length remains fixed until it is changed again.
  *
  * \par<b>Related APIs:</b><BR>
- * XMC_USIC_CH_DisableFrameLengthControl(), XMC_USIC_CH_SetFrameLength() \n\n\n
+ * XMC_USIC_CH_EnableFrameLengthControl(), XMC_USIC_CH_SetFrameLength() \n\n\n
  */
 __STATIC_INLINE void XMC_USIC_CH_DisableFrameLengthControl(XMC_USIC_CH_t *const channel)
 {
@@ -1410,12 +1413,12 @@ __STATIC_INLINE void XMC_USIC_CH_DisableFrameLengthControl(XMC_USIC_CH_t *const 
  * @return None
  *
  * \par<b>Description</b><br>
- * Disables automatic update of frame length. \n\n
- * When automatic update of frame length is disabled, frame length has to configured explicitly.
- * Frame length remains fixed until it is changed again.
+ * Disables automatic update of word length. \n\n
+ * When automatic update of word length is disabled, word length has to configured explicitly.
+ * Word length remains fixed until it is changed again.
  *
  * \par<b>Related APIs:</b><BR>
- * XMC_USIC_CH_DisableFrameLengthControl(), XMC_USIC_CH_SetFrameLength() \n\n\n
+ * XMC_USIC_CH_EnableFrameLengthControl(), XMC_USIC_CH_SetWordLength() \n\n\n
  */
 __STATIC_INLINE void XMC_USIC_CH_DisableWordLengthControl(XMC_USIC_CH_t *const channel)
 {
@@ -1682,6 +1685,31 @@ __STATIC_INLINE void XMC_USIC_CH_TXFIFO_PutData(XMC_USIC_CH_t *const channel, co
 /**
  * @param channel Pointer to USIC channel handler of type @ref XMC_USIC_CH_t \n
  * 				   \b Range: @ref XMC_USIC0_CH0, @ref XMC_USIC0_CH1 to @ref XMC_USIC2_CH1 based on device support.
+ * @param data Data to be transmitted. \n
+ *           \b Range: 16bit unsigned data. minimum= 0, maximum= 65535
+ * @param loc Input location. \n
+ * @return None
+ *
+ * \par<b>Description</b><br>
+ * Transmit data can be loaded to TBUF by software by writing to the transmit buffer input
+ * locations TBUFx (x = 00-31), consisting of 32 consecutive addresses. The data written
+ * to one of these input locations is stored in the transmit buffer TBUF. Additionally, the
+ * address of the written location is evaluated and can be used for additional control
+ * purposes. This 5-bit wide information (named Transmit Control Information TCI) can be
+ * used for different purposes in different protocols.
+ *
+ * \par<b>Related APIs:</b><BR>
+ * XMC_USIC_CH_EnableWordLengthControl() \n
+ * XMC_USIC_CH_EnableFrameLengthControl() \n\n\n
+ */
+__STATIC_INLINE void XMC_USIC_CH_TXFIFO_PutDataEx(XMC_USIC_CH_t *const channel, const uint16_t data, uint8_t loc)
+{
+  channel->IN[loc] = data;
+}
+
+/**
+ * @param channel Pointer to USIC channel handler of type @ref XMC_USIC_CH_t \n
+ * 				   \b Range: @ref XMC_USIC0_CH0, @ref XMC_USIC0_CH1 to @ref XMC_USIC2_CH1 based on device support.
  * @param data Data to be transmitted.
  * @param frame_length Frame length to be configured while transmitting the data. \n
  * 			\b Range: minimum= 0, maximum= 31. e.g: For a frame length of 16, set \a frame_length as 15.
@@ -1694,6 +1722,7 @@ __STATIC_INLINE void XMC_USIC_CH_TXFIFO_PutData(XMC_USIC_CH_t *const channel, co
  * \a frame_length is used as index for the IN[] register array.
  * 
  * \par<b>Related APIs:</b><BR>
+ * XMC_USIC_CH_TXFIFO_PutDataEx() \n
  * XMC_USIC_CH_EnableFrameLengthControl() \n\n\n
  */
 __STATIC_INLINE void XMC_USIC_CH_TXFIFO_PutDataFLEMode(XMC_USIC_CH_t *const channel,

@@ -4,11 +4,11 @@
  *
  * @cond
  *****************************************************************************
- * XMClib v2.2.0 - XMC Peripheral Driver Library
+ * XMClib v2.2.0 - XMC Peripheral Driver Library 
  *
  * Copyright (c) 2015-2019, Infineon Technologies AG
- * All rights reserved.
- *
+ * All rights reserved.                        
+ *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
  * 
  * Permission is hereby granted, free of charge, to any person or organization
@@ -32,7 +32,7 @@
  * FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
+ *                                                                              
  * To improve the quality of the software, users are encouraged to share 
  * modifications, enhancements or bug fixes with Infineon Technologies AG 
  * at XMCSupport@infineon.com.

@@ -8,9 +8,9 @@
  *
  * Copyright (c) 2015-2019, Infineon Technologies AG
  * All rights reserved.                        
- * 
+ *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
- *
+ * 
  * Permission is hereby granted, free of charge, to any person or organization
  * obtaining a copy of the software and accompanying documentation covered by
  * this license (the "Software") to use, reproduce, display, distribute,
@@ -32,7 +32,7 @@
  * FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *                                           
+ *                                                                              
  * To improve the quality of the software, users are encouraged to share 
  * modifications, enhancements or bug fixes with Infineon Technologies AG 
  * at XMCSupport@infineon.com.
