@@ -1,12 +1,12 @@
 /*********************************************************************************************************************
  * @file     system_XMC4100.c
  * @brief    CMSIS Cortex-M4 Device Peripheral Access Layer Header File for the Infineon XMC4100 Device Series
- * @version  V3.2.5
- * @date     29. Oct 2018
+ * @version  V3.2.6
+ * @date     02. Dec 2019
  *
  * @cond
  *********************************************************************************************************************
- * Copyright (c) 2015-2018, Infineon Technologies AG
+ * Copyright (c) 2015-2019, Infineon Technologies AG
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,are permitted provided that the
@@ -43,6 +43,8 @@
  *                       Added support for ARM Compiler 6 (armclang) 
  * V3.2.4, 26. Sep 2017, Disable FPU if FPU_USED is zero
  * V3.2.5, 29. Oct 2018, Fix variable location of SystemCoreClock, g_hrpwm_char_data and g_chipid for ARMCC compiler
+ * V3.2.6, 02. Dec 2019, Fix including device header file following the convention: angle brackets are used for standard includes and double quotes for everything else.
+ * 
  ******************************************************************************
  * @endcond
  */
@@ -52,7 +54,7 @@
  *******************************************************************************/
 #include <string.h>
 
-#include <XMC4100.h>
+#include "XMC4100.h"
 #include "system_XMC4100.h"
 
 /*******************************************************************************

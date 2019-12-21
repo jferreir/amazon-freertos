@@ -1,12 +1,12 @@
 /*********************************************************************************************************************
  * @file     system_XMC1200.c
  * @brief    Device specific initialization for the XMC1200-Series according to CMSIS
- * @version  V1.12
- * @date     29 Oct 2018
+ * @version  V1.13
+ * @date     02 Dec 2019
  *
  * @cond
  *********************************************************************************************************************
- * Copyright (c) 2012-2018, Infineon Technologies AG
+ * Copyright (c) 2012-2019, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Redistribution and use in source and binary forms, with or without modification,are permitted provided that the 
@@ -49,6 +49,8 @@
  * V1.11,19 Jun 2017, Rely on cmsis_compiler.h instead of defining __WEAK
  *                    Added support for ARM Compiler 6 (armclang) 
  * V1.12,29 Oct 2018, Fix variable location of SystemCoreClock for ARMCC compiler
+ * V1.13,02 Dec 2019, Fix including device header file following the convention: angle brackets are used for standard includes and double quotes for everything else.
+ * 
  * @endcond 
  */
 
@@ -56,7 +58,7 @@
  * HEADER FILES
  *******************************************************************************/
 
-#include <XMC1200.h>
+#include "XMC1200.h"
 #include "system_XMC1200.h"
 
 /*******************************************************************************

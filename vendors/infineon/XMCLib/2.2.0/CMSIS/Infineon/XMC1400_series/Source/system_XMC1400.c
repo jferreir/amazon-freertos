@@ -1,8 +1,8 @@
 /*********************************************************************************************************************
  * @file     system_XMC1400.c
  * @brief    Device specific initialization for the XMC1400-Series according to CMSIS
- * @version  V1.6
- * @date     04 June 2019
+ * @version  V1.7
+ * @date     02 Dec 2019
  *
  * @cond
  *********************************************************************************************************************
@@ -49,7 +49,8 @@
  *                      the RTC_Enable() or the calibration will stall the MCU until the oscillator is stable (max. 5s according datasheet)
  *
  * V1.6, 04 June 2019, Sync. code of SystemCoreClockSetup() to XMC_SCU_CLOCK_Init() in xmc1_scu.c
- * 
+ * V1.7, 02 Dec 2019, Fix including device header file following the convention: angle brackets are used for standard includes and double quotes for everything else.
+ *
  * @endcond
  */
 
@@ -57,7 +58,7 @@
  * HEADER FILES
  *******************************************************************************/
 
-#include <XMC1400.h>
+#include "XMC1400.h"
 #include "system_XMC1400.h"
 
 /*******************************************************************************
