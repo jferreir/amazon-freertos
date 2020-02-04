@@ -1401,6 +1401,16 @@
 #else
 #error "Invalid I2C1_TX FIFO SIZE Configuration!"
 #endif
+
+// <o> IRQ Priority <0-63>
+// <i> Defines priority of I2C events IRQ handling
+// <i> Default: 63
+#define RTE_I2C1_IRQ_PRIORITY  63
+
+// <o> Hold Delay <0-15>
+// <i> Defines the delay used to respect the SDA hold time
+// <i> Default: 2
+#define RTE_I2C1_HDEL  2
 //</e>
 
 // <e> I2C2 (Inter-Integrated circuit) [Driver_I2C2]

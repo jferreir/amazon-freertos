@@ -2102,13 +2102,13 @@
 
 // <o>IRQ Priority <0-63>
 // <i> Defines priority of I2C events IRQ handling
-// <i> Default: 62 
-#define RTE_I2C0_IRQ_PRIORITY 63
+// <i> Default: 63
+#define RTE_I2C0_IRQ_PRIORITY  63
 
-// <o>IRQ Priority <0-15>
-// <i> Defines the delay used to respect the SDA hold time 
-// <i> Default: 2
-#define RTE_I2C0_HDEL 0
+// <o>Hold Delay <0-15>
+// <i> Defines the delay used to respect the SDA hold time
+// <i> Default: 0
+#define RTE_I2C0_HDEL  0
 
 //</e>
 
@@ -2238,13 +2238,13 @@
 
 // <o>IRQ Priority <0-63>
 // <i> Defines priority of I2C events IRQ handling
-// <i> Default: 62 
-#define RTE_I2C1_IRQ_PRIORITY 63
+// <i> Default: 63
+#define RTE_I2C1_IRQ_PRIORITY  63
 
-// <o>IRQ Priority <0-15>
-// <i> Defines the delay used to respect the SDA hold time 
-// <i> Default: 2
-#define RTE_I2C1_HDEL 0
+// <o>Hold Delay <0-15>
+// <i> Defines the delay used to respect the SDA hold time
+// <i> Default: 0
+#define RTE_I2C1_HDEL  0
 
 //</e>
 // <e> I2C2 (Inter-Integrated circuit) [Driver_I2C2]
@@ -2355,13 +2355,13 @@
 
 // <o>IRQ Priority <0-63>
 // <i> Defines priority of I2C events IRQ handling
-// <i> Default: 62 
-#define RTE_I2C2_IRQ_PRIORITY 63
+// <i> Default: 63
+#define RTE_I2C2_IRQ_PRIORITY  63
 
-// <o>IRQ Priority <0-15>
-// <i> Defines the delay used to respect the SDA hold time 
-// <i> Default: 2
-#define RTE_I2C2_HDEL 0
+// <o>Hold Delay <0-15>
+// <i> Defines the delay used to respect the SDA hold time
+// <i> Default: 0
+#define RTE_I2C2_HDEL  0
 
 //</e>
 // <e> I2C3 (Inter-Integrated circuit) [Driver_I2C3]
@@ -2483,13 +2483,13 @@
 
 // <o>IRQ Priority <0-63>
 // <i> Defines priority of I2C events IRQ handling
-// <i> Default: 62 
-#define RTE_I2C3_IRQ_PRIORITY 63
+// <i> Default: 63
+#define RTE_I2C3_IRQ_PRIORITY  63
 
-// <o>IRQ Priority <0-15>
-// <i> Defines the delay used to respect the SDA hold time 
-// <i> Default: 2
-#define RTE_I2C3_HDEL 0
+// <o>Hold Delay <0-15>
+// <i> Defines the delay used to respect the SDA hold time
+// <i> Default: 0
+#define RTE_I2C3_HDEL  0
 
 //</e>
 // <e> I2C4 (Inter-Integrated circuit) [Driver_I2C4]
@@ -2593,13 +2593,13 @@
 
 // <o>IRQ Priority <0-63>
 // <i> Defines priority of I2C events IRQ handling
-// <i> Default: 62 
-#define RTE_I2C4_IRQ_PRIORITY 63
+// <i> Default: 63
+#define RTE_I2C4_IRQ_PRIORITY  63
 
-// <o>IRQ Priority <0-15>
-// <i> Defines the delay used to respect the SDA hold time 
-// <i> Default: 2
-#define RTE_I2C4_HDEL 0
+// <o>Hold Delay <0-15>
+// <i> Defines the delay used to respect the SDA hold time
+// <i> Default: 0
+#define RTE_I2C4_HDEL  0
 
 //</e>
 // <e> I2C5 (Inter-Integrated circuit) [Driver_I2C5]
@@ -2719,13 +2719,13 @@
 
 // <o>IRQ Priority <0-63>
 // <i> Defines priority of I2C events IRQ handling
-// <i> Default: 62 
-#define RTE_I2C5_IRQ_PRIORITY 63
+// <i> Default: 63
+#define RTE_I2C5_IRQ_PRIORITY  63
 
-// <o>IRQ Priority <0-15>
-// <i> Defines the delay used to respect the SDA hold time 
-// <i> Default: 2
-#define RTE_I2C5_HDEL 0
+// <o>Hold Delay <0-15>
+// <i> Defines the delay used to respect the SDA hold time
+// <i> Default: 0
+#define RTE_I2C5_HDEL  0
 
 //</e>
 

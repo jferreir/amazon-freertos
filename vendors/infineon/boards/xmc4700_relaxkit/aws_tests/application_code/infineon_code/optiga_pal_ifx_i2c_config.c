@@ -42,6 +42,10 @@
 #include "pal_platform.h"
 
 #include "xmc_gpio.h"
+// Uncomment the following line if Optiga Shield2Go connected to Socket2/3 of MyIoT Shield2Go Adapter
+#define OPTIGA_RESET_PIN P1_8
+// Uncomment the following line if Optiga Shield2Go connected to Socket1 of MyIoT Shield2Go Adapter
+//#define OPTIGA_RESET_PIN P1_11
 
 #include "Driver_I2C.h"
 extern ARM_DRIVER_I2C            Driver_I2C3;
@@ -55,17 +59,17 @@ const XMC_GPIO_CONFIG_t optiga_reset_gpio_config =
 
 static void optiga_reset_gpio_init(void)
 {
-  XMC_GPIO_Init(P1_8, &optiga_reset_gpio_config);
+  XMC_GPIO_Init(OPTIGA_RESET_PIN, &optiga_reset_gpio_config);
 }
 
 static void optiga_reset_set_high(void)
 {
-  XMC_GPIO_SetOutputHigh(P1_8);
+  XMC_GPIO_SetOutputHigh(OPTIGA_RESET_PIN);
 }
 
 static void optiga_reset_set_low(void)
 {
-  XMC_GPIO_SetOutputLow(P1_8);
+  XMC_GPIO_SetOutputLow(OPTIGA_RESET_PIN);
 }
 
 pal_platform_gpio_t optiga_reset =

@@ -44,6 +44,8 @@
  * Version 2.9 Fix compiler warnings
  *             Fix BUS_CLEAR
  *             Enable digital filters on inputs
+ *             Fix I2C_GetDataCount()
+ *             I2C_MasterTransmit(), I2C_MasterReceive() added busy bus check
  * 
  * Version 2.8 Conditional compiling based on RTE_Drivers_I2C
  * 
@@ -698,7 +700,7 @@ static int32_t I2C_MasterTransmit(uint32_t addr, const uint8_t *data, uint32_t n
     return ARM_DRIVER_ERROR;
   }
 
-  if (i2c->info->status.busy)
+  if (i2c->info->status.busy || (XMC_GPIO_GetInput(i2c->sda_rx_port.port, i2c->sda_rx_port.pin) == 0))
   {
     /* Transfer operation in progress, or Slave stalled */
     return ARM_DRIVER_ERROR_BUSY;
@@ -739,14 +741,7 @@ static int32_t I2C_MasterTransmit(uint32_t addr, const uint8_t *data, uint32_t n
   if(i2c->info->pending == false)
   {  
     /* send slave address and command to write */
-	if (XMC_GPIO_GetInput(i2c->sda_rx_port.port, i2c->sda_rx_port.pin) != 0)
-	{
     XMC_I2C_CH_MasterStart(i2c->i2c, addr, XMC_I2C_CH_CMD_WRITE);
-	}
-	else
-	{
-	  return ARM_DRIVER_ERROR;
-	}
   }
   else
   {
@@ -832,7 +827,7 @@ static int32_t I2C_MasterReceive(uint32_t addr, uint8_t *data, uint32_t num, boo
   }
 
   // Check if receiver is busy
-  if (i2c->info->status.busy == 1)
+  if (i2c->info->status.busy || (XMC_GPIO_GetInput(i2c->sda_rx_port.port, i2c->sda_rx_port.pin) == 0))
   {
     return ARM_DRIVER_ERROR_BUSY;
   }
@@ -898,14 +893,7 @@ static int32_t I2C_MasterReceive(uint32_t addr, uint8_t *data, uint32_t num, boo
   if(i2c->info->pending == false)
   {  
     /* send slave address and command to write */
-	if (XMC_GPIO_GetInput(i2c->sda_rx_port.port, i2c->sda_rx_port.pin) != 0)
-	{
     XMC_I2C_CH_MasterStart(i2c->i2c, addr, XMC_I2C_CH_CMD_READ);
-	}
-	else
-	{
-      return ARM_DRIVER_ERROR;
-	}
   }
   else
   {
@@ -1215,7 +1203,14 @@ static int32_t I2C5_SlaveReceive(uint8_t *data, uint32_t num)
 */
 __STATIC_INLINE int32_t I2C_GetDataCount(I2C_RESOURCES *const i2c)
 {
-  return i2c->info->xfer.rx_cnt;;
+  if (i2c->info->status.direction == I2C_DIR_READ)
+  {
+    return i2c->info->xfer.rx_cnt;
+  }
+  else
+  {
+	return i2c->info->xfer.tx_cnt;
+  }
 }
 
 #if (RTE_I2C0 != 0)
@@ -1429,7 +1424,7 @@ static void I2C_IRQHandler(I2C_RESOURCES *const i2c)
   {
     if ((XMC_I2C_CH_GetStatusFlag(i2c->i2c) & (XMC_I2C_CH_STATUS_FLAG_NACK_RECEIVED | XMC_I2C_CH_STATUS_FLAG_ERROR)) != 0)
     {
-      XMC_I2C_CH_ClearStatusFlag(i2c->i2c, XMC_I2C_CH_STATUS_FLAG_ACK_RECEIVED | XMC_I2C_CH_STATUS_FLAG_ERROR);
+      XMC_I2C_CH_ClearStatusFlag(i2c->i2c, XMC_I2C_CH_STATUS_FLAG_NACK_RECEIVED | XMC_I2C_CH_STATUS_FLAG_ERROR);
       i2c->info->status.bus_error = 1;
       i2c->info->status.busy = 0;
       if (i2c->info->cb_event) i2c->info->cb_event(ARM_I2C_EVENT_TRANSFER_DONE | ARM_I2C_EVENT_ADDRESS_NACK | ARM_I2C_EVENT_TRANSFER_INCOMPLETE);
