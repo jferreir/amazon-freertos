@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS V201910.00
+ * Amazon FreeRTOS V201912.00
  * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -56,10 +56,6 @@ static IotSemaphore_t demoNetworkSemaphore;
 
 /* Variable used to indicate the connected network. */
 static uint32_t demoConnectedNetwork = AWSIOT_NETWORK_TYPE_NONE;
-
-#ifdef democonfigMEMORY_ANALYSIS
-    extern demoMEMORY_ANALYSIS_STACK_DEPTH_TYPE xDemoStackSize;
-#endif
 
 #if defined( MQTT_DEMO_TYPE_ENABLED )
     #if BLE_ENABLED
@@ -127,6 +123,7 @@ static void _onNetworkStateChangeCallback( uint32_t network,
 {
     const IotNetworkInterface_t * pNetworkInterface = NULL;
     void * pConnectionParams = NULL, * pCredentials = NULL;
+    uint32_t disconnectedNetworks = AWSIOT_NETWORK_TYPE_NONE;
 
     demoContext_t * pDemoContext = ( demoContext_t * ) pContext;
 
@@ -134,6 +131,14 @@ static void _onNetworkStateChangeCallback( uint32_t network,
     {
         demoConnectedNetwork = network;
         IotSemaphore_Post( &demoNetworkSemaphore );
+
+        /* Disable the disconnected networks to save power and reclaim any unused memory. */
+        disconnectedNetworks = configENABLED_NETWORKS & ( ~demoConnectedNetwork );
+
+        if( disconnectedNetworks != AWSIOT_NETWORK_TYPE_NONE )
+        {
+            AwsIotNetworkManager_DisableNetwork( disconnectedNetworks );
+        }
 
         if( pDemoContext->networkConnectedCallback != NULL )
         {
@@ -154,6 +159,14 @@ static void _onNetworkStateChangeCallback( uint32_t network,
         {
             pNetworkInterface = AwsIotNetworkManager_GetNetworkInterface( network );
             pDemoContext->networkDisconnectedCallback( pNetworkInterface );
+        }
+
+        /* Re-enable all the networks for the demo for reconnection. */
+        disconnectedNetworks = configENABLED_NETWORKS & ( ~demoConnectedNetwork );
+
+        if( disconnectedNetworks != AWSIOT_NETWORK_TYPE_NONE )
+        {
+            AwsIotNetworkManager_EnableNetwork( disconnectedNetworks );
         }
 
         demoConnectedNetwork = _getConnectedNetworkForDemo( pDemoContext );
@@ -283,9 +296,10 @@ static int _initialize( demoContext_t * pContext )
  */
 static void _cleanup( void )
 {
-    AwsIotNetworkManager_DisableNetwork( configENABLED_NETWORKS );
     /* Remove network manager subscription */
     AwsIotNetworkManager_RemoveSubscription( subscription );
+    /* Disable all the networks used by the demo.*/
+    AwsIotNetworkManager_DisableNetwork( configENABLED_NETWORKS );
     IotSemaphore_Destroy( &demoNetworkSemaphore );
     IotSdk_Cleanup();
 }
@@ -312,11 +326,11 @@ void runDemoTask( void * pArgument )
     #endif /* INSERT_DELAY_BEFORE_DEMO */
 
     #ifdef democonfigMEMORY_ANALYSIS
-        demoMEMORY_ANALYSIS_STACK_DEPTH_TYPE xBeforeDemoTaskWaterMark, xAfterDemoTaskWaterMark = 0;
-        xBeforeDemoTaskWaterMark = demoMEMORY_ANALYSIS_STACK_WATERMARK( NULL );
+        democonfigMEMORY_ANALYSIS_STACK_DEPTH_TYPE xBeforeDemoTaskWaterMark, xAfterDemoTaskWaterMark = 0;
+        xBeforeDemoTaskWaterMark = democonfigMEMORY_ANALYSIS_STACK_WATERMARK( NULL );
 
         size_t xBeforeDemoHeapSize, xAfterDemoHeapSize = 0;
-        xBeforeDemoHeapSize = demoMEMORY_ANALYSIS_MIN_EVER_HEAP_SIZE();
+        xBeforeDemoHeapSize = democonfigMEMORY_ANALYSIS_MIN_EVER_HEAP_SIZE();
     #endif /* democonfigMEMORY_ANALYSIS */
 
 
@@ -342,16 +356,15 @@ void runDemoTask( void * pArgument )
                                          pNetworkInterface );
 
         #ifdef democonfigMEMORY_ANALYSIS
-            /* If memory anaalysis is enabled metrics regarding the heap and stack usage of the demo will print. */
+            /* If memory analysis is enabled metrics regarding the heap and stack usage of the demo will print. */
             /* This format is used for easier parsing and creates an avenue for future metrics to be added. */
-            xAfterDemoHeapSize = demoMEMORY_ANALYSIS_MIN_EVER_HEAP_SIZE();
-            IotLogInfo( "memory_metrics:freertos_heap:total:bytes:%u", demoMEMORY_ANALYSIS_HEAP_SIZE );
-            IotLogInfo( "memory_metrics:freertos_heap:before:bytes:%u", xBeforeDemoHeapSize );
-            IotLogInfo( "memory_metrics:freertos_heap:after:bytes:%u", xAfterDemoHeapSize );
-            xAfterDemoTaskWaterMark = demoMEMORY_ANALYSIS_STACK_WATERMARK( NULL );
-            IotLogInfo( "memory_metrics:demo_task_stack:total:stack_words:%u", xDemoStackSize );
-            IotLogInfo( "memory_metrics:demo_task_stack:before:stack_words:%u", xBeforeDemoTaskWaterMark );
-            IotLogInfo( "memory_metrics:demo_task_stack:after:stack_words:%u", xAfterDemoTaskWaterMark );
+            xAfterDemoHeapSize = democonfigMEMORY_ANALYSIS_MIN_EVER_HEAP_SIZE();
+            IotLogInfo( "memory_metrics::freertos_heap::before::bytes::%u", xBeforeDemoHeapSize );
+            IotLogInfo( "memory_metrics::freertos_heap::after::bytes::%u", xAfterDemoHeapSize );
+
+            xAfterDemoTaskWaterMark = democonfigMEMORY_ANALYSIS_STACK_WATERMARK( NULL );
+            IotLogInfo( "memory_metrics::demo_task_stack::before::bytes::%u", xBeforeDemoTaskWaterMark );
+            IotLogInfo( "memory_metrics::demo_task_stack::after::bytes::%u", xAfterDemoTaskWaterMark );
         #endif /* democonfigMEMORY_ANALYSIS */
 
         /* Log the demo status. */
@@ -409,6 +422,11 @@ void runDemoTask( void * pArgument )
 
 /*-----------------------------------------------------------*/
 
+/* It is recommended to implement hooks that use platform specific APIs. This allows
+ * for better error messages and recovery. Should platform specific hooks be implemented,
+ * add this macro to iot_config.h to avoid compiling these symbols.*/
+#ifndef iotconfigUSE_PORT_SPECIFIC_HOOKS
+
 /**
  * @brief Warn user if pvPortMalloc fails.
  *
@@ -419,16 +437,16 @@ void runDemoTask( void * pArgument )
  * configTOTAL_HEAP_SIZE configuration constant in FreeRTOSConfig.h.
  *
  */
-void vApplicationMallocFailedHook()
-{
-    configPRINTF( ( "ERROR: Malloc failed to allocate memory\r\n" ) );
-    taskDISABLE_INTERRUPTS();
-
-    /* Loop forever */
-    for( ; ; )
+    void vApplicationMallocFailedHook()
     {
+        configPRINT_STRING( ( "ERROR: Malloc failed to allocate memory\r\n" ) );
+        taskDISABLE_INTERRUPTS();
+
+        /* Loop forever */
+        for( ; ; )
+        {
+        }
     }
-}
 
 /*-----------------------------------------------------------*/
 
@@ -443,19 +461,19 @@ void vApplicationMallocFailedHook()
  * has occurred.
  *
  */
-void vApplicationStackOverflowHook( TaskHandle_t xTask,
-                                    char * pcTaskName )
-{
-    configPRINTF( ( "ERROR: stack overflow with task %s\r\n", pcTaskName ) );
-    portDISABLE_INTERRUPTS();
-
-    /* Unused Parameters */
-    ( void ) xTask;
-
-    /* Loop forever */
-    for( ; ; )
+    void vApplicationStackOverflowHook( TaskHandle_t xTask,
+                                        char * pcTaskName )
     {
-    }
-}
+        configPRINT_STRING( ( "ERROR: stack overflow\r\n" ) );
+        portDISABLE_INTERRUPTS();
 
+        /* Unused Parameters */
+        ( void ) xTask;
+
+        /* Loop forever */
+        for( ; ; )
+        {
+        }
+    }
+#endif /* iotconfigUSE_PORT_SPECIFIC_HOOKS */
 /*-----------------------------------------------------------*/

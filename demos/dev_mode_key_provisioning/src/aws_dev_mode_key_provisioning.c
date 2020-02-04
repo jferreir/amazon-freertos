@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS V201910.00
+ * Amazon FreeRTOS V201912.00
  * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -97,7 +97,7 @@ typedef struct RsaParams_t
     CK_BYTE coefficient[ COEFFICIENT_LENGTH + 1 ];
 } RsaParams_t;
 
-/* Internal structure for capturing the privisioned state of the host device. */
+/* Internal structure for capturing the provisioned state of the host device. */
 typedef struct ProvisionedState_t
 {
     CK_OBJECT_HANDLE xPrivateKey;
@@ -598,7 +598,7 @@ CK_RV xProvisionCertificate( CK_SESSION_HANDLE xSession,
 
     xResult = C_GetFunctionList( &pxFunctionList );
 
-    /* Litmus test for valid certificiate.  0x2d is '-' as in ----- BEGIN CERTIFICATE ----- */
+    /* Test for a valid certificate: 0x2d is '-', as in ----- BEGIN CERTIFICATE. */
     if( ( pucCertificate == NULL ) || ( pucCertificate[ 0 ] != 0x2d ) )
     {
         xResult = CKR_ATTRIBUTE_VALUE_INVALID;
@@ -606,8 +606,9 @@ CK_RV xProvisionCertificate( CK_SESSION_HANDLE xSession,
 
     if( xResult == CKR_OK )
     {
-        /* Convert the certificate to DER format if it was in PEM. */
-        /* The DER key should be about 3/4 the size of the PEM key, so mallocing the PEM key size is sufficient. */
+        /* Convert the certificate to DER format if it was in PEM. The DER key
+         * should be about 3/4 the size of the PEM key, so mallocing the PEM key
+         * size is sufficient. */
         pucDerObject = pvPortMalloc( xCertificateTemplate.xValue.ulValueLen );
         xDerLen = xCertificateTemplate.xValue.ulValueLen;
 

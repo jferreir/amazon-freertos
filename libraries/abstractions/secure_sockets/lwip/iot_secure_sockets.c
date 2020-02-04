@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS Secure Sockets V1.1.7
+ * Amazon FreeRTOS Secure Sockets V1.1.8
  * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -36,8 +36,8 @@
 #include "iot_secure_sockets.h"
 
 
-#include "sockets.h"
-#include "netdb.h"
+#include "lwip/sockets.h"
+#include "lwip/netdb.h"
 
 #include "iot_wifi.h"
 
@@ -221,7 +221,6 @@ static void vTaskRxSelect( void * param )
 
             /*vTaskDelete( rx_handle ); */
             vTaskDelete( NULL );
-            return;
         }
 
         if( FD_ISSET( s, &read_fds ) )
@@ -240,12 +239,13 @@ static void prvRxSelectSet( ss_ctx_t * ctx,
 {
     BaseType_t xReturned;
     TaskHandle_t xHandle = NULL;
+    configSTACK_DEPTH_TYPE xStackDepth = socketsconfigRECEIVE_CALLBACK_TASK_STACK_DEPTH;
 
     ctx->rx_callback = ( void ( * )( Socket_t ) )pvOptionValue;
 
     xReturned = xTaskCreate( vTaskRxSelect, /* pvTaskCode */
                              "rxs",         /* pcName */
-                             512,           /* usStackDepth */
+                             xStackDepth,   /* usStackDepth */
                              ctx,           /* pvParameters */
                              1,             /* uxPriority */
                              &xHandle );    /* pxCreatedTask */
@@ -412,11 +412,6 @@ int32_t SOCKETS_Recv( Socket_t xSocket,
 {
     ss_ctx_t * ctx = ( ss_ctx_t * ) xSocket;
 
-    if( ( ctx->status & SS_STATUS_CONNECTED ) != SS_STATUS_CONNECTED )
-    {
-        return SOCKETS_ENOTCONN;
-    }
-
     if( SOCKETS_INVALID_SOCKET == xSocket )
     {
         return SOCKETS_SOCKET_ERROR;
@@ -425,6 +420,11 @@ int32_t SOCKETS_Recv( Socket_t xSocket,
     if( ( NULL == pvBuffer ) || ( 0 == xBufferLength ) )
     {
         return SOCKETS_EINVAL;
+    }
+
+    if( ( ctx->status & SS_STATUS_CONNECTED ) != SS_STATUS_CONNECTED )
+    {
+        return SOCKETS_ENOTCONN;
     }
 
     ctx->recv_flag = ulFlags;
@@ -465,12 +465,18 @@ int32_t SOCKETS_Send( Socket_t xSocket,
     }
 
     ctx = ( ss_ctx_t * ) xSocket;
-    ctx->send_flag = ulFlags;
+
+    if( ( ctx->status & SS_STATUS_CONNECTED ) != SS_STATUS_CONNECTED )
+    {
+        return SOCKETS_ENOTCONN;
+    }
 
     if( 0 > ctx->ip_socket )
     {
         return SOCKETS_SOCKET_ERROR;
     }
+
+    ctx->send_flag = ulFlags;
 
     if( ctx->enforce_tls )
     {
@@ -755,8 +761,9 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
             }
             else
             {
-                ctx->ppcAlpnProtocols[
-                    ctx->ulAlpnProtocolsCount - 1 ] = NULL;
+                memset( ctx->ppcAlpnProtocols,
+                        0x00,
+                        ctx->ulAlpnProtocolsCount * sizeof( char * ) );
             }
 
             /* Copy each protocol string. */

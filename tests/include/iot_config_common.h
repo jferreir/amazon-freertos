@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS V201910.00
+ * Amazon FreeRTOS V201912.00
  * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -162,6 +162,7 @@
 /* BLE_HAL test suites header file abstraction */
 #define IOT_LINEAR_CONTAINERS             "iot_linear_containers.h"
 #define IOT_THREADS                       "platform/iot_threads.h"
+#define IOT_CLOCK                         "platform/iot_clock.h"
 #define IOT_PLATFORM_TYPES                "types/iot_platform_types.h"
 #define IOT_BT_HAL_MANAGER_ADAPTER_BLE    "bt_hal_manager_adapter_ble.h"
 #define IOT_BT_HAL_MANAGER_ADAPTER        "bt_hal_manager.h"
@@ -169,6 +170,7 @@
 #define IOT_BT_HAL_GATT_TYPES             "bt_hal_gatt_types.h"
 #define IOT_UNITY_FIXTURE                 "unity_fixture.h"
 #define IOT_UNITY                         "unity.h"
+#define IOT_LOG                           "iot_logging_setup.h"
 
 /* Cloud endpoint to which the device connects to. */
 #define IOT_CLOUD_ENDPOINT                clientcredentialMQTT_BROKER_ENDPOINT

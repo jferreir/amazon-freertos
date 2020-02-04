@@ -210,7 +210,7 @@ void prvGAPeventHandler( esp_gap_ble_cb_event_t event,
                     xStatus = eBTStatusFail;
                 }
 
-                xBTBleAdapterCallbacks.pxAdvStatusCb( xStatus, ulGattServerIFhandle, true );
+                xBTBleAdapterCallbacks.pxAdvStatusCb( xStatus, 0, true );
             }
 
             break;
@@ -225,7 +225,7 @@ void prvGAPeventHandler( esp_gap_ble_cb_event_t event,
                     xStatus = eBTStatusFail;
                 }
 
-                xBTBleAdapterCallbacks.pxAdvStatusCb( xStatus, ulGattServerIFhandle, false );
+                xBTBleAdapterCallbacks.pxAdvStatusCb( xStatus, 0, false );
             }
 
             break;
@@ -659,7 +659,7 @@ BTStatus_t prvGetBondableDeviceList( void )
                 memcpy( &( ( BTBdaddr_t * ) xBondedDevices.pvVal )[ usIndex ], &pxESPDevlist[ usIndex ].bd_addr, sizeof( BTBdaddr_t ) );
             }
 
-            xBondedDevices.xLen = usNbDevices;
+            xBondedDevices.xLen = usNbDevices * sizeof( BTBdaddr_t );
             xBondedDevices.xType = eBTpropertyAdapterBondedDevices;
 
             xBTCallbacks.pxAdapterPropertiesCb( eBTStatusSuccess, 1, &xBondedDevices );

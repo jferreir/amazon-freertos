@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS PKCS #11 V2.0.1
+ * Amazon FreeRTOS PKCS #11 V2.0.2
  * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -2612,6 +2612,16 @@ CK_DECLARE_FUNCTION( CK_RV, C_FindObjects )( CK_SESSION_HANDLE xSession,
             /* According to the PKCS #11 standard, not finding an object results in a CKR_OK return value with an object count of 0. */
             *pulObjectCount = 0;
             PKCS11_WARNING_PRINT( ( "WARN: Object with label '%s' not found. \r\n", ( char * ) pxSession->pxFindObjectLabel ) );
+        }
+    }
+
+    /* Clean up memory if there was an error finding the object. */
+    if( xResult != CKR_OK )
+    {
+        if( pxSession->pxFindObjectLabel != NULL )
+        {
+            vPortFree( pxSession->pxFindObjectLabel );
+            pxSession->pxFindObjectLabel = NULL;
         }
     }
 

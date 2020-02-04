@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS BLE HAL V1.0.0
+ * Amazon FreeRTOS BLE HAL V4.0.0
  * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -36,20 +36,22 @@
 
 #include "iot_test_ble_hal_common.h"
 
-#define bletestsFAIL_CHAR_VALUE    "fail"
+#define bletestsFAIL_CHAR_VALUE          "fail"
+#define bletests_MANUFACTURERDATA_LEN    3
+#define bletests_MANUFACTURERDATA        { 0xE5, 0x02, 0x05 }
+#define bletests_SERVICEDATA_LEN         3
+#define bletests_SERVICEDATA             { 0xEF, 0x12, 0xD6 }
 
 void GAP_common_teardown();
 void GAP_common_setup();
 void GATT_teardown();
 void GATT_setup();
-void Advertisement_teardown();
-void Advertisement_setup();
+
 void prvInitWithNULLCb( void );
 
 void prvGetResult( bletestAttSrvB_t xAttribute,
                    bool IsPrep,
                    uint16_t usOffset );
-void prvCreateAndStartServiceB( void );
 void prvShortWaitConnection( void );
 void prvCreateStartServicesWithNULLCb( void );
 void prvStartServiceWithNULLCb( BTService_t * xRefSrvc );

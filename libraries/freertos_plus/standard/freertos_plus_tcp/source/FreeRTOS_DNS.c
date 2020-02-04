@@ -1,5 +1,5 @@
 /*
- * FreeRTOS+TCP V2.1.0
+ * FreeRTOS+TCP V2.2.0
  * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -471,6 +471,7 @@ typedef struct xDNSAnswerRecord DNSAnswerRecord_t;
 uint32_t ulIPAddress = 0uL;
 TickType_t uxReadTimeOut_ticks = ipconfigDNS_RECEIVE_BLOCK_TIME_TICKS;
 TickType_t uxIdentifier = 0u;
+BaseType_t xHasRandom = pdFALSE;
 
 	if( pcHostName != NULL )
 	{
@@ -505,8 +506,11 @@ TickType_t uxIdentifier = 0u;
 		/* Generate a unique identifier. */
 		if( ulIPAddress == 0uL )
 		{
+		uint32_t ulNumber;
+
+			xHasRandom = xApplicationGetRandomNumber( &( ulNumber ) );
 			/* DNS identifiers are 16-bit. */
-			uxIdentifier = ( TickType_t ) ( ipconfigRAND32() & 0xffffu );
+			uxIdentifier = ( TickType_t ) ( ulNumber & 0xffffu );
 			/* ipconfigRAND32() may not return a non-zero value. */
 		}
 
@@ -517,10 +521,10 @@ TickType_t uxIdentifier = 0u;
 				if( ulIPAddress == 0uL )
 				{
 					/* The user has provided a callback function, so do not block on recvfrom() */
-					if( uxIdentifier != ( TickType_t ) 0u )
+					if( xHasRandom != pdFALSE )
 					{
 						uxReadTimeOut_ticks = 0u;
-						vDNSSetCallBack( pcHostName, pvSearchID, pCallback, uxTimeout, ( TickType_t ) uxIdentifier );
+						vDNSSetCallBack( pcHostName, pvSearchID, pCallback, uxTimeout, uxIdentifier );
 					}
 				}
 				else
@@ -532,7 +536,7 @@ TickType_t uxIdentifier = 0u;
 		}
 		#endif /* if ( ipconfigDNS_USE_CALLBACKS == 1 ) */
 
-		if( ( ulIPAddress == 0uL ) && ( uxIdentifier != ( TickType_t ) 0u ) )
+		if( ( ulIPAddress == 0uL ) && ( xHasRandom != pdFALSE ) )
 		{
 			ulIPAddress = prvGetHostByName( pcHostName, uxIdentifier, uxReadTimeOut_ticks );
 		}
@@ -912,17 +916,25 @@ for testing purposes, by the module iot_test_freertos_tcp.c
 uint32_t ulDNSHandlePacket( NetworkBufferDescriptor_t *pxNetworkBuffer )
 {
 DNSMessage_t *pxDNSMessageHeader;
+size_t uxPayloadSize;
 
-	if( pxNetworkBuffer->xDataLength >= sizeof( DNSMessage_t ) )
-	{
-		pxDNSMessageHeader =
-			( DNSMessage_t * ) ( pxNetworkBuffer->pucEthernetBuffer + sizeof( UDPPacket_t ) );
+    /* Only proceed if the payload length indicated in the header
+    appears to be valid. */
+    if( pxNetworkBuffer->xDataLength >= sizeof( UDPPacket_t ) )
+    {
+        uxPayloadSize = pxNetworkBuffer->xDataLength - sizeof( UDPPacket_t );
 
-		/* The parameter pdFALSE indicates that the reply was not expected. */
-		prvParseDNSReply( ( uint8_t * ) pxDNSMessageHeader,
-						  pxNetworkBuffer->xDataLength,
-						  pdFALSE );
-	}
+        if( uxPayloadSize >= sizeof( DNSMessage_t ) )
+        {
+            pxDNSMessageHeader =
+                ( DNSMessage_t * ) ( pxNetworkBuffer->pucEthernetBuffer + sizeof( UDPPacket_t ) );
+
+            /* The parameter pdFALSE indicates that the reply was not expected. */
+            prvParseDNSReply( ( uint8_t * ) pxDNSMessageHeader,
+                uxPayloadSize,
+                pdFALSE );
+        }
+    }
 
 	/* The packet was not consumed. */
 	return pdFAIL;
@@ -935,11 +947,12 @@ DNSMessage_t *pxDNSMessageHeader;
 	{
 	UDPPacket_t *pxUDPPacket = ( UDPPacket_t * ) pxNetworkBuffer->pucEthernetBuffer;
 	uint8_t *pucUDPPayloadBuffer = pxNetworkBuffer->pucEthernetBuffer + sizeof( UDPPacket_t );
+	size_t uxPayloadSize = pxNetworkBuffer->xDataLength - sizeof( UDPPacket_t );
 
 		/* The network buffer data length has already been set to the
 		length of the UDP payload. */
 		prvTreatNBNS( pucUDPPayloadBuffer,
-					  pxNetworkBuffer->xDataLength,
+					  uxPayloadSize,
 					  pxUDPPacket->xIPHeader.ulSourceIPAddress );
 
 		/* The packet was not consumed. */
@@ -1168,11 +1181,9 @@ BaseType_t xDoStore = xExpected;
 				{
 				BaseType_t xDataLength = uxBufferLength + sizeof( UDPHeader_t ) + sizeof( EthernetHeader_t ) + sizeof( IPHeader_t );
 
-					/* The field xDataLength was set to the length of the UDP payload.
-					The answer (reply) will be longer than the request, so the packet
-					must be duplicaed into a bigger buffer */
+					/* Set the size of the outgoing packet. */
 					pxNetworkBuffer->xDataLength = xDataLength;
-					pxNewBuffer = pxDuplicateNetworkBufferWithDescriptor( pxNetworkBuffer, xDataLength + 16 );
+					pxNewBuffer = pxDuplicateNetworkBufferWithDescriptor( pxNetworkBuffer, xDataLength + sizeof( LLMNRAnswer_t ) );
 
 					if( pxNewBuffer != NULL )
 					{
@@ -1326,14 +1337,10 @@ BaseType_t xDoStore = xExpected;
 				if( ( xBufferAllocFixedSize == pdFALSE ) && ( pxNetworkBuffer != NULL ) )
 				{
 				NetworkBufferDescriptor_t *pxNewBuffer;
-				BaseType_t xDataLength = pxNetworkBuffer->xDataLength + sizeof( UDPHeader_t ) +
-										 sizeof( EthernetHeader_t ) + sizeof( IPHeader_t );
 
-					/* The field xDataLength was set to the length of the UDP payload.
-					The answer (reply) will be longer than the request, so the packet
-					must be duplicated into a bigger buffer */
-					pxNetworkBuffer->xDataLength = xDataLength;
-					pxNewBuffer = pxDuplicateNetworkBufferWithDescriptor( pxNetworkBuffer, xDataLength + 16 );
+					/* The field xDataLength was set to the total length of the UDP packet,
+					i.e. the payload size plus sizeof( UDPPacket_t ). */
+					pxNewBuffer = pxDuplicateNetworkBufferWithDescriptor( pxNetworkBuffer, pxNetworkBuffer->xDataLength + sizeof( NBNSAnswer_t ) );
 
 					if( pxNewBuffer != NULL )
 					{

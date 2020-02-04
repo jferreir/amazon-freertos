@@ -1,5 +1,5 @@
 /*
- * Amazon FreeRTOS V201910.00
+ * Amazon FreeRTOS V201912.00
  * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -104,7 +104,7 @@ static uint16_t _IotTestNetworkType = AWSIOT_NETWORK_TYPE_WIFI;
         IotBleEventsCallbacks_t xEventCb;
         BaseType_t xRet = pdTRUE;
         static bool bInitBLE = false;
-        BTStatus_t xStatus;
+        BTStatus_t xStatus = eBTStatusSuccess;
 
         if( bInitBLE == false )
         {
@@ -121,7 +121,8 @@ static uint16_t _IotTestNetworkType = AWSIOT_NETWORK_TYPE_WIFI;
                 }
             }
         }
-        else
+
+        if( xStatus == eBTStatusSuccess )
         {
             xStatus = IotBle_On();
         }
@@ -157,14 +158,6 @@ static uint16_t _IotTestNetworkType = AWSIOT_NETWORK_TYPE_WIFI;
         if( IotBle_UnRegisterEventCb( eBLEConnection, xEventCb ) != eBTStatusSuccess )
         {
             ret = false;
-        }
-
-        if( ret == true )
-        {
-            if( IotBle_StopAdv( NULL ) != eBTStatusSuccess )
-            {
-                ret = false;
-            }
         }
 
         if( ret == true )

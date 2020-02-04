@@ -60,7 +60,7 @@ def main():
         isTestSuccessFull,
         runTest.discoverPrimaryServices)
 
-    bleAdapter.gatt.updateLocalAttributeTable()
+    bleAdapter.gatt.updateLocalAttributeTable( True )
 
     # Check device not present. After discovery of services, advertisement
     # should have stopped.
@@ -70,8 +70,8 @@ def main():
     # bleAdapter.readLocalMTU()
 
     # Check attribute table UUIDs
-    bleAdapter.gatt.updateLocalAttributeTable()
-    isTestSuccessFull = runTest.checkUUIDs(bleAdapter.gatt)
+    bleAdapter.gatt.updateLocalAttributeTable( True )
+    isTestSuccessFull = runTest.checkUUIDs(bleAdapter.gatt, True)
     runTest.submitTestResult(isTestSuccessFull, runTest.checkUUIDs)
 
     # Check attribute table properties
@@ -79,8 +79,10 @@ def main():
     runTest.submitTestResult(isTestSuccessFull, runTest.checkProperties)
 
     # CHeck long write
-    isTestSuccessFull = runTest.writeLongCharacteristic()
-    runTest.submitTestResult(isTestSuccessFull, runTest.writeLongCharacteristic)
+    isTestSuccessFull = runTest.writereadLongCharacteristic()
+    runTest.submitTestResult(
+        isTestSuccessFull,
+        runTest.writereadLongCharacteristic)
 
     # Check read/write, simple connection
     isTestSuccessFull = runTest.readWriteSimpleConnection()
@@ -144,9 +146,11 @@ def main():
     bleAdapter.stopDiscovery()
     runTest.reconnectWhileBonded()
 
+    # Test to wait for a disconnect from DUT.
+    runTest.waitForDisconnect()
+
     # reconnect while not bonded. Pairing should fail since Just works is not
     # accepted
-    bleAdapter.disconnect()
     bleAdapter.removeBondedDevices()
     time.sleep(2)  # wait for bonded devices to be deleted
     bleAdapter.setDiscoveryFilter(scan_filter)
