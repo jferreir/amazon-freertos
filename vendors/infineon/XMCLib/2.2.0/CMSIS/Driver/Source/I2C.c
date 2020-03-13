@@ -569,11 +569,7 @@ static int32_t I2C_PowerControl(ARM_POWER_STATE state, I2C_RESOURCES *const i2c)
     XMC_I2C_CH_Init(i2c->i2c, &i2c_default_config);
     XMC_USIC_CH_TXFIFO_Configure(i2c->i2c, i2c->info->tx_fifo_pointer, (XMC_USIC_CH_FIFO_SIZE_t)i2c->tx_fifo_size_reg, 1U);
     XMC_I2C_CH_SetInputSource(i2c->i2c, XMC_I2C_CH_INPUT_SDA, i2c->sda_pin_input);
-    i2c->pin_sda_config->mode = (XMC_GPIO_MODE_t)(XMC_GPIO_MODE_OUTPUT_OPEN_DRAIN | i2c->sda_pin_af_output);
-    i2c->pin_sda_config->output_strength = XMC_GPIO_OUTPUT_STRENGTH_STRONG_MEDIUM_EDGE;
     XMC_I2C_CH_SetInputSource(i2c->i2c, XMC_I2C_CH_INPUT_SCL, i2c->scl_pin_input);
-    i2c->pin_scl_config->mode = (XMC_GPIO_MODE_t)(XMC_GPIO_MODE_OUTPUT_OPEN_DRAIN | i2c->scl_pin_af_output);
-    i2c->pin_scl_config->output_strength = XMC_GPIO_OUTPUT_STRENGTH_STRONG_MEDIUM_EDGE;
 
     XMC_USIC_CH_EnableInputDigitalFilter(i2c->i2c, XMC_I2C_CH_INPUT_SDA);
     XMC_USIC_CH_EnableInputSync(i2c->i2c, XMC_I2C_CH_INPUT_SDA);
@@ -582,10 +578,15 @@ static int32_t I2C_PowerControl(ARM_POWER_STATE state, I2C_RESOURCES *const i2c)
 
     XMC_I2C_CH_SetHoldDelay(i2c->i2c, i2c->hdel);
 
-    XMC_I2C_CH_Start(i2c->i2c); 
+    XMC_I2C_CH_Start(i2c->i2c);
   
     // Configure pin  
-    XMC_GPIO_Init(i2c->sda_tx_port.port,i2c->sda_tx_port.pin, i2c->pin_sda_config);                                           
+    i2c->pin_sda_config->mode = (XMC_GPIO_MODE_t)(XMC_GPIO_MODE_OUTPUT_OPEN_DRAIN | i2c->sda_pin_af_output);
+    i2c->pin_sda_config->output_strength = XMC_GPIO_OUTPUT_STRENGTH_STRONG_MEDIUM_EDGE;
+    XMC_GPIO_Init(i2c->sda_tx_port.port,i2c->sda_tx_port.pin, i2c->pin_sda_config);
+
+    i2c->pin_scl_config->mode = (XMC_GPIO_MODE_t)(XMC_GPIO_MODE_OUTPUT_OPEN_DRAIN | i2c->scl_pin_af_output);
+    i2c->pin_scl_config->output_strength = XMC_GPIO_OUTPUT_STRENGTH_STRONG_MEDIUM_EDGE;
     XMC_GPIO_Init(i2c->scl_output_port.port,i2c->scl_output_port.pin, i2c->pin_scl_config);                                                       
 
     NVIC_ClearPendingIRQ(i2c->irq_num);

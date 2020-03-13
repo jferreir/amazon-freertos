@@ -2489,7 +2489,7 @@
 // <o>Hold Delay <0-15>
 // <i> Defines the delay used to respect the SDA hold time
 // <i> Default: 0
-#define RTE_I2C3_HDEL  2
+#define RTE_I2C3_HDEL  0
 
 //</e>
 // <e> I2C4 (Inter-Integrated circuit) [Driver_I2C4]
