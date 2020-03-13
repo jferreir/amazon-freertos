@@ -1,6 +1,6 @@
 /*
- * Amazon FreeRTOS BLE HAL V4.0.0
- * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS BLE HAL V5.0.1
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -37,6 +37,7 @@
 #ifndef _BT_HAL_AVSRC_PROFILE_H
 #define _BT_HAL_AVSRC_PROFILE_H
 
+#include <stddef.h>
 #include <stdint.h>
 #include "bt_hal_manager_types.h"
 

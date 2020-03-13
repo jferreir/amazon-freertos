@@ -1,7 +1,7 @@
 // Copyright 2018 Espressif Systems (Shanghai) PTE LTD
 //
-// Amazon FreeRTOS Wi-Fi for ESP32-DevKitC ESP-WROVER-KIT V1.0.1
-// Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+// FreeRTOS Wi-Fi for ESP32-DevKitC ESP-WROVER-KIT V1.0.1
+// Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -59,6 +59,7 @@ static bool wifi_auth_failure;
 #define WIFI_FLASH_NS     "WiFi"
 #define MAX_WIFI_KEY_WIDTH         ( 5 )
 #define MAX_SECURITY_MODE_LEN      ( 1 )
+#define MAX_AP_CONNECTIONS         ( 4 )
 
 typedef struct StorageRegistry
 {
@@ -1218,7 +1219,11 @@ static esp_err_t WIFI_SetSecurity( WIFISecurity_t securityMode, wifi_auth_mode_t
 
 WIFIReturnCode_t WIFI_ConfigureAP( const WIFINetworkParams_t * const pxNetworkParams )
 {
-    wifi_config_t wifi_config = { 0 };
+    wifi_config_t wifi_config = {
+        .ap = {
+            .max_connection = MAX_AP_CONNECTIONS,
+        },
+    };
     esp_err_t ret;
     WIFIReturnCode_t wifi_ret = eWiFiFailure;
 

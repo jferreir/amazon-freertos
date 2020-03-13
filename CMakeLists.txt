@@ -6,15 +6,17 @@ if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
 endif()
 
 project(amazon-freertos)
-set(PROJECT_VERSION "201912.00")
-set(PROJECT_VERSION_MAJOR "201912")
+set(PROJECT_VERSION "202002.00")
+set(PROJECT_VERSION_MAJOR "202002")
 set(PROJECT_VERSION_MINOR "00")
 
 # Import global configurations.
 include("tools/cmake/afr.cmake")
 
 # Add 3rdparty modules.
-add_subdirectory("libraries/3rdparty")
+if (NOT AFR_ENABLE_UNIT_TESTS)
+    add_subdirectory("libraries/3rdparty")
+endif()
 
 # -------------------------------------------------------------------------------------------------
 # Configure target board
@@ -49,10 +51,14 @@ endif()
 include("${AFR_BOARD_PATH}/CMakeLists.txt")
 
 # -------------------------------------------------------------------------------------------------
-# Amazon FreeRTOS modules
+# FreeRTOS modules
 # -------------------------------------------------------------------------------------------------
 # Do not prefix the output library file.
 set(CMAKE_STATIC_LIBRARY_PREFIX "")
+
+if (AFR_ENABLE_UNIT_TESTS)
+    return()
+endif()
 
 # Initialize all modules.
 add_subdirectory("libraries")
@@ -63,11 +69,18 @@ add_subdirectory("tests")
 afr_status("=========================Resolving dependencies==========================")
 afr_resolve_dependencies()
 
+if(DEFINED CBMC)
+    add_subdirectory("tools/cbmc/proofs")
+    list(FILTER cbmc_proof_names EXCLUDE REGEX "^$")
+    list(TRANSFORM cbmc_proof_names APPEND "-goto" OUTPUT_VARIABLE all_proof_targets)
+    add_custom_target("cbmc" DEPENDS ${all_proof_targets})
+endif()
+
 # -------------------------------------------------------------------------------------------------
 # Summary
 # -------------------------------------------------------------------------------------------------
 afr_status("")
-afr_status("====================Configuration for Amazon FreeRTOS====================")
+afr_status("====================Configuration for FreeRTOS====================")
 afr_status("  Version:                 " "${AFR_VERSION}")
 afr_status("  Git version:             " "${AFR_VERSION_VCS}")
 
@@ -98,9 +111,9 @@ afr_status("  Toolchain:               " "${AFR_TOOLCHAIN}")
 afr_status("  Toolchain path:          " "${CMAKE_FIND_ROOT_PATH}")
 afr_status("  CMake generator:         " "${CMAKE_GENERATOR}")
 
-# ================ Amazon FreeRTOS modules ================
+# ================ FreeRTOS modules ================
 afr_status("")
-afr_status("Amazon FreeRTOS modules:")
+afr_status("FreeRTOS modules:")
 
 afr_status("  Modules to build:        " "${AFR_MODULES_BUILD}")
 afr_status("  Enabled by user:         " "${AFR_MODULES_ENABLED_USER}")

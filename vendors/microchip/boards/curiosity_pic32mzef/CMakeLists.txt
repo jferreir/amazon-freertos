@@ -13,7 +13,7 @@ else()
 endif()
 
 # -------------------------------------------------------------------------------------------------
-# Amazon FreeRTOS Console metadata
+# FreeRTOS Console metadata
 # -------------------------------------------------------------------------------------------------
 if("${AFR_BOARD_NAME}" STREQUAL "curiosity_pic32mzef")
     include("${CMAKE_CURRENT_LIST_DIR}/curiosity_pic32mzef.cmake")
@@ -35,7 +35,7 @@ target_compile_options(
 
 
 # Linker flags
-set(linker_flags -Wl,--script=\"${board_dir}/application_code/microchip_code/app_mz.ld\",--defsym=_min_heap_size=170000,--defsym=_min_stack_size=10000,--gc-sections,--no-code-in-dinit,--no-dinit-in-serial-mem,--memorysummary,memoryfile.xml,--allow-multiple-definition)
+set(linker_flags -Wl,--script=\"${board_dir}/application_code/microchip_code/app_mz.ld\",--defsym=_min_heap_size=10000,--defsym=_min_stack_size=10000,--gc-sections,--no-code-in-dinit,--no-dinit-in-serial-mem,--memorysummary,memoryfile.xml,--allow-multiple-definition)
 
 target_link_options(
     AFR::compiler::mcu_port
@@ -43,7 +43,7 @@ target_link_options(
 )
 
 # -------------------------------------------------------------------------------------------------
-# Amazon FreeRTOS portable layers
+# FreeRTOS portable layers
 # -------------------------------------------------------------------------------------------------
 # Kernel
 afr_mcu_port(kernel)
@@ -291,7 +291,7 @@ set_source_files_properties(${AFR_DEMOS_DIR}/posix/iot_test_posix_pthread.c
 set(CMAKE_STATIC_LIBRARY_PREFIX "lib")
 
 # -------------------------------------------------------------------------------------------------
-# Amazon FreeRTOS demos and tests
+# FreeRTOS demos and tests
 # -------------------------------------------------------------------------------------------------
 set(CMAKE_EXECUTABLE_SUFFIX ".elf")
 

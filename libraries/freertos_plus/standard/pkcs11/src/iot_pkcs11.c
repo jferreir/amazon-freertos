@@ -1,6 +1,6 @@
 /*
- * Amazon FreeRTOS PKCS #11 V1.0.2
- * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS PKCS #11 V1.0.3
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -31,6 +31,42 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+
+/**
+ * @file iot_pkcs11.c
+ * @brief FreeRTOS PKCS #11 Interface.
+ *
+ * This file contains wrapper functions for common PKCS #11 operations.
+ */
+
+/*-----------------------------------------------------------*/
+
+/** @brief Open a PKCS #11 Session.
+ *
+ *  \param[out] pxSession   Pointer to the session handle to be created.
+ *  \param[out] xSlotId     Slot ID to be used for the session.
+ *
+ *  \return CKR_OK or PKCS #11 error code. (PKCS #11 error codes are positive).
+ */
+CK_RV prvOpenSession( CK_SESSION_HANDLE * pxSession,
+                      CK_SLOT_ID xSlotId )
+{
+    CK_RV xResult;
+    CK_FUNCTION_LIST_PTR pxFunctionList;
+
+    xResult = C_GetFunctionList( &pxFunctionList );
+
+    if( xResult == CKR_OK )
+    {
+        xResult = pxFunctionList->C_OpenSession( xSlotId,
+                                                 CKF_SERIAL_SESSION | CKF_RW_SESSION,
+                                                 NULL, /* Application defined pointer. */
+                                                 NULL, /* Callback function. */
+                                                 pxSession );
+    }
+
+    return xResult;
+}
 
 /*-----------------------------------------------------------*/
 
@@ -79,34 +115,6 @@ CK_RV xGetSlotList( CK_SLOT_ID ** ppxSlotId,
 }
 
 /*-----------------------------------------------------------*/
-
-/* @brief Open a PKCS #11 Session.
- *
- *  \param[out] pxSession   Pointer to the session handle to be created.
- *  \param[out] xSlotId     Slot ID to be used for the session.
- *
- *  \return CKR_OK or PKCS #11 error code. (PKCS #11 error codes are positive).
- */
-CK_RV prvOpenSession( CK_SESSION_HANDLE * pxSession,
-                      CK_SLOT_ID xSlotId )
-{
-    CK_RV xResult;
-    CK_FUNCTION_LIST_PTR pxFunctionList;
-
-    xResult = C_GetFunctionList( &pxFunctionList );
-
-    if( xResult == CKR_OK )
-    {
-        xResult = pxFunctionList->C_OpenSession( xSlotId,
-                                                 CKF_SERIAL_SESSION | CKF_RW_SESSION,
-                                                 NULL, /* Application defined pointer. */
-                                                 NULL, /* Callback function. */
-                                                 pxSession );
-    }
-
-    return xResult;
-}
-
 /*-----------------------------------------------------------*/
 
 #ifdef CreateMutex
@@ -141,8 +149,6 @@ CK_RV xInitializePKCS11( void )
 
 /*-----------------------------------------------------------*/
 
-/* Perform common token initialization as per the PKCS #11 standard. For
- * compatibility reasons, this may include authentication with a static PIN. */
 CK_RV xInitializePkcs11Token( void )
 {
     CK_RV xResult;
@@ -269,25 +275,8 @@ CK_RV xInitializePkcs11Session( CK_SESSION_HANDLE * pxSession )
 
     return xResult;
 }
-
 /*-----------------------------------------------------------*/
 
-/* @brief Finds an object with a given label if it exists.
- *
- *   This function wraps C_FindObjectsInit, C_FindObjects, and C_FindObjectsFinal.
- *
- *   \param[in] xSession         A valid PKCS #11 session.
- *   \param[in] pcLabelName      The label of the object to be found.
- *   \param[out] pxHandle        Pointer to the handle of the found object,
- *                               or 0 if no object is found.
- *   \return CKR_OK if PKCS #11 calls were successful.  PKCS #11
- *   error code if not.
- *
- *   \note This function returns CKR_OK even if an object with the given
- *   CKA_LABEL is not found.  It is critical that functions verify that
- *   the object handle value is not equal to 0 (the invalid handle)
- *   before attempting to use the handle.
- */
 CK_RV xFindObjectWithLabelAndClass( CK_SESSION_HANDLE xSession,
                                     const char * pcLabelName,
                                     CK_OBJECT_CLASS xClass,
@@ -329,8 +318,6 @@ CK_RV xFindObjectWithLabelAndClass( CK_SESSION_HANDLE xSession,
 
     if( CK_TRUE == xFindInit )
     {
-        /* Indicate to the module that the we're done looking for the indicated
-         * type of object. */
         xResult = pxFunctionList->C_FindObjectsFinal( xSession );
     }
 
@@ -344,21 +331,21 @@ CK_RV xFindObjectWithLabelAndClass( CK_SESSION_HANDLE xSession,
 
 /*-----------------------------------------------------------*/
 
-CK_RV vAppendSHA256AlgorithmIdentifierSequence( uint8_t * x32ByteHashedMessage,
-                                                uint8_t * x51ByteHashOidBuffer )
+CK_RV vAppendSHA256AlgorithmIdentifierSequence( uint8_t * puc32ByteHashedMessage,
+                                                uint8_t * puc51ByteHashOidBuffer )
 {
     CK_RV xResult = CKR_OK;
-    uint8_t xOidSequence[] = pkcs11STUFF_APPENDED_TO_RSA_SIG;
+    uint8_t pucOidSequence[] = pkcs11STUFF_APPENDED_TO_RSA_SIG;
 
-    if( ( x32ByteHashedMessage == NULL ) || ( x51ByteHashOidBuffer == NULL ) )
+    if( ( puc32ByteHashedMessage == NULL ) || ( puc51ByteHashOidBuffer == NULL ) )
     {
         xResult = CKR_ARGUMENTS_BAD;
     }
 
     if( xResult == CKR_OK )
     {
-        memcpy( x51ByteHashOidBuffer, xOidSequence, sizeof( xOidSequence ) );
-        memcpy( &x51ByteHashOidBuffer[ sizeof( xOidSequence ) ], x32ByteHashedMessage, 32 );
+        memcpy( puc51ByteHashOidBuffer, pucOidSequence, sizeof( pucOidSequence ) );
+        memcpy( &puc51ByteHashOidBuffer[ sizeof( pucOidSequence ) ], puc32ByteHashedMessage, 32 );
     }
 
     return xResult;

@@ -1,6 +1,6 @@
 /*
- * Amazon FreeRTOS V1.4.8
- * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS V1.4.8
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -84,7 +84,7 @@
   *  Please note that this must be set larger than zero.
   *
   */
-#define otaconfigMAX_NUM_BLOCKS_REQUEST        32U
+#define otaconfigMAX_NUM_BLOCKS_REQUEST        1U
 
 /**
  * @brief The maximum number of requests allowed to send without a response before we abort.
