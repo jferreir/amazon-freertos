@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,13 +34,14 @@
 
 /**
  * @file USBD.c
- * @date 30 October, 2017
- * @version 2.6
+ * @date 16 Dec., 2019
+ * @version 2.8
  *
  * @brief USBD Driver for Infineon XMC4000
  *
  * History
  *
+ * Version 2.8 Added interrupt priority
  * Version 2.7 Conditional compiling based on RTE_Drivers_USBD
  *             Move function prototypes to USBD.c from USBD.h
  * Version 2.6 Fix compiler portability 
@@ -828,8 +829,8 @@ void USB0_0_IRQHandler() {
 static void XMC_EnableUSBInterrupt(void)
 {
   NVIC_SetPriority(USB0_0_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),\
-                                           XMC_PREEMPTION_PRIORITY,\
-                                           XMC_SUB_PRIORITY));
+                                           RTE_USB_DEVICE_IRQ_PRIORITY,\
+                                           0));
   NVIC_ClearPendingIRQ(USB0_0_IRQn);
   NVIC_EnableIRQ(USB0_0_IRQn);
 }

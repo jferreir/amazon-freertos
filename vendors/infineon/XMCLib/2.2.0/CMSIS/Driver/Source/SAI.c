@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,8 +34,8 @@
 
 /**
  * @file SAI.c
- * @date 25 Oct, 2019
- * @version 1.3
+ * @date 16 Dec., 2019
+ * @version 1.4
  *
  * @brief SAI CMSIS Driver for Infineon XMC devices
  *
@@ -45,6 +45,7 @@
  * Version 1.1 Fix compiler portability <br>
  * Version 1.2 Conditional compiling based on RTE_Drivers_SAI
  * Version 1.3 Fix compiler warnings
+ * Version 1.4 Added interrupt priority
  */
 
 #include "SAI.h"
@@ -57,7 +58,7 @@
 #error "SAI not configured in RTE_Device.h!"
 #endif
 
-#define ARM_SAI_DRV_VERSION    ARM_DRIVER_VERSION_MAJOR_MINOR(1, 3) /* driver version */
+#define ARM_SAI_DRV_VERSION    ARM_DRIVER_VERSION_MAJOR_MINOR(1, 4) /* driver version */
 
 /* Driver Version */
 static const ARM_DRIVER_VERSION i2s_driver_version = 
@@ -84,7 +85,8 @@ static const XMC_I2S_CH_CONFIG_t i2s_default_config =
   .data_bits = 8,
   .frame_length = 16,
   .data_delayed_sclk_periods = 1,
-  .wa_inversion = XMC_I2S_CH_WA_POLARITY_DIRECT
+  .wa_inversion = XMC_I2S_CH_WA_POLARITY_DIRECT,
+  .normal_divider_mode = true
 };
 
 /* I2S0 */
@@ -129,6 +131,7 @@ I2S_RESOURCES I2S0_Resources =
   NULL, 0, 0,
 #endif  
   (IRQn_Type)USIC0_0_IRQn,
+  RTE_I2S0_IRQ_PRIORITY,
   RTE_I2S0_TX_FIFO_SIZE_NUM,
   RTE_I2S0_TX_FIFO_SIZE,
   RTE_I2S0_RX_FIFO_SIZE_NUM,
@@ -180,6 +183,7 @@ I2S_RESOURCES I2S1_Resources = {
   NULL, 0, 0,
 #endif
   (IRQn_Type)USIC0_1_IRQn,
+  RTE_I2S1_IRQ_PRIORITY,
   RTE_I2S1_TX_FIFO_SIZE_NUM,
   RTE_I2S1_TX_FIFO_SIZE,
   RTE_I2S1_RX_FIFO_SIZE_NUM,
@@ -232,6 +236,7 @@ I2S_RESOURCES I2S2_Resources =
   NULL, 0, 0,
 #endif
   (IRQn_Type)USIC1_0_IRQn,
+  RTE_I2S2_IRQ_PRIORITY,
   RTE_I2S2_TX_FIFO_SIZE_NUM,
   RTE_I2S2_TX_FIFO_SIZE,
   RTE_I2S2_RX_FIFO_SIZE_NUM,
@@ -284,6 +289,7 @@ I2S_RESOURCES I2S3_Resources =
   NULL, 0, 0,
 #endif
   (IRQn_Type)USIC1_1_IRQn,
+  RTE_I2S3_IRQ_PRIORITY,
   RTE_I2S3_TX_FIFO_SIZE_NUM,
   RTE_I2S3_TX_FIFO_SIZE,
   RTE_I2S3_RX_FIFO_SIZE_NUM,
@@ -335,6 +341,7 @@ I2S_RESOURCES I2S4_Resources = {
   NULL, 0, 0,
 #endif
   (IRQn_Type)USIC2_0_IRQn,
+  RTE_I2S4_IRQ_PRIORITY,
   RTE_I2S4_TX_FIFO_SIZE_NUM,
   RTE_I2S4_TX_FIFO_SIZE,
   RTE_I2S4_RX_FIFO_SIZE_NUM,
@@ -387,6 +394,7 @@ I2S_RESOURCES I2S5_Resources = {
   NULL, 0, 0,
 #endif
   (IRQn_Type)USIC2_1_IRQn,
+  RTE_I2S5_IRQ_PRIORITY,
   RTE_I2S5_TX_FIFO_SIZE_NUM,
   RTE_I2S5_TX_FIFO_SIZE,
   RTE_I2S5_RX_FIFO_SIZE_NUM,
@@ -655,9 +663,9 @@ static int32_t I2S_PowerControl(ARM_POWER_STATE state, I2S_RESOURCES *const i2s)
     NVIC_ClearPendingIRQ(i2s->irq_num);
 
 #if(UC_FAMILY == XMC4)
-    NVIC_SetPriority(i2s->irq_num, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 63U, 0U));
+    NVIC_SetPriority(i2s->irq_num, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), i2s->irq_priority, 0U));
 #else
-    NVIC_SetPriority(i2s->irq_num, 3U);
+    NVIC_SetPriority(i2s->irq_num, i2s->irq_priority);
 #endif
 
 #if (UC_SERIES == XMC14)

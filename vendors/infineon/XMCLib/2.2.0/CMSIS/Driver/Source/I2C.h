@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,18 +34,18 @@
 
 /**
  * @file I2C.h
- * @date 16 September, 2015
- * @version 2.3
+ * @date 16 Dec., 2019
+ * @version 2.4
  *
  * @brief I2C Driver for Infineon XMC devices
  *
  * History
  *
- * Version 2.3 Adapted to xmc1400 devices<br>
- *
- * Version 2.2 Added Status Structure for handling the driver status<br>
- *
  * Version 1.0 Initial version<br>
+ * Version 2.2 Added Status Structure for handling the driver status<br>
+ * Version 2.3 Adapted to xmc1400 devices<br>
+ * Version 2.4 Added IRQ priority and HDEL settings<br>
+ *
  */
 
 

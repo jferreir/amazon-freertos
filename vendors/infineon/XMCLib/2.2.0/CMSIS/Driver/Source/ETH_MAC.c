@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,8 +34,8 @@
 
 /**
  * @file ETH_MAC.c
- * @date 21 Jun, 2019
- * @version 2.12
+ * @date 16 Dec., 2019
+ * @version 2.13
  *
  * @brief Ethernet Media Access (MAC) Driver for Infineon XMC4000
  *
@@ -49,6 +49,9 @@
  * -------------------------------------------------------------------- 
  *
  * History
+ *
+ * Version 2.13
+ *  Added interrupt priority
  *
  * Version 2.12
  *  Conditional compiling based on RTE_Drivers_ETH_MAC
@@ -110,7 +113,7 @@
  * MACROS
  *******************************************************************************/
 
-#define ARM_ETH_MAC_DRV_VERSION    ARM_DRIVER_VERSION_MAJOR_MINOR(2, 12) /* driver version */
+#define ARM_ETH_MAC_DRV_VERSION    ARM_DRIVER_VERSION_MAJOR_MINOR(2, 13) /* driver version */
 
 /* Timeouts */
 #define ETH_MAC_PHY_TIMEOUT         200         /* PHY Register access timeout in us  */
@@ -625,6 +628,7 @@ static int32_t ETH_MAC_PowerControl(ARM_POWER_STATE state)
       ETH0->INTERRUPT_ENABLE = ETH_INTERRUPT_ENABLE_NIE_Msk | ETH_INTERRUPT_ENABLE_RIE_Msk | ETH_INTERRUPT_ENABLE_TIE_Msk;
 
       NVIC_ClearPendingIRQ(ETH0_0_IRQn);
+      NVIC_SetPriority(ETH0_0_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), RTE_ENET_IRQ_PRIORITY, 0U));
       NVIC_EnableIRQ(ETH0_0_IRQn);
 
       handler.frame_end = NULL;

@@ -1,12 +1,12 @@
 /**
  * @file xmc_can.c
- * @date 2019-06-26
+ * @date 2020-03-17
  *
  * @cond
  *****************************************************************************
  * XMClib v2.2.0 - XMC Peripheral Driver Library 
  *
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -83,6 +83,9 @@
  *     - Added XMC_CAN_GetClockFrequency()
  *     - Fixed XMC_CAN_InitEx() so that XMC_CAN_SetBaudrateClockSource() is invoked before XMC_CAN_GetBaudrateClockFrequency()
  *
+ * 2020-03-17:
+ *     - Fixed XMC_CAN_MO_ReceiveData() according to description in the reference manual
+ * 
  * @endcond
  *
  */ 
@@ -737,7 +740,7 @@ XMC_CAN_STATUS_t XMC_CAN_MO_ReceiveData (XMC_CAN_MO_t *can_mo)
 
       rx_pnd = (uint8_t)((uint32_t)((can_mo->can_mo_ptr->MOSTAT) & CAN_MO_MOSTAT_RXUPD_Msk) >> CAN_MO_MOSTAT_RXUPD_Pos);
       new_data = (uint8_t)((uint32_t)((can_mo->can_mo_ptr->MOSTAT) & CAN_MO_MOSTAT_NEWDAT_Msk) >> CAN_MO_MOSTAT_NEWDAT_Pos);
-    } while ((rx_pnd != 0U) && (new_data != 0U));
+    } while ((rx_pnd != 0U) || (new_data != 0U));
 
     error = XMC_CAN_STATUS_SUCCESS;
   }

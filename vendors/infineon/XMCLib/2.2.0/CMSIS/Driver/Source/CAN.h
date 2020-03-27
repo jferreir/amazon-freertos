@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,14 +34,15 @@
 
 /**
  * @file CAN.h
- * @date 19 July, 2016
- * @version 1.0
+ * @date 16 Dec., 2019
+ * @version 1.1
  *
  * @brief CAN Driver for Infineon XMC devices
  *
  * History
  *
  * Version 1.0 Initial version<br>
+ * Version 1.1 Added interrupt priority
  */
 
 #include "Driver_CAN.h"
@@ -100,6 +101,7 @@ typedef struct CAN_RESOURCES
   XMC_GPIO_t                     rx_port;                   // RX pin identifier
   uint32_t                       rx_input;                  // RX pin input configuration
   IRQn_Type                      irq_num;                   // CAN IRQ Number
+  uint32_t                       irq_priority;              // CAN IRQ priority
   const uint8_t                  current_node_index;        // Currently used CAN node index
   uint32_t                       mo_index;                  // MO allocated to the current node
   volatile CAN_INFO_t            *info;                     // Pointer to run-time information

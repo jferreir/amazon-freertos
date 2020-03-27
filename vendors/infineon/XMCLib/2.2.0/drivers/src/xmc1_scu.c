@@ -6,7 +6,7 @@
  *****************************************************************************
  * XMClib v2.2.0 - XMC Peripheral Driver Library 
  *
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003

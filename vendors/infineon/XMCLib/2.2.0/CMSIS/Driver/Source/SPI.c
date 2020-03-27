@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,12 +34,14 @@
 
 /**
  * @file SPI.c
- * @date 25 Oct, 2019
- * @version 2.11
+ * @date 16 Dec., 2019
+ * @version 2.12
  *
  * @brief spi Driver for Infineon XMC devices
  *
  * History
+ *
+ * Version 2.12 Added interrupt priority
  *
  * Version 2.11 Fix compiler warnings
  *
@@ -73,7 +75,7 @@
 #error "SPI not configured in RTE_Device.h!"
 #endif
 
-#define ARM_SPI_DRV_VERSION ARM_DRIVER_VERSION_MAJOR_MINOR(2,11)   /* driver version */
+#define ARM_SPI_DRV_VERSION ARM_DRIVER_VERSION_MAJOR_MINOR(2,12)   /* driver version */
 
 #define SPI_BIT_ORDER_MSB_LSB (0UL)
 #define SPI_BIT_ORDER_LSB_MSB (1UL)
@@ -101,7 +103,8 @@ static const XMC_SPI_CH_CONFIG_t spi_default_config =
   .baudrate = 1000000,
   .bus_mode = XMC_SPI_CH_BUS_MODE_MASTER,
   .selo_inversion = XMC_SPI_CH_SLAVE_SEL_INV_TO_MSLS,
-  .parity_mode = XMC_USIC_CH_PARITY_MODE_NONE
+  .parity_mode = XMC_USIC_CH_PARITY_MODE_NONE,
+  .normal_divider_mode = true
 };
 
 
@@ -188,6 +191,7 @@ SPI_RESOURCES SPI0_Resources =
 #endif
   XMC_SPI0_CH0,
   (IRQn_Type)USIC0_0_IRQn,
+  RTE_SPI0_IRQ_PRIORITY,
   RTE_SPI0_TX_FIFO_SIZE,
   RTE_SPI0_TX_FIFO_SIZE_NUM,
   RTE_SPI0_RX_FIFO_SIZE,
@@ -275,6 +279,7 @@ SPI_RESOURCES SPI1_Resources =
 #endif
   XMC_SPI0_CH1,
   (IRQn_Type)USIC0_1_IRQn,
+  RTE_SPI1_IRQ_PRIORITY,
   RTE_SPI1_TX_FIFO_SIZE,
   RTE_SPI1_TX_FIFO_SIZE_NUM,
   RTE_SPI1_RX_FIFO_SIZE,
@@ -368,6 +373,7 @@ SPI_RESOURCES SPI2_Resources =
 #endif
   XMC_SPI1_CH0,
   (IRQn_Type)USIC1_0_IRQn,
+  RTE_SPI2_IRQ_PRIORITY,
   RTE_SPI2_TX_FIFO_SIZE,
   RTE_SPI2_TX_FIFO_SIZE_NUM,
   RTE_SPI2_RX_FIFO_SIZE,
@@ -456,6 +462,7 @@ SPI_RESOURCES SPI3_Resources =
 #endif  
   XMC_SPI1_CH1,
   (IRQn_Type)USIC1_1_IRQn,
+  RTE_SPI3_IRQ_PRIORITY,
   RTE_SPI3_TX_FIFO_SIZE,
   RTE_SPI3_TX_FIFO_SIZE_NUM,
   RTE_SPI3_RX_FIFO_SIZE,
@@ -548,6 +555,7 @@ SPI_RESOURCES SPI4_Resources =
 #endif  
   XMC_SPI2_CH0,
   (IRQn_Type)USIC2_0_IRQn,
+  RTE_SPI4_IRQ_PRIORITY,
   RTE_SPI4_TX_FIFO_SIZE,
   RTE_SPI4_TX_FIFO_SIZE_NUM,
   RTE_SPI4_RX_FIFO_SIZE,
@@ -633,6 +641,7 @@ SPI_RESOURCES SPI5_Resources =
 #endif  
   XMC_SPI2_CH1,
   (IRQn_Type)USIC2_1_IRQn,
+  RTE_SPI5_IRQ_PRIORITY,
   RTE_SPI5_TX_FIFO_SIZE,
   RTE_SPI5_TX_FIFO_SIZE_NUM,
   RTE_SPI5_RX_FIFO_SIZE,
@@ -914,9 +923,9 @@ static int32_t SPI_PowerControl(ARM_POWER_STATE state, SPI_RESOURCES *const spi)
    
     NVIC_ClearPendingIRQ(spi->irq_rx_num);
 #if(UC_FAMILY == XMC4)
-    NVIC_SetPriority(spi->irq_rx_num,NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 63U, 0U)); 
+    NVIC_SetPriority(spi->irq_rx_num,NVIC_EncodePriority(NVIC_GetPriorityGrouping(), spi->irq_priority, 0U)); 
 #else
-    NVIC_SetPriority(spi->irq_rx_num, 3U); 
+    NVIC_SetPriority(spi->irq_rx_num, spi->irq_priority); 
 #endif
 
 #if (UC_SERIES == XMC14)    

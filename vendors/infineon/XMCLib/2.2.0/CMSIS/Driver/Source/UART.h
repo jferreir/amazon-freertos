@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,8 +34,8 @@
 
 /**
  * @file UART.h
- * @date 31 August, 2018
- * @version 2.8
+ * @date 16 Dec., 2019
+ * @version 2.9
  *
  * @brief UART Driver for Infineon XMC devices
  *
@@ -52,6 +52,8 @@
  * Version 2.7 Fixed IRQ numbers for XMC1400
  *
  * Version 2.8 Fixed UART_INFO.mode variable type<br>
+ *
+ * Version 2.9 Added interrupt priority<br>
  *
  */
 
@@ -144,6 +146,7 @@ typedef struct
   uint32_t               input;                      // Input for RX  Pin
   XMC_USIC_CH_t          *uart;                      // Pointer to UART peripheral
   IRQn_Type              irq_num;                    // UART TX IRQ Number
+  uint32_t               irq_priority;               // UART IRQ priority
   volatile uint32_t      tx_fifo_size_reg;           // FIFO tx size register
   volatile uint32_t      tx_fifo_size_num;           // FIFO tx size register num
   volatile uint32_t      rx_fifo_size_reg;           // FIFO rx size register 

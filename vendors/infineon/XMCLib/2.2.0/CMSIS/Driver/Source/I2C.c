@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,12 +34,14 @@
 
 /**
  * @file I2C.c
- * @date 25 Oct, 2019
- * @version 2.9
+ * @date 16 Dec., 2019
+ * @version 2.10
  *
  * @brief I2C Driver for Infineon XMC devices
  *
  * History
+ *
+ * Version 2.10 Added IRQ priority and HDEL settings
  *
  * Version 2.9 Fix compiler warnings
  *             Fix BUS_CLEAR
@@ -78,7 +80,7 @@
 #error "I2C not configured in RTE_Device.h!"
 #endif
 
-#define ARM_I2C_DRV_VERSION ARM_DRIVER_VERSION_MAJOR_MINOR(2,9)   /* driver version */
+#define ARM_I2C_DRV_VERSION ARM_DRIVER_VERSION_MAJOR_MINOR(2,10)   /* driver version */
 
 #define I2C_MODE_MASTER 1
 #define I2C_MODE_SLAVE  0 

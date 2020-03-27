@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,8 +34,8 @@
 
  /**
  * @file MCI.c
- * @date 21 June, 2019
- * @version 1.1
+ * @date 16 Dec., 2019
+ * @version 1.2
  *
  * @brief MCI/SDMMC Driver for Infineon XMC devices
  *
@@ -45,6 +45,7 @@
  * 
  * Version 1.1 Conditional compiling based on RTE_Drivers_MCI
  * 
+ * Version 1.2 Added interrupt priority
  */
 
 /***************************************************************************
@@ -65,7 +66,7 @@
  * MACROS
  ***************************************************************************/
 /* driver version */
-#define ARM_MCI_DRV_VERSION ARM_DRIVER_VERSION_MAJOR_MINOR    (1, 1)
+#define ARM_MCI_DRV_VERSION ARM_DRIVER_VERSION_MAJOR_MINOR    (1, 2)
 
 /* Macro for gpio uninitialization from SDMMC peripheral */
 #define MCI_GPIO_UNINITIALIZE(pinfunction)\
@@ -75,8 +76,6 @@
                               MCI_0_PIN_HW_CONFIG_DEFUALT)
 
 #define MCI_DELAY_LOOP_COUNT                                100000U
-#define MCI_IRQ_PREEMTION_PRIORITY                          63U
-#define MCI_IRQ_SUB_PRIORITY                                0
 #define MCI_MASK_BYTE_ZERO                                  0x000000FFU
 /* Macros used to find value of time out counter value in SDMMC_TIMEOUT_CTRL register */
 #define MCI_POW_VAL_OF_TWO_IN_TIMOUT_REG                    13U
@@ -591,7 +590,7 @@ static int32_t PowerControl (ARM_POWER_STATE state) {
       /* Enable Interrupt */
       NVIC_SetPriority(SDMMC0_0_IRQn,
                        NVIC_EncodePriority(NVIC_GetPriorityGrouping(),
-                       MCI_IRQ_PREEMTION_PRIORITY, MCI_IRQ_SUB_PRIORITY));
+                       RTE_SDMMC_IRQ_PRIORITY, 0));
 
       NVIC_ClearPendingIRQ(SDMMC0_0_IRQn);
       NVIC_EnableIRQ(SDMMC0_0_IRQn);

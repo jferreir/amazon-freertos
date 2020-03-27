@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -35,13 +35,14 @@
 /**
  * @file SAI.h
  * @date XXXX
- * @version 1.0
+ * @version 1.1
  *
  * @brief SAI CMSIS Driver for Infineon XMC devices
  *
  * History
  *
  * Version 1.0 Initial version<br>
+ * Version 1.1 Added interrupt priority
  */
 
 #include "Driver_SAI.h"
@@ -144,6 +145,7 @@ typedef struct
   XMC_GPIO_t                mclk_output_port;               // MCLK (Master Clock) OUTPUT pin identifier
   uint32_t                  mclk_output_alternate_function; // MCLK (Master Clock) OUTPUT pin alternate function
   IRQn_Type                 irq_num;                        // I2S transmit IRQ Number
+  uint32_t                  irq_priority;                   // I2S IRQ priority
   uint32_t                  tx_fifo_size_num;               // FIFO TX size register num
   uint32_t                  tx_fifo_size_reg;               // FIFO TX size register
   uint32_t                  rx_fifo_size_num;               // FIFO RX size register num

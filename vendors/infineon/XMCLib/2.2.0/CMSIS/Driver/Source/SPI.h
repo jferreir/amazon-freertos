@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -150,6 +150,7 @@ typedef struct
   uint32_t                 slave_select_input;                        // SELI  Input
   XMC_USIC_CH_t           *spi;                                       // Pointer to SPI peripheral
   IRQn_Type                irq_rx_num;                                // SPI RX IRQ Number
+  uint32_t                 irq_priority;                              // SPI RX IRQ priority
   volatile uint32_t        tx_fifo_size_reg;                          // FIFO tx size register num
   volatile uint32_t        tx_fifo_size_num;                          // FIFO tx size register 
   volatile uint32_t        rx_fifo_size_reg;                          // FIFO rx size register num

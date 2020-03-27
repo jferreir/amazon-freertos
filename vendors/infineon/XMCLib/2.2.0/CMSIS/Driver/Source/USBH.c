@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,8 +34,8 @@
 
 /**
  * @file USBH.c
- * @date 21 Jun, 2019
- * @version 1.2
+ * @date 16 Dec., 2019
+ * @version 1.3
  *
  * @brief USBH Driver for Infineon XMC4000
  *
@@ -44,6 +44,7 @@
  * Version 1.0 Initial version<br>
  * Version 1.1 Fix compiler portability 
  * Version 1.2 Conditional compiling based on RTE_Drivers_USBH
+ * Version 1.3 Added interrupt priority
  */
 
 #include <stdint.h>
@@ -59,7 +60,7 @@
 
 /* USBH Driver ***************************************************************** */
 
-#define ARM_USBH_DRV_VERSION ARM_DRIVER_VERSION_MAJOR_MINOR(1,2)
+#define ARM_USBH_DRV_VERSION ARM_DRIVER_VERSION_MAJOR_MINOR(1,3)
 
 /* Driver Version */
 static const ARM_DRIVER_VERSION xmc_usbh_driver_version = { ARM_USBH_API_VERSION, ARM_USBH_DRV_VERSION };
@@ -397,7 +398,9 @@ static int32_t XMC_PowerControl (ARM_POWER_STATE state) {
       /* Enable interrupts */
       XMC_USBH0_device.global_register->GAHBCFG  |=  USB_GAHBCFG_GlblIntrMsk_Msk;
       /* Set highest interrupt priority */
-      NVIC_SetPriority (USB0_0_IRQn, 0);
+      NVIC_SetPriority (USB0_0_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),\
+                                           RTE_USB_HOST_IRQ_PRIORITY,\
+                                           0));
       NVIC_EnableIRQ   (USB0_0_IRQn);
       break;
     default:

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,13 +34,14 @@
 
 /**
  * @file USBD.h
- * @date 21 Jun, 2019
- * @version 2.6
+ * @date 16 Dec., 2019
+ * @version 2.7
  *
  * @brief USBD Driver for Infineon XMC4000
  *
  * History
  *
+ * Version 2.7 Take USBD interrupt priority from RTE
  * Version 2.5 Move function prototypes to USBD.c
  * Version 2.5 Added  macro for powered device reconnection hadling for OTG devices <br>
  * Version 2.4 Clock handling modified for supporting XMC4800 and XMC4700 devices
@@ -111,13 +112,6 @@ typedef void* dwc_dma_t;
 #define XMC_USB_TX_FIFO_REG_OFFSET 0x1000
 /** Offset for each fifo register */
 #define XMC_USB_TX_FIFO_OFFSET 0x1000
-
-/* Interrupt priority */
-/** Defines USB interrupt priority */
-#define XMC_PREEMPTION_PRIORITY          63
-
-/** Defines USB interrupt sub priority */
-#define XMC_SUB_PRIORITY                 0
 
 /** Number of hardware tx endpoint fifos */
 #define USB_NUM_TX_FIFOS 7

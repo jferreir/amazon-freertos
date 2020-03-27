@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,8 +34,8 @@
 
 /**
  * @file CAN.c
- * @date 25 Oct, 2019
- * @version 1.4
+ * @date 16 Dec., 2019
+ * @version 1.5
  *
  * @brief CAN Driver for Infineon XMC devices
  *
@@ -50,6 +50,7 @@
  *             Fix IRQ handler when more than one message object allocated per CAN node
  *             Disable internal loopback mode
  * Version 1.4 Fix compiler warnings
+ * Version 1.5 Added interrupt priority
  *
  */
 
@@ -63,7 +64,7 @@
 #error "CAN not configured in RTE_Device.h!"
 #endif
 
-#define ARM_CAN_DRV_VERSION            ARM_DRIVER_VERSION_MAJOR_MINOR(1,4)   /* driver version */
+#define ARM_CAN_DRV_VERSION            ARM_DRIVER_VERSION_MAJOR_MINOR(1,5)   /* driver version */
 #define DEFAULT_ACCEPTANCE_MASK        0x1FFFFFFF
 
 #if (UC_SERIES == XMC14) || (UC_DEVICE == XMC4108)
@@ -135,6 +136,7 @@ CAN_RESOURCES_t CAN0_Resources =
   {RTE_CAN0_RX_PORT},
   RTE_CAN0_RX_INPUT,
   (IRQn_Type)CAN0_0_IRQn,
+  RTE_CAN0_IRQ_PRIORITY,
   0,
   0,
   &CAN0_INFO,
@@ -157,6 +159,7 @@ CAN_RESOURCES_t CAN1_Resources =
   {RTE_CAN1_RX_PORT},
   RTE_CAN1_RX_INPUT,
   (IRQn_Type)CAN0_1_IRQn,
+  RTE_CAN1_IRQ_PRIORITY,
   1,
   0,
   &CAN1_INFO,
@@ -179,6 +182,7 @@ CAN_RESOURCES_t CAN2_Resources =
   {RTE_CAN2_RX_PORT},
   RTE_CAN2_RX_INPUT,
   (IRQn_Type)CAN0_2_IRQn,
+  RTE_CAN2_IRQ_PRIORITY,
   2,
   0,
   &CAN2_INFO,
@@ -201,6 +205,7 @@ CAN_RESOURCES_t CAN3_Resources =
   {RTE_CAN3_RX_PORT},
   RTE_CAN3_RX_INPUT,
   (IRQn_Type)CAN0_3_IRQn,
+  RTE_CAN3_IRQ_PRIORITY,
   3,
   0,
   &CAN3_INFO,
@@ -223,6 +228,7 @@ CAN_RESOURCES_t CAN4_Resources =
   {RTE_CAN4_RX_PORT},
   RTE_CAN4_RX_INPUT,
   (IRQn_Type)CAN0_4_IRQn,
+  RTE_CAN4_IRQ_PRIORITY,
   4,
   0,
   &CAN4_INFO,
@@ -245,6 +251,7 @@ CAN_RESOURCES_t CAN5_Resources =
   {RTE_CAN5_RX_PORT},
   RTE_CAN5_RX_INPUT,
   (IRQn_Type)CAN0_5_IRQn,
+  RTE_CAN5_IRQ_PRIORITY,
   5,
   0,
   &CAN5_INFO,
@@ -545,9 +552,9 @@ static int32_t CAN_PowerControl(ARM_POWER_STATE state, CAN_RESOURCES_t *can)
       NVIC_ClearPendingIRQ(can->irq_num);
 
 #if(UC_FAMILY == XMC4)
-      NVIC_SetPriority(can->irq_num, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 63U, 0U));
+      NVIC_SetPriority(can->irq_num, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), can->irq_priority, 0U));
 #else
-      NVIC_SetPriority(can->irq_num, 3U);
+      NVIC_SetPriority(can->irq_num, can->irq_priority);
 #endif
 
 #if (UC_SERIES == XMC14)

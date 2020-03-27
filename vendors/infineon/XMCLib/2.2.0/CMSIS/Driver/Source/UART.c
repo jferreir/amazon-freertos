@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -34,8 +34,8 @@
 
 /**
  * @file UART.c
- * @date 25 Oct, 2019
- * @version 2.13
+ * @date 16 Dec., 2019
+ * @version 2.14
  *
  * @brief UART Driver for Infineon XMC devices
  *
@@ -64,6 +64,8 @@
  * Version 2.12 Conditional compiling based on RTE_Drivers_USART
  *
  * Version 2.13 Fix compiler warnings
+ *
+ * Version 2.14 Added interrupt priority
  */
 
 #include "UART.h"
@@ -76,7 +78,7 @@
 #error "USART not configured in RTE_Device.h!"
 #endif
 
-#define ARM_USART_DRV_VERSION ARM_DRIVER_VERSION_MAJOR_MINOR(2,13)   /* driver version */
+#define ARM_USART_DRV_VERSION ARM_DRIVER_VERSION_MAJOR_MINOR(2,14)   /* driver version */
 
 // Driver Version
 static const ARM_DRIVER_VERSION DriverVersion = 
@@ -103,7 +105,8 @@ static const XMC_UART_CH_CONFIG_t uart_default_config =
 .data_bits = 8U,
 .frame_length = 8U,
 .stop_bits = 1U,
-.parity_mode = XMC_USIC_CH_PARITY_MODE_NONE
+.parity_mode = XMC_USIC_CH_PARITY_MODE_NONE,
+.normal_divider_mode = true
 };
 
 
@@ -132,6 +135,7 @@ UART_RESOURCES UART0_Resources =
   RTE_UART0_RX_INPUT,
   XMC_UART0_CH0,
   (IRQn_Type)USIC0_0_IRQn,
+  RTE_UART0_IRQ_PRIORITY,
   RTE_UART0_TX_FIFO_SIZE,
   RTE_UART0_TX_FIFO_SIZE_NUM,
   RTE_UART0_RX_FIFO_SIZE,
@@ -158,6 +162,7 @@ UART_RESOURCES UART1_Resources =
   RTE_UART1_RX_INPUT,
   XMC_UART0_CH1,
   (IRQn_Type)USIC0_1_IRQn,
+  RTE_UART1_IRQ_PRIORITY,
   RTE_UART1_TX_FIFO_SIZE,
   RTE_UART1_TX_FIFO_SIZE_NUM,
   RTE_UART1_RX_FIFO_SIZE,
@@ -184,6 +189,7 @@ UART_RESOURCES UART2_Resources =
   RTE_UART2_RX_INPUT,
   XMC_UART1_CH0,
   (IRQn_Type)USIC1_0_IRQn,
+  RTE_UART2_IRQ_PRIORITY,
   RTE_UART2_TX_FIFO_SIZE,
   RTE_UART2_TX_FIFO_SIZE_NUM,
   RTE_UART2_RX_FIFO_SIZE,
@@ -211,6 +217,7 @@ UART_RESOURCES UART3_Resources =
   RTE_UART3_RX_INPUT,
   XMC_UART1_CH1,
   (IRQn_Type)USIC1_1_IRQn,
+  RTE_UART3_IRQ_PRIORITY,
   RTE_UART3_TX_FIFO_SIZE,
   RTE_UART3_TX_FIFO_SIZE_NUM,
   RTE_UART3_RX_FIFO_SIZE,
@@ -238,6 +245,7 @@ UART_RESOURCES UART4_Resources =
   RTE_UART4_RX_INPUT,
   XMC_UART2_CH0,
   (IRQn_Type)USIC2_0_IRQn,
+  RTE_UART4_IRQ_PRIORITY,
   RTE_UART4_TX_FIFO_SIZE,
   RTE_UART4_TX_FIFO_SIZE_NUM,
   RTE_UART4_RX_FIFO_SIZE,
@@ -265,6 +273,7 @@ UART_RESOURCES UART5_Resources =
   RTE_UART5_RX_INPUT,
   XMC_UART2_CH1,
   (IRQn_Type)USIC2_1_IRQn,
+  RTE_UART5_IRQ_PRIORITY,
   RTE_UART5_TX_FIFO_SIZE,
   RTE_UART5_TX_FIFO_SIZE_NUM,
   RTE_UART5_RX_FIFO_SIZE,
@@ -548,10 +557,10 @@ static int32_t UART_PowerControl(ARM_POWER_STATE state, UART_RESOURCES *const ua
 
 #if(UC_FAMILY == XMC4)
     // Receive interrupt has higher priority as transmit interrupt
-    NVIC_SetPriority(uart->irq_num, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 63U, 0U));
+    NVIC_SetPriority(uart->irq_num, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), uart->irq_priority, 0U));
 #else
     // Receive interrupt has higher priority as transmit interrupt
-    NVIC_SetPriority(uart->irq_num, 3U);
+    NVIC_SetPriority(uart->irq_num, uart->irq_priority);
 #endif
 
 #if (UC_SERIES == XMC14)    

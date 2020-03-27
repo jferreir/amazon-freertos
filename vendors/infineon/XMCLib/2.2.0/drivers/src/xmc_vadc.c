@@ -6,7 +6,7 @@
  *****************************************************************************
  * XMClib v2.2.0 - XMC Peripheral Driver Library 
  *
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -109,6 +109,9 @@
  * 2019-12-16:
  *     - Fix including files following the convention: angle brackets are used for standard includes and double quotes for everything else.
  *
+ * 2020-03-18:
+ *     - Changed XMC_VADC_GLOBAL_Init() setting ADC clock to 48MHz for XMC1400 series
+ * 
  * @endcond 
  *
  */
@@ -209,6 +212,10 @@ void XMC_VADC_GLOBAL_Init(XMC_VADC_GLOBAL_t *const global_ptr, const XMC_VADC_GL
   uint32_t reg;
 #endif
   XMC_ASSERT("XMC_VADC_GLOBAL_Init:Wrong Module Pointer", (global_ptr == VADC))
+
+#if (UC_SERIES == XMC14)
+  XMC_SCU_CLOCK_SetAdcClockSrc(XMC_SCU_CLOCK_ADCCLKSRC_48MHZ);
+#endif
 
   /* Enable the VADC module*/
   XMC_VADC_GLOBAL_EnableModule();
