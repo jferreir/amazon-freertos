@@ -1,6 +1,6 @@
 /*
- * FreeRTOS V1.1.4
- * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * IoT MQTT V2.1.0
+ * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -18,39 +18,46 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/**
+ * @file iot_tests_mqtt_mock.h
+ * @brief Declares functions to mock MQTT network responses.
  *
- * http://aws.amazon.com/freertos
- * http://www.FreeRTOS.org
+ * The function in this file are not thread safe; only one MQTT operation
+ * should be mocked at any time.
  */
 
-/**
- * @file aws_secure_sockets_config.h
- * @brief Secure sockets configuration options.
- */
+#ifndef IOT_TESTS_MQTT_MOCK_H_
+#define IOT_TESTS_MQTT_MOCK_H_
 
-#ifndef _AWS_SECURE_SOCKETS_CONFIG_H_
-#define _AWS_SECURE_SOCKETS_CONFIG_H_
+/* The config header is always included first. */
+#include "iot_config.h"
+
+/* Standard includes. */
+#include <stdbool.h>
+
+/* MQTT types include. */
+#include "types/iot_mqtt_types.h"
+
+/* Define an assertion function to use. */
+#ifndef IotTest_Assert
+    #include <assert.h>
+    #define IotTest_Assert    assert
+#endif
 
 /**
- * @brief Byte order of the target MCU.
+ * @brief Initialize an MQTT connection to mock.
  *
- * Valid values are pdLITTLE_ENDIAN and pdBIG_ENDIAN.
+ * @param[out] pMqttConnection Set to an MQTT connection handle on success.
+ *
+ * @return `true` if all initialization succeeded; `false` otherwise.
  */
-#define socketsconfigBYTE_ORDER                   pdLITTLE_ENDIAN
+bool IotTest_MqttMockInit( IotMqttConnection_t * pMqttConnection );
 
 /**
- * @brief Default socket send timeout.
+ * @brief Clean up the MQTT connection mocking.
  */
-#define socketsconfigDEFAULT_SEND_TIMEOUT         ( 10000 )
+void IotTest_MqttMockCleanup( void );
 
-/**
- * @brief Default socket receive timeout.
- */
-#define socketsconfigDEFAULT_RECV_TIMEOUT         ( 10000 )
-
-/**
- * @brief Enable metrics of secure socket.
- */
-#define AWS_IOT_SECURE_SOCKETS_METRICS_ENABLED    ( 1 )
-
-#endif /* _AWS_SECURE_SOCKETS_CONFIG_H_ */
+#endif /* ifndef IOT_TESTS_MQTT_MOCK_H_ */

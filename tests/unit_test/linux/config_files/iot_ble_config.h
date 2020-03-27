@@ -1,6 +1,6 @@
 /*
- * FreeRTOS V1.1.4
- * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * Amazon FreeRTOS V1.4.2
+ * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,33 +24,19 @@
  */
 
 /**
- * @file aws_secure_sockets_config.h
- * @brief Secure sockets configuration options.
+ * @file iot_ble_config.h
+ * @brief BLE configuration overrides for ESP32 board.
  */
 
-#ifndef _AWS_SECURE_SOCKETS_CONFIG_H_
-#define _AWS_SECURE_SOCKETS_CONFIG_H_
 
-/**
- * @brief Byte order of the target MCU.
- *
- * Valid values are pdLITTLE_ENDIAN and pdBIG_ENDIAN.
- */
-#define socketsconfigBYTE_ORDER                   pdLITTLE_ENDIAN
+#ifndef _IOT_BLE_CONFIG_H_
+#define _IOT_BLE_CONFIG_H_
 
-/**
- * @brief Default socket send timeout.
- */
-#define socketsconfigDEFAULT_SEND_TIMEOUT         ( 10000 )
+/* Device name for this peripheral device. */
+#define IOT_BLE_DEVICE_COMPLETE_LOCAL_NAME    "mockboard"
 
-/**
- * @brief Default socket receive timeout.
- */
-#define socketsconfigDEFAULT_RECV_TIMEOUT         ( 10000 )
+#include "iot_config.h"
+/* Include BLE default config at bottom to set the default values for the configurations which are not overridden */
+#include "iot_ble_config_defaults.h"
 
-/**
- * @brief Enable metrics of secure socket.
- */
-#define AWS_IOT_SECURE_SOCKETS_METRICS_ENABLED    ( 1 )
-
-#endif /* _AWS_SECURE_SOCKETS_CONFIG_H_ */
+#endif /* _IOT_BLE_CONFIG_H_ */
