@@ -83,14 +83,16 @@ static void RunTests( void )
     #endif
 
     #if ( testrunnerFULL_GGD_ENABLED == 1 )
-        RUN_TEST_GROUP( Full_GGD );
+        RUN_TEST_GROUP( GGD_Unit );
+        RUN_TEST_GROUP( GGD_System );
     #endif
 
     #if ( testrunnerFULL_GGD_HELPER_ENABLED == 1 )
-        RUN_TEST_GROUP( Full_GGD_Helper );
+        RUN_TEST_GROUP( GGD_Helper_System );
     #endif
 
     #if ( testrunnerFULL_SHADOW_ENABLED == 1 )
+        RUN_TEST_GROUP( Full_Shadow_Unit );
         RUN_TEST_GROUP( Full_Shadow );
     #endif
 
@@ -200,6 +202,7 @@ static void RunTests( void )
 
     #if ( testrunnerFULL_BLE_END_TO_END_TEST_ENABLED == 1 )
         RUN_TEST_GROUP( MQTT_Unit_BLE_Serialize );
+        RUN_TEST_GROUP( Full_BLE_END_TO_END_CONNECTIVITY );
         RUN_TEST_GROUP( Full_BLE_END_TO_END_MQTT );
         RUN_TEST_GROUP( Full_BLE_END_TO_END_SHADOW );
     #endif
@@ -209,9 +212,9 @@ static void RunTests( void )
     #endif
 
     #if ( testrunnerFULL_SERIALIZER_ENABLED == 1 )
-        RUN_TEST_GROUP( Full_Serializer_CBOR );
-        RUN_TEST_GROUP( Full_Serializer_JSON );
-        RUN_TEST_GROUP( Full_Serializer_JSON_deserialize );
+        RUN_TEST_GROUP( Serializer_Unit_CBOR );
+        RUN_TEST_GROUP( Serializer_Unit_JSON );
+        RUN_TEST_GROUP( Serializer_Unit_JSON_deserialize );
     #endif
 
     #if ( testrunnerFULL_HTTPS_CLIENT_ENABLED == 1 )

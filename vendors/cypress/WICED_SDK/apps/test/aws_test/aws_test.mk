@@ -84,6 +84,7 @@ GLOBAL_INCLUDES +=  $(AMAZON_FREERTOS_PATH)tests/include \
                     $(AFR_C_SDK_STANDARD_PATH)mqtt/src \
                     $(AFR_C_SDK_STANDARD_PATH)mqtt/src/private \
                     $(AFR_C_SDK_STANDARD_PATH)mqtt/test/access \
+                    $(AFR_C_SDK_STANDARD_PATH)mqtt/test/mock \
                     $(AFR_C_SDK_STANDARD_PATH)serializer/include \
                     $(AFR_C_SDK_AWS_PATH)shadow/include \
                     $(AFR_C_SDK_AWS_PATH)shadow/include/types \
@@ -135,6 +136,7 @@ $(NAME)_SOURCES    := $(AMAZON_FREERTOS_PATH)vendors/cypress/boards/$(PLATFORM)/
                       $(AFR_C_SDK_STANDARD_PATH)mqtt/test/iot_test_mqtt_agent.c \
                       $(AFR_C_SDK_STANDARD_PATH)mqtt/test/system/iot_tests_mqtt_system.c \
                       $(AFR_C_SDK_STANDARD_PATH)mqtt/src/iot_mqtt_api.c \
+                      $(AFR_C_SDK_STANDARD_PATH)mqtt/test/mock/iot_tests_mqtt_mock.c \
                       $(AFR_C_SDK_STANDARD_PATH)mqtt/test/unit/iot_tests_mqtt_api.c \
                       $(AFR_C_SDK_STANDARD_PATH)mqtt/test/unit/iot_tests_mqtt_receive.c \
                       $(AFR_C_SDK_STANDARD_PATH)mqtt/test/unit/iot_tests_mqtt_subscription.c \
@@ -144,7 +146,8 @@ $(NAME)_SOURCES    := $(AMAZON_FREERTOS_PATH)vendors/cypress/boards/$(PLATFORM)/
                       $(AFR_C_SDK_AWS_PATH)shadow/test/unit/aws_iot_tests_shadow_api.c \
                       $(AFR_C_SDK_AWS_PATH)shadow/test/unit/aws_iot_tests_shadow_parser.c \
                       $(AFR_C_SDK_AWS_PATH)shadow/test/system/aws_iot_tests_shadow_system.c \
-                      $(AFR_FREERTOS_PLUS_AWS_PATH)greengrass/test/aws_test_greengrass_discovery.c \
+                      $(AFR_FREERTOS_PLUS_AWS_PATH)greengrass/test/aws_test_ggd_system.c \
+                      $(AFR_FREERTOS_PLUS_AWS_PATH)greengrass/test/aws_test_ggd_unit.c \
                       $(AFR_FREERTOS_PLUS_AWS_PATH)greengrass/test/aws_test_helper_secure_connect.c \
                       $(AFR_C_SDK_AWS_PATH)defender/src/aws_iot_defender_api.c \
                       $(AFR_C_SDK_AWS_PATH)defender/src/aws_iot_defender_collector.c \
