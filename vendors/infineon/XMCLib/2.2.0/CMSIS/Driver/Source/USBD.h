@@ -57,7 +57,7 @@
 #ifndef USBD_H_
 #define USBD_H_
 #include "xmc_scu.h"
-#include "driver_usbd.h"
+#include "Driver_USBD.h"
 #include "RTE_Device.h"
 #include "RTE_Components.h"
 

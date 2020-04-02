@@ -1,6 +1,6 @@
 /*
- * Amazon FreeRTOS V1.4.8
- * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS V1.4.8
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -47,7 +47,7 @@
  *
  * @note Should be less than 256.
  */
-#define shadowconfigMAX_CLIENTS                  ( 2 )
+#define shadowconfigMAX_CLIENTS                  ( 1 )
 
 /**
  * @brief Shadow debug message setting.
@@ -56,7 +56,7 @@
  * it to @c 1 to enable debug messages. Ensure that the macro @c configPRINTF
  * is available if debugging is enabled.
  */
-#define shadowconfigENABLE_DEBUG_LOGS            ( 0 )
+#define shadowconfigENABLE_DEBUG_LOGS            ( 1 )
 
 /**
  * @brief Number of unique Things for which user notify callbacks can be
@@ -67,7 +67,7 @@
  *
  * @note Should be less than 256.
  */
-#define shadowconfigMAX_THINGS_WITH_CALLBACKS    ( 4 )
+#define shadowconfigMAX_THINGS_WITH_CALLBACKS    ( 1 )
 
 /**
  * @brief Time (in milliseconds) a Shadow Client may block during cleanup @b IF

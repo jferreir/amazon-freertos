@@ -1,10 +1,9 @@
 /*
- *
- * Copyright (c) 2015-2019, Infineon Technologies AG
+ * Copyright (c) 2015-2020, Infineon Technologies AG
  * All rights reserved.                        
  *                                             
  * Boost Software License - Version 1.0 - August 17th, 2003
- *
+ * 
  * Permission is hereby granted, free of charge, to any person or organization
  * obtaining a copy of the software and accompanying documentation covered by
  * this license (the "Software") to use, reproduce, display, distribute,
@@ -27,8 +26,8 @@
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  *                                                                              
- * To improve the quality of the software, users are encouraged to share
- * modifications, enhancements or bug fixes with Infineon Technologies AG
+ * To improve the quality of the software, users are encouraged to share 
+ * modifications, enhancements or bug fixes with Infineon Technologies AG 
  * at XMCSupport@infineon.com.
  *
  */
@@ -55,6 +54,8 @@
  *
  * Version 1.2.0
  * - [New] Added IRQ priority setting for drivers
+ * - [New] Added Hold delay option for I2C driver
+ *
  */
 
 //-------- <<< Use Configuration Wizard in Context Menu >>> --------------------
@@ -65,6 +66,7 @@
 #include "xmc_device.h"
 #include "xmc4_gpio_map.h"
 #include "xmc4_usic_map.h"
+#include "xmc_can_map.h"
 
 #define NO_FIFO 0
 #define FIFO_SIZE_2 1
@@ -112,6 +114,12 @@
 #else
 #error "Invalid CAN0_RX Pin Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of CAN events IRQ handling
+// <i> Default: 63
+#define RTE_CAN0_IRQ_PRIORITY  63
+
 // </e>
 
 // <e> CAN1 (Controller area network) [Driver_CAN1]
@@ -153,6 +161,12 @@
 #else
 #error "Invalid CAN1_RX Pin Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of CAN events IRQ handling
+// <i> Default: 63
+#define RTE_CAN1_IRQ_PRIORITY  63
+
 // </e>
 
 // <e> CAN2 (Controller area network) [Driver_CAN2]
@@ -188,6 +202,12 @@
 #else
 #error "Invalid CAN2_RX Pin Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of CAN events IRQ handling
+// <i> Default: 63
+#define RTE_CAN2_IRQ_PRIORITY  63
+
 // </e>
 
 // <e> CAN3 (Controller area network) [Driver_CAN3]
@@ -217,6 +237,12 @@
 #else
 #error "Invalid CAN3_RX Pin Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of CAN events IRQ handling
+// <i> Default: 63
+#define RTE_CAN3_IRQ_PRIORITY  63
+
 // </e>
 
 // <e> CAN4 (Controller area network) [Driver_CAN4]
@@ -246,6 +272,12 @@
 #else
 #error "Invalid CAN4_RX Pin Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of CAN events IRQ handling
+// <i> Default: 63
+#define RTE_CAN4_IRQ_PRIORITY  63
+
 // </e>
 
 // <e> CAN5 (Controller area network) [Driver_CAN5]
@@ -275,6 +307,12 @@
 #else
 #error "Invalid CAN5_RX Pin Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of CAN events IRQ handling
+// <i> Default: 63
+#define RTE_CAN5_IRQ_PRIORITY  63
+
 // </e>
 
 // <e> UART0 (Universal asynchronous receiver transmitter) [Driver_USART0]
@@ -361,6 +399,12 @@
 #else
 #error "Invalid UART0_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of UART events IRQ handling
+// <i> Default: 63
+#define RTE_UART0_IRQ_PRIORITY  63
+
 //</e>
 
 // <e> UART1 (Universal asynchronous receiver transmitter) [Driver_USART1]
@@ -453,6 +497,12 @@
 #else
 #error "Invalid UART1_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of UART events IRQ handling
+// <i> Default: 63
+#define RTE_UART1_IRQ_PRIORITY  63
+
 //</e>
 // <e> UART2 (Universal asynchronous receiver transmitter) [Driver_USART2]
 // <i> Configuration settings for Driver_USART2 in component ::Drivers:UART
@@ -541,6 +591,12 @@
 #else
 #error "Invalid UART2_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of UART events IRQ handling
+// <i> Default: 63
+#define RTE_UART2_IRQ_PRIORITY  63
+
 //</e>
 // <e> UART3 (Universal asynchronous receiver transmitter) [Driver_USART3]
 // <i> Configuration settings for Driver_USART3 in component ::Drivers:UART
@@ -630,6 +686,11 @@
 #error "Invalid UART3_TX FIFO SIZE Configuration!"
 #endif
 
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of UART events IRQ handling
+// <i> Default: 63
+#define RTE_UART3_IRQ_PRIORITY  63
+
 //</e>
 // <e> UART4 (Universal asynchronous receiver transmitter) [Driver_USART4]
 // <i> Configuration settings for Driver_USART4 in component ::Drivers:UART
@@ -715,6 +776,12 @@
 #else
 #error "Invalid UART4_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of UART events IRQ handling
+// <i> Default: 63
+#define RTE_UART4_IRQ_PRIORITY  63
+
 //</e>
 // <e> UART5 (Universal asynchronous receiver transmitter) [Driver_USART5]
 // <i> Configuration settings for Driver_USART5 in component ::Drivers:UART
@@ -803,6 +870,12 @@
 #else
 #error "Invalid UART5_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of UART events IRQ handling
+// <i> Default: 63
+#define RTE_UART5_IRQ_PRIORITY  63
+
 // </e>
 
 // <e> SPI0 (Serial peripheral interface) [Driver_SPI0]
@@ -1020,6 +1093,12 @@
 #else
 #error "Invalid SPI0_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of SPI events IRQ handling
+// <i> Default: 63
+#define RTE_SPI0_IRQ_PRIORITY  63
+
 //</e>
 
 // <e> SPI1 (Serial peripheral interface) [Driver_SPI1]
@@ -1233,6 +1312,12 @@
 #else
 #error "Invalid SPI1_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of SPI events IRQ handling
+// <i> Default: 63
+#define RTE_SPI1_IRQ_PRIORITY  63
+
 //</e>
 
 // <e> SPI2 (Serial peripheral interface) [Driver_SPI2]
@@ -1420,6 +1505,12 @@
 #else
 #error "Invalid SPI2_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of SPI events IRQ handling
+// <i> Default: 63
+#define RTE_SPI2_IRQ_PRIORITY  63
+
 //</e>
 // <e> SPI3 (Serial peripheral interface) [Driver_SPI3]
 // <i> Configuration settings for Driver_SPI3 in component ::Drivers:SPI
@@ -1624,6 +1715,11 @@
 #error "Invalid SPI3_TX FIFO SIZE Configuration!"
 #endif
 
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of SPI events IRQ handling
+// <i> Default: 63
+#define RTE_SPI3_IRQ_PRIORITY  63
+
 //</e>
 // <e> SPI4 (Serial peripheral interface) [Driver_SPI4]
 // <i> Configuration settings for Driver_SPI4 in component ::Drivers:SPI
@@ -1810,6 +1906,11 @@
 #error "Invalid SPI4_TX FIFO SIZE Configuration!"
 #endif
 
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of SPI events IRQ handling
+// <i> Default: 63
+#define RTE_SPI4_IRQ_PRIORITY  63
+
 //</e>
 
 // <e> SPI5 (Serial peripheral interface) [Driver_SPI5]
@@ -1982,6 +2083,11 @@
 #else
 #error "Invalid SPI5_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of SPI events IRQ handling
+// <i> Default: 63
+#define RTE_SPI5_IRQ_PRIORITY  63
 
 //</e>
 // <e> I2C0 (Inter-Integrated circuit) [Driver_I2C0]
@@ -2885,6 +2991,12 @@
 #else
 #error "Invalid I2S0_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of I2S events IRQ handling
+// <i> Default: 63
+#define RTE_I2S0_IRQ_PRIORITY  63
+
 //</e>
 
 // <e> I2S1 (Inter-Integrated Sound) [Driver_SAI1]
@@ -3055,6 +3167,12 @@
 #else
 #error "Invalid I2S1_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of I2S events IRQ handling
+// <i> Default: 63
+#define RTE_I2S1_IRQ_PRIORITY  63
+
 //</e>
 
 // <e> I2S2 (Inter-Integrated Sound) [Driver_SAI2]
@@ -3207,6 +3325,12 @@
 #else
 #error "Invalid I2S2_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of I2S events IRQ handling
+// <i> Default: 63
+#define RTE_I2S2_IRQ_PRIORITY  63
+
 //</e>
 
 // <e> I2S3 (Inter-Integrated Sound) [Driver_SAI3]
@@ -3362,6 +3486,12 @@
 #else
 #error "Invalid I2S3_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of I2S events IRQ handling
+// <i> Default: 63
+#define RTE_I2S3_IRQ_PRIORITY  63
+
 //</e>
 
 // <e> I2S4 (Inter-Integrated Sound) [Driver_SAI4]
@@ -3492,6 +3622,12 @@
 #else
 #error "Invalid I2S4_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of I2S events IRQ handling
+// <i> Default: 63
+#define RTE_I2S4_IRQ_PRIORITY  63
+
 //</e>
 
 // <e> I2S5 (Inter-Integrated Sound) [Driver_SAI5]
@@ -3641,6 +3777,12 @@
 #else
 #error "Invalid I2S5_TX FIFO SIZE Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of I2S events IRQ handling
+// <i> Default: 63
+#define RTE_I2S5_IRQ_PRIORITY  63
+
 //</e>
 
 // <e> ENET (Ethernet Interface) [Driver_ETH_MAC0]
@@ -4129,9 +4271,23 @@
 #endif
 
 //   </h> MIIM (Management Data Interface)
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of ENET events IRQ handling
+// <i> Default: 63
+#define RTE_ENET_IRQ_PRIORITY  63
+
 // </e> ENET (Ethernet Interface) [Driver_ETH_MAC0]
 
 // <e> USB (Universal Serial Bus) [Driver_USBH]
+// <i> Configuration settings for Driver_USBH0 in component ::Drivers:USB Host
+#define RTE_USB_HOST         0
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of USBH events IRQ handling
+// <i> Default: 63
+#define RTE_USB_HOST_IRQ_PRIORITY  63
+
 //     <o> VBUS drive pin setting <0=>P0_1 <1=>P3_2
 
 #define   RTE_USB_HOST_ID         0
@@ -4144,6 +4300,17 @@
 #endif
 
 // </e> USB (Universal Serial Bus) [Driver_USBH]
+
+// <e> USB (Universal Serial Bus) [Driver_USBD]
+// <i> Configuration settings for Driver_USBD0 in component ::Drivers:USB Device
+#define RTE_USB_DEVICE         0
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of USBD events IRQ handling
+// <i> Default: 63
+#define RTE_USB_DEVICE_IRQ_PRIORITY  63
+
+// </e> USB (Universal Serial Bus) [Driver_USBD]
 
 // <e> SD/MMC Interface [Driver_MCI0]
 // <i> Configuration settings for Driver_MCI0 in component ::Drivers:MCI
@@ -4256,6 +4423,12 @@
 #else
 #error "Invalid SDMMC0_CLK Pin Configuration!"
 #endif
+
+// <o>IRQ Priority <0-63>
+// <i> Defines priority of SDMMC events IRQ handling
+// <i> Default: 63
+#define RTE_SDMMC_IRQ_PRIORITY  63
+
 // </e> SD/MMC Interface [Driver_MCI0]
 
 #if ((RTE_UART0+RTE_I2C0+RTE_SPI0+RTE_I2S0)>1)

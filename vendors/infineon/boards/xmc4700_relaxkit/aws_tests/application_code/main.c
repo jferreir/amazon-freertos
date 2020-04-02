@@ -66,7 +66,6 @@
 /* AWS library includes. */
 #include "iot_system_init.h"
 #include "iot_logging_task.h"
-#include "iot_wifi.h"
 #include "aws_clientcredential.h"
 #include "aws_dev_mode_key_provisioning.h"
 

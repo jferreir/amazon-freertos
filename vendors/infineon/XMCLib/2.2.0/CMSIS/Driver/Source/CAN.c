@@ -126,10 +126,10 @@ static bool global_can_initialized = false;
 /* CAN0 */
 #if (RTE_CAN0 != 0)
 
-static CAN_INFO_t CAN0_INFO = {0};
+static CAN_INFO_t CAN0_INFO;
 static XMC_CAN_MO_t CAN0_MO;
 
-CAN_RESOURCES_t CAN0_Resources = 
+static const CAN_RESOURCES_t CAN0_Resources = 
 {
   {RTE_CAN0_TX_PORT},
   RTE_CAN0_TX_AF,
@@ -149,10 +149,10 @@ CAN_RESOURCES_t CAN0_Resources =
 /* CAN1 */
 #if (RTE_CAN1 != 0)
 
-static CAN_INFO_t CAN1_INFO = {0};
+static CAN_INFO_t CAN1_INFO;
 static XMC_CAN_MO_t CAN1_MO;
 
-CAN_RESOURCES_t CAN1_Resources = 
+static const CAN_RESOURCES_t CAN1_Resources = 
 {
   {RTE_CAN1_TX_PORT},
   RTE_CAN1_TX_AF,
@@ -172,10 +172,10 @@ CAN_RESOURCES_t CAN1_Resources =
 /* CAN2 */
 #if (RTE_CAN2 != 0)
 
-static CAN_INFO_t CAN2_INFO = {0};
+static CAN_INFO_t CAN2_INFO;
 static XMC_CAN_MO_t CAN2_MO;
 
-CAN_RESOURCES_t CAN2_Resources = 
+static const CAN_RESOURCES_t CAN2_Resources = 
 {
   {RTE_CAN2_TX_PORT},
   RTE_CAN2_TX_AF,
@@ -195,10 +195,10 @@ CAN_RESOURCES_t CAN2_Resources =
 /* CAN3 */
 #if (RTE_CAN3 != 0)
 
-static CAN_INFO_t CAN3_INFO = {0};
+static CAN_INFO_t CAN3_INFO;
 static XMC_CAN_MO_t CAN3_MO;
 
-CAN_RESOURCES_t CAN3_Resources = 
+static const CAN_RESOURCES_t CAN3_Resources = 
 {
   {RTE_CAN3_TX_PORT},
   RTE_CAN3_TX_AF,
@@ -218,10 +218,10 @@ CAN_RESOURCES_t CAN3_Resources =
 /* CAN4 */
 #if (RTE_CAN4 != 0)
 
-static CAN_INFO_t CAN4_INFO = {0};
+static CAN_INFO_t CAN4_INFO;
 static XMC_CAN_MO_t CAN4_MO;
 
-CAN_RESOURCES_t CAN4_Resources = 
+static const CAN_RESOURCES_t CAN4_Resources = 
 {
   {RTE_CAN4_TX_PORT},
   RTE_CAN4_TX_AF,
@@ -241,10 +241,10 @@ CAN_RESOURCES_t CAN4_Resources =
 /* CAN5 */
 #if (RTE_CAN5 != 0)
 
-static CAN_INFO_t CAN5_INFO = {0};
+static CAN_INFO_t CAN5_INFO;
 static XMC_CAN_MO_t CAN5_MO;
 
-CAN_RESOURCES_t CAN5_Resources = 
+static const CAN_RESOURCES_t CAN5_Resources = 
 {
   {RTE_CAN5_TX_PORT},
   RTE_CAN5_TX_AF,
@@ -262,7 +262,7 @@ CAN_RESOURCES_t CAN5_Resources =
 #endif
 
 /* CAN Resources */
-static CAN_RESOURCES_t *can[6] = 
+static const CAN_RESOURCES_t *can[6] = 
 {
 #if (RTE_CAN0 != 0)
   &CAN0_Resources,

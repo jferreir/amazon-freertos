@@ -1,6 +1,6 @@
 /*
- * FreeRTOS V1.4.8
- * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * Amazon FreeRTOS V1.4.2
+ * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,43 +24,19 @@
  */
 
 /**
- * @file aws_mqtt_config.h
- * @brief MQTT config options.
+ * @file iot_ble_config.h
+ * @brief BLE configuration overrides for ESP32 board.
  */
 
-#ifndef _AWS_MQTT_CONFIG_H_
-#define _AWS_MQTT_CONFIG_H_
 
-#include <stdint.h>
+#ifndef _IOT_BLE_CONFIG_H_
+#define _IOT_BLE_CONFIG_H_
 
-/**
- * @brief Enable subscription management.
- *
- * This gives the user flexibility of registering a callback per topic.
- */
-#define mqttconfigENABLE_SUBSCRIPTION_MANAGEMENT            ( 1 )
+/* Device name for this peripheral device. */
+#define IOT_BLE_DEVICE_COMPLETE_LOCAL_NAME    "mockboard"
 
-/**
- * @brief Maximum length of the topic which can be stored in subscription
- * manager.
- */
-#define mqttconfigSUBSCRIPTION_MANAGER_MAX_TOPIC_LENGTH     ( 128 )
+#include "iot_config.h"
+/* Include BLE default config at bottom to set the default values for the configurations which are not overridden */
+#include "iot_ble_config_defaults.h"
 
-/**
- * @brief Maximum number of subscriptions which can be stored in subscription
- * manager.
- */
-#define mqttconfigSUBSCRIPTION_MANAGER_MAX_SUBSCRIPTIONS    ( 8 )
-
-/*
- * Uncomment the following two lines to enable asserts.
- */
-/* extern void vAssertCalled( const char *pcFile, uint32_t ulLine ); */
-/* #define mqttconfigASSERT( x ) if( ( x ) == 0 ) vAssertCalled( __FILE__, __LINE__ ) */
-
-/**
- * @brief Set this macro to 1 for enabling debug logs.
- */
-#define mqttconfigENABLE_DEBUG_LOGS    0
-
-#endif /* _AWS_MQTT_CONFIG_H_ */
+#endif /* _IOT_BLE_CONFIG_H_ */

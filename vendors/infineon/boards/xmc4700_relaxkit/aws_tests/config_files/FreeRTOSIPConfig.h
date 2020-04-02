@@ -77,8 +77,8 @@ extern void vLoggingPrintf( const char * pcFormatString,
  * performed, for example FreeRTOS_send() and FreeRTOS_recv().  The timeouts can be
  * set per socket, using setsockopt().  If not set, the times below will be
  * used as defaults. */
-#define ipconfigSOCK_DEFAULT_RECEIVE_BLOCK_TIME    ( 10000 )
-#define ipconfigSOCK_DEFAULT_SEND_BLOCK_TIME       ( 10000 )
+#define ipconfigSOCK_DEFAULT_RECEIVE_BLOCK_TIME    ( 20000 )
+#define ipconfigSOCK_DEFAULT_SEND_BLOCK_TIME       ( 20000 )
 
 /* Include support for LLMNR: Link-local Multicast Name Resolution
  * (non-Microsoft) */
@@ -143,7 +143,7 @@ extern uint32_t ulRand();
  * ipconfigMAX_SEND_BLOCK_TIME_TICKS is specified in RTOS ticks.  A time in
  * milliseconds can be converted to a time in ticks by dividing the time in
  * milliseconds by portTICK_PERIOD_MS. */
-#define ipconfigUDP_MAX_SEND_BLOCK_TIME_TICKS    ( 5000 / portTICK_PERIOD_MS )
+#define ipconfigUDP_MAX_SEND_BLOCK_TIME_TICKS    ( 20000 / portTICK_PERIOD_MS )
 
 /* If ipconfigUSE_DHCP is 1 then FreeRTOS+TCP will attempt to retrieve an IP
  * address, netmask, DNS server address and gateway address from a DHCP server.  If
@@ -168,8 +168,7 @@ extern uint32_t ulRand();
  * static IP address passed as a parameter to FreeRTOS_IPInit() if the
  * re-transmission time interval reaches ipconfigMAXIMUM_DISCOVER_TX_PERIOD without
  * a DHCP reply being received. */
-#define ipconfigMAXIMUM_DISCOVER_TX_PERIOD \
-    ( 120000 / portTICK_PERIOD_MS )
+#define ipconfigMAXIMUM_DISCOVER_TX_PERIOD     ( 120000 / portTICK_PERIOD_MS )
 
 /* The ARP cache is a table that maps IP addresses to MAC addresses.  The IP
  * stack can only send a UDP message to a remove IP address if it knowns the MAC
@@ -210,16 +209,15 @@ extern uint32_t ulRand();
  * are available to the IP stack.  The total number of network buffers is limited
  * to ensure the total amount of RAM that can be consumed by the IP stack is capped
  * to a pre-determinable value. */
-#define ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS    4
-#define configNUM_RX_DESCRIPTORS 2
+#define ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS    8
+#define configNUM_RX_DESCRIPTORS 4
 #define configNUM_TX_DESCRIPTORS 4
 
 /* A FreeRTOS queue is used to send events from application tasks to the IP
  * stack.  ipconfigEVENT_QUEUE_LENGTH sets the maximum number of events that can
  * be queued for processing at any one time.  The event queue must be a minimum of
  * 5 greater than the total number of network buffers. */
-#define ipconfigEVENT_QUEUE_LENGTH \
-    ( ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS + 5 )
+#define ipconfigEVENT_QUEUE_LENGTH     ( ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS + 5 )
 
 /* The address of a socket is the combination of its IP address and its port
  * number.  FreeRTOS_bind() is used to manually allocate a port number to a socket
@@ -244,14 +242,14 @@ extern uint32_t ulRand();
 #define ipconfigUSE_TCP                                ( 1 )
 
 /* USE_WIN: Let TCP use windowing mechanism. */
-#define ipconfigUSE_TCP_WIN                            ( 0 )
+#define ipconfigUSE_TCP_WIN                            ( 1 )
 
 /* The MTU is the maximum number of bytes the payload of a network frame can
  * contain.  For normal Ethernet V2 frames the maximum MTU is 1500.  Setting a
  * lower value can save RAM, depending on the buffer management scheme used.  If
  * ipconfigCAN_FRAGMENT_OUTGOING_PACKETS is 1 then (ipconfigNETWORK_MTU - 28) must
  * be divisible by 8. */
-#define ipconfigNETWORK_MTU                            586
+#define ipconfigNETWORK_MTU                            1500
 
 /* Set ipconfigUSE_DNS to 1 to include a basic DNS client/resolver.  DNS is used
  * through the FreeRTOS_gethostbyname() API function. */
@@ -302,10 +300,10 @@ extern uint32_t ulRand();
 
  /* Each TCP socket has a circular buffers for Rx and Tx, which have a fixed
   * maximum size.  Define the size of Rx buffer for TCP sockets. */
- #define ipconfigTCP_RX_BUFFER_LENGTH                   ( 2 * ipconfigTCP_MSS )
+ #define ipconfigTCP_RX_BUFFER_LENGTH                   ( 4 * ipconfigTCP_MSS )
 
  /* Define the size of Tx buffer for TCP sockets. */
- #define ipconfigTCP_TX_BUFFER_LENGTH   				( 2 * ipconfigTCP_MSS )
+ #define ipconfigTCP_TX_BUFFER_LENGTH   				( 4 * ipconfigTCP_MSS )
 
 
 
@@ -315,8 +313,8 @@ extern uint32_t ulRand();
 
 /* Include support for TCP hang protection.  All sockets in a connecting or
  * disconnecting stage will timeout after a period of non-activity. */
-#define ipconfigTCP_HANG_PROTECTION              ( 1 )
-#define ipconfigTCP_HANG_PROTECTION_TIME         ( 30 )
+//#define ipconfigTCP_HANG_PROTECTION              ( 1 )
+//#define ipconfigTCP_HANG_PROTECTION_TIME         ( 30 )
 
 /* Include support for TCP keep-alive messages. */
 #define ipconfigTCP_KEEP_ALIVE                   ( 1 )

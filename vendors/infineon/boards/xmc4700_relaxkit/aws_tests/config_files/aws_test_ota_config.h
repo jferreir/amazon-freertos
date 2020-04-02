@@ -1,6 +1,6 @@
 /*
- * Amazon FreeRTOS V1.1.4
- * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS V1.1.4
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -31,16 +31,22 @@
 #define _AWS_TEST_OTA_CONFIG_H_
 
  /**
- * @brief Path to cert for OTA test PAL. Used to verify signature.
+ * @brief Path to cert for OTA PAL test. Used to verify signature.
  * If applicable, the device must be pre-provisioned with this certificate. Please see
  * test/common/ota/test_files for the set of certificates.
+ *
+ * In the Windows Simultor this is the path to the certificate on your machine. The path currently
+ * here is relative to the FreeRTOS root. If you are debugging locally, Visual Studio may have
+ * your path set as the project directory. In that case this can be changed to:
+ *
+ * #define otatestpalCERTIFICATE_FILE  "..\\..\\..\\..\\..\\libraries\\freertos_plus\\aws\\ota\\test\\test_files\\ecdsa-sha256-signer.crt.pem"
  */
-#define otatestpalCERTIFICATE_FILE    "ecdsa-sha256-signer.crt.pem"
+#define otatestpalCERTIFICATE_FILE    "libraries\\freertos_plus\\aws\\ota\\test\\test_files\\ecdsa-sha256-signer.crt.pem"
 
  /**
- * @brief Some boards have a hard-coded name for the firmware image to boot.
+ * @brief Some devices have a hard-coded name for the firmware image to boot.
  */
-#define otatestpalFRIMWARE_FILE  "dummy.bin"
+#define otatestpalFIRMWARE_FILE  "dummy.bin"
 
 /**
  * @brief Some boards OTA PAL layers will use the file names passed into it for the 
@@ -50,16 +56,21 @@
 #define otatestpalUSE_FILE_SYSTEM     1
 
 /**
- * @brief 1 if prvPAL_CheckFileSignature is implemented in aws_ota_pal.c.
+ * @brief 1 if prvPAL_CheckFileSignature() is implemented in aws_ota_pal.c.
  */
 #define otatestpalCHECK_FILE_SIGNATURE_SUPPORTED           1
 
 /**
- * @brief 1 if prvPAL_ReadAndAssumeCertificate is implemented in the aws_ota_pal.c.
+ * @brief 1 if prvPAL_ReadAndAssumeCertificate() is implemented in aws_ota_pal.c.
  */
 #define otatestpalREAD_AND_ASSUME_CERTIFICATE_SUPPORTED    1
 
 /**
+ * @brief 1 if using PKCS #11 to access the code sign certificate from NVM.
+ */
+#define otatestpalREAD_CERTIFICATE_FROM_NVM_WITH_PKCS11    0
+
+ /**
  * @brief Include of signature testing data applicable to this device.
  */
 #include "aws_test_ota_pal_ecdsa_sha256_signature.h"
@@ -68,7 +79,7 @@
  * @brief Define a valid and invalid signature verification method for this
  * platform (Windows). These are used for generating test JSON docs.
  */
-#define otatestVALID_SIG_METHOD                         "sig-sha256-rsa"
-#define otatestINVALID_SIG_METHOD                       "sig-sha256-ecdsa"
+#define otatestVALID_SIG_METHOD                         "sig-sha256-ecdsa"
+#define otatestINVALID_SIG_METHOD                       "sig-sha256-rsa"
 
 #endif /* ifndef _AWS_TEST_OTA_CONFIG_H_ */

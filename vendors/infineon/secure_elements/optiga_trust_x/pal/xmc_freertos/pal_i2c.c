@@ -124,7 +124,7 @@ pal_status_t pal_i2c_init(const pal_i2c_t* p_i2c_context)
 	ARM_DRIVER_I2C *I2Cdrv = (ARM_DRIVER_I2C *)p_i2c_context->p_i2c_hw_config;
 	I2Cdrv->Initialize(I2C_SignalEvent);
     I2Cdrv->PowerControl(ARM_POWER_FULL);
-	//I2Cdrv->Control(ARM_I2C_BUS_CLEAR, 0);
+	I2Cdrv->Control(ARM_I2C_BUS_CLEAR, 0);
 
 	return PAL_STATUS_SUCCESS;
   }
@@ -217,10 +217,12 @@ pal_status_t pal_i2c_write(pal_i2c_t *p_i2c_context, uint8_t *p_data, uint16_t l
 	else if (status == ARM_DRIVER_ERROR_BUSY)
 	{
 	  pal_status = PAL_STATUS_I2C_BUSY;
+      ((app_event_handler_t)(p_i2c_context->upper_layer_event_handler))(p_i2c_context->upper_layer_ctx , PAL_I2C_EVENT_BUSY);
 	}
 	else
 	{
       pal_status = PAL_STATUS_FAILURE;
+      ((app_event_handler_t)(p_i2c_context->upper_layer_event_handler))(p_i2c_context->upper_layer_ctx , PAL_I2C_EVENT_ERROR);
 	}
   }
 
@@ -270,15 +272,17 @@ pal_status_t pal_i2c_read(pal_i2c_t* p_i2c_context , uint8_t* p_data , uint16_t 
 
 	if (status == ARM_DRIVER_OK)
 	{
-      return PAL_STATUS_SUCCESS;
+	  pal_status = PAL_STATUS_SUCCESS;
 	}
 	else if (status == ARM_DRIVER_ERROR_BUSY)
 	{
 	  pal_status = PAL_STATUS_I2C_BUSY;
+      ((app_event_handler_t)(p_i2c_context->upper_layer_event_handler))(p_i2c_context->upper_layer_ctx , PAL_I2C_EVENT_BUSY);
 	}
 	else
 	{
 	  pal_status = PAL_STATUS_FAILURE;
+      ((app_event_handler_t)(p_i2c_context->upper_layer_event_handler))(p_i2c_context->upper_layer_ctx , PAL_I2C_EVENT_ERROR);
 	}
   }
 

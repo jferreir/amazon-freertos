@@ -122,12 +122,12 @@ static const ARM_I2C_CAPABILITIES DriverCapabilities =
 /* I2C0 */
 #if (RTE_I2C0 != 0)
 
-static I2C_INFO I2C0_Info = {0};
+static I2C_INFO I2C0_Info;
 static XMC_GPIO_CONFIG_t I2C0_sda_conf; 
 static XMC_GPIO_CONFIG_t I2C0_scl_conf; 
 
 /* I2C0 Resources */
-I2C_RESOURCES I2C0_Resources = 
+static const I2C_RESOURCES I2C0_Resources = 
 {
   {RTE_I2C0_TX_PORT},
   RTE_I2C0_TX_AF,
@@ -154,12 +154,12 @@ I2C_RESOURCES I2C0_Resources =
 /* I2C1 */
 #if (RTE_I2C1 != 0)
 
-static I2C_INFO I2C1_Info = {0};
+static I2C_INFO I2C1_Info;
 static XMC_GPIO_CONFIG_t I2C1_sda_conf; 
 static XMC_GPIO_CONFIG_t I2C1_scl_conf; 
 
 /* I2C1 Resources */
-I2C_RESOURCES I2C1_Resources = 
+static const I2C_RESOURCES I2C1_Resources = 
 {
   {RTE_I2C1_TX_PORT},
   RTE_I2C1_TX_AF,
@@ -186,12 +186,12 @@ I2C_RESOURCES I2C1_Resources =
 /* I2C2 */
 #if (RTE_I2C2 != 0)
 
-static I2C_INFO I2C2_Info = {0};
+static I2C_INFO I2C2_Info;
 static XMC_GPIO_CONFIG_t I2C2_sda_conf; 
 static XMC_GPIO_CONFIG_t I2C2_scl_conf; 
 
 /* I2C2 Resources */
-I2C_RESOURCES I2C2_Resources = 
+static const I2C_RESOURCES I2C2_Resources = 
 {
   {RTE_I2C2_TX_PORT},
   RTE_I2C2_TX_AF,
@@ -218,12 +218,12 @@ I2C_RESOURCES I2C2_Resources =
 /* I2C3 */
 #if (RTE_I2C3 != 0)
 
-static I2C_INFO I2C3_Info = {0};
+static I2C_INFO I2C3_Info;
 static XMC_GPIO_CONFIG_t I2C3_sda_conf; 
 static XMC_GPIO_CONFIG_t I2C3_scl_conf; 
 
 /* I2C3 Resources */
-I2C_RESOURCES I2C3_Resources = 
+static const I2C_RESOURCES I2C3_Resources = 
 {
   {RTE_I2C3_TX_PORT},
   RTE_I2C3_TX_AF,
@@ -251,12 +251,12 @@ I2C_RESOURCES I2C3_Resources =
 /* I2C4 */
 #if (RTE_I2C4 != 0)
 
-static I2C_INFO I2C4_Info = {0};
+static I2C_INFO I2C4_Info;
 static XMC_GPIO_CONFIG_t I2C4_sda_conf; 
 static XMC_GPIO_CONFIG_t I2C4_scl_conf; 
 
 /* I2C4 Resources */
-I2C_RESOURCES I2C4_Resources = 
+static const I2C_RESOURCES I2C4_Resources = 
 {
   {RTE_I2C4_TX_PORT},
   RTE_I2C4_TX_AF,
@@ -284,12 +284,12 @@ I2C_RESOURCES I2C4_Resources =
 /* I2C5 */
 #if (RTE_I2C5 != 0)
 
-static I2C_INFO I2C5_Info = {0};
+static I2C_INFO I2C5_Info;
 static XMC_GPIO_CONFIG_t I2C5_sda_conf; 
 static XMC_GPIO_CONFIG_t I2C5_scl_conf; 
 
 /* I2C4 Resources */
-I2C_RESOURCES I2C5_Resources = 
+static const I2C_RESOURCES I2C5_Resources = 
 {
   {RTE_I2C5_TX_PORT},
   RTE_I2C5_TX_AF,
@@ -316,7 +316,7 @@ I2C_RESOURCES I2C5_Resources =
 
 
 /* I2C Resources */
-static I2C_RESOURCES  *i2c[6] = 
+static const I2C_RESOURCES  *i2c[6] = 
 {
 #if (RTE_I2C0 != 0)
   &I2C0_Resources,
@@ -1473,7 +1473,7 @@ static void I2C_IRQHandler(I2C_RESOURCES *const i2c)
               if (i2c->info->xfer.tx_num > i2c->info->xfer.tx_cnt) 
               { 
                 i2c->info->xfer.tx_cnt++;         
-                XMC_USIC_CH_TXFIFO_PutData(i2c->i2c, *(i2c->info->xfer.tx_buf++));  
+                XMC_USIC_CH_TXFIFO_PutData(i2c->i2c, *(i2c->info->xfer.tx_buf++));
               }
               else
               {         

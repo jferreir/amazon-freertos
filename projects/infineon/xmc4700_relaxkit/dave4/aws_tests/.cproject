@@ -114,10 +114,11 @@
 							<option id="com.ifx.xmc4000.option.targetPath.310586547" name="Target Path" superClass="com.ifx.xmc4000.option.targetPath" useByScannerDiscovery="false" value="/DeviceRoot/Microcontrollers/Boards/XMC4700 Relax Kit/XMC4700-F144x2048" valueType="string"/>
 							<option id="com.ifx.xmc4000.option.target.fpu.580489739" name="Fpu (-mfpu)" superClass="com.ifx.xmc4000.option.target.fpu" useByScannerDiscovery="false" value="org.eclipse.cdt.cross.arm.gnu.base.option.mfpu.fpv4-sp-d16" valueType="enumerated"/>
 							<option id="com.ifx.xmc4000.option.targetName.1787399259" name="Target Name" superClass="com.ifx.xmc4000.option.targetName" useByScannerDiscovery="false" value="XMC4700-F144x2048" valueType="string"/>
+							<option id="com.ifx.xmc4000.option.debugging.other.1255062100" name="Other debugging flags" superClass="com.ifx.xmc4000.option.debugging.other" useByScannerDiscovery="false" value="-gdwarf -g3" valueType="string"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.GNU_ELF" id="com.ifx.xmc4000.targetPlatform.342496985" isAbstract="false" name="Windows Platform" osList="win32" superClass="com.ifx.xmc4000.targetPlatform"/>
 							<builder buildPath="${workspace_loc:/aws_tests_xmc4700_relaxkit}/Debug" id="com.ifx.XMC4000.toolchainBuilder.1355432043" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="XMC Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.ifx.XMC4000.toolchainBuilder"/>
 							<tool id="com.ifx.xmc4000.appDebug.compiler.347856241" name="ARM-GCC C Compiler" superClass="com.ifx.xmc4000.appDebug.compiler">
-								<option id="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.optimization.level.1410832012" name="Optimization level" superClass="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.optimization.level" useByScannerDiscovery="false" value="org.eclipse.cdt.cross.arm.gnu.base.option.optimization.level.none" valueType="enumerated"/>
+								<option id="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.optimization.level.1410832012" name="Optimization level" superClass="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.optimization.level" useByScannerDiscovery="false" value="org.eclipse.cdt.cross.arm.gnu.base.option.optimization.level.more" valueType="enumerated"/>
 								<option id="com.ifx.xmc4000.compiler.option.misc.mfloat.1706067169" name="Floating point" superClass="com.ifx.xmc4000.compiler.option.misc.mfloat" useByScannerDiscovery="false" value="org.eclipse.cdt.cross.arm.gnu.base.option.other.mfloat.softfp" valueType="enumerated"/>
 								<option id="com.ifx.xmc4000.compiler.option.include.paths.882534551" name="Include paths (-I)" superClass="com.ifx.xmc4000.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/vendors/infineon/XMCLib/2.2.0/drivers/inc}&quot;"/>
@@ -127,8 +128,6 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Dave/Generated}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Libraries}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/application_code/infineon_code}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/config_files}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/freertos_kernel/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/freertos_kernel/portable/GCC/ARM_CM4F}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/freertos_plus/standard/freertos_plus_tcp/include}&quot;"/>
@@ -142,6 +141,9 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/freertos_plus/aws/greengrass/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/freertos_plus/aws/greengrass/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/freertos_plus/aws/greengrass/test}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/freertos_plus/aws/ota/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/freertos_plus/aws/ota/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/freertos_plus/aws/ota/test}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/abstractions/wifi/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/abstractions/secure_sockets/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/abstractions/platform/include}&quot;"/>
@@ -158,6 +160,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/c_sdk/standard/https/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/c_sdk/standard/https/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/c_sdk/standard/https/test/access}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/c_sdk/standard/mqtt/test/mock}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/c_sdk/standard/ble/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/c_sdk/aws/shadow/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/c_sdk/aws/shadow/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/c_sdk/aws/shadow/test}&quot;"/>
@@ -171,12 +175,14 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/3rdparty/tinycbor}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/3rdparty/http_parser}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libraries/3rdparty/mbedtls/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/vendors/infineon/boards/xmc4700_relaxkit/ports/posix}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/application_code/infineon_code}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/application_code/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/application_code/dev_mode_key_provisioning/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/config_files}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/vendors/infineon/secure_elements/optiga_trust_x/optiga/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/vendors/infineon/secure_elements/optiga_trust_x/pal/xmc_freertos}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/vendors/infineon/secure_elements/optiga_trust_x/examples/ecdsa_utils}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/demos/dev_mode_key_provisioning/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/tests/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/vendors/infineon/boards/xmc4700_relaxkit/ports/posix}&quot;"/>
 								</option>
 								<option id="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.preprocessor.def.770910174" name="Defined symbols (-D)" superClass="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.preprocessor.def" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="XMC4700_F144x2048"/>
@@ -237,56 +243,13 @@
 							<tool id="com.ifx.xmc4000.printsize.56007435" name="ARM-GCC Print Size" superClass="com.ifx.xmc4000.printsize"/>
 						</toolChain>
 					</folderInfo>
-					<folderInfo id="com.ifx.xmc4000.appDebug.1066359332.312928211" name="/" resourcePath="libraries/c_sdk/standard/https/test">
-						<toolChain id="com.ifx.xmc4000.appDebug.toolChain.782178312" name="ARM-GCC Application" superClass="com.ifx.xmc4000.appDebug.toolChain" unusedChildren="">
-							<option id="com.ifx.xmc4000.option.debugging.level.1730475540.1379928343" name="Debug level" superClass="com.ifx.xmc4000.option.debugging.level.1730475540"/>
-							<option id="com.ifx.xmc4000.option.targetPath.310586547.752897460" name="Target Path" superClass="com.ifx.xmc4000.option.targetPath.310586547"/>
-							<option id="com.ifx.xmc4000.option.target.fpu.580489739.1940230972" name="Fpu (-mfpu)" superClass="com.ifx.xmc4000.option.target.fpu.580489739"/>
-							<option id="com.ifx.xmc4000.option.targetName.1787399259.330531320" name="Target Name" superClass="com.ifx.xmc4000.option.targetName.1787399259"/>
-							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.GNU_ELF" id="com.ifx.xmc4000.targetPlatform" isAbstract="false" name="Windows Platform" osList="win32" superClass="com.ifx.xmc4000.targetPlatform"/>
-							<tool id="com.ifx.xmc4000.appDebug.compiler.107074954" name="ARM-GCC C Compiler" superClass="com.ifx.xmc4000.appDebug.compiler.347856241">
-								<inputType id="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.c.compiler.base.input.1856615534" superClass="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.c.compiler.base.input"/>
-							</tool>
-							<tool id="com.ifx.xmc4000.appDebug.cppcompiler.1960799375" name="ARM-GCC C++ Compiler" superClass="com.ifx.xmc4000.appDebug.cppcompiler.464137573"/>
-							<tool id="com.ifx.xmc4000.appDebug.assembler.1952217229" name="ARM-GCC Assembler" superClass="com.ifx.xmc4000.appDebug.assembler.1356803676">
-								<inputType id="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.assembler.base.input.1840953629" superClass="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.assembler.base.input"/>
-							</tool>
-							<tool id="com.ifx.xmc4000.appDebug.linker.1595939039" name="ARM-GCC C Linker" superClass="com.ifx.xmc4000.appDebug.linker.985952814"/>
-							<tool id="com.ifx.xmc4000.appDebug.cpplinker.1957447178" name="ARM-GCC C++ Linker" superClass="com.ifx.xmc4000.appDebug.cpplinker.787080843"/>
-							<tool id="com.ifx.xmc4000.libLinker.1310579644" name="ARM-GCC Archiver" superClass="com.ifx.xmc4000.libLinker.828991773"/>
-							<tool id="com.ifx.xmc4000.appDebug.createflash.456893324" name="ARM-GCC Create Flash Image" superClass="com.ifx.xmc4000.appDebug.createflash.2052152821"/>
-							<tool id="com.ifx.xmc4000.appDebug.createlisting.1796511798" name="ARM-GCC Create Listing" superClass="com.ifx.xmc4000.appDebug.createlisting.58935261"/>
-							<tool id="com.ifx.xmc4000.printsize.1356008949" name="ARM-GCC Print Size" superClass="com.ifx.xmc4000.printsize.56007435"/>
-						</toolChain>
-					</folderInfo>
-					<folderInfo id="com.ifx.xmc4000.appDebug.1066359332.1852209673" name="/" resourcePath="libraries/3rdparty/http_parser">
-						<toolChain id="com.ifx.xmc4000.appDebug.toolChain.636611959" name="ARM-GCC Application" superClass="com.ifx.xmc4000.appDebug.toolChain" unusedChildren="">
-							<option id="com.ifx.xmc4000.option.debugging.level.1730475540.652108174" name="Debug level" superClass="com.ifx.xmc4000.option.debugging.level.1730475540"/>
-							<option id="com.ifx.xmc4000.option.targetPath.310586547.264610425" name="Target Path" superClass="com.ifx.xmc4000.option.targetPath.310586547"/>
-							<option id="com.ifx.xmc4000.option.target.fpu.580489739.1504196305" name="Fpu (-mfpu)" superClass="com.ifx.xmc4000.option.target.fpu.580489739"/>
-							<option id="com.ifx.xmc4000.option.targetName.1787399259.1748701927" name="Target Name" superClass="com.ifx.xmc4000.option.targetName.1787399259"/>
-							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.GNU_ELF" id="com.ifx.xmc4000.targetPlatform" isAbstract="false" name="Windows Platform" osList="win32" superClass="com.ifx.xmc4000.targetPlatform"/>
-							<tool id="com.ifx.xmc4000.appDebug.compiler.1691684636" name="ARM-GCC C Compiler" superClass="com.ifx.xmc4000.appDebug.compiler.347856241">
-								<inputType id="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.c.compiler.base.input.1237754622" superClass="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.c.compiler.base.input"/>
-							</tool>
-							<tool id="com.ifx.xmc4000.appDebug.cppcompiler.1474073448" name="ARM-GCC C++ Compiler" superClass="com.ifx.xmc4000.appDebug.cppcompiler.464137573"/>
-							<tool id="com.ifx.xmc4000.appDebug.assembler.1258473363" name="ARM-GCC Assembler" superClass="com.ifx.xmc4000.appDebug.assembler.1356803676">
-								<inputType id="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.assembler.base.input.1620439202" superClass="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.assembler.base.input"/>
-							</tool>
-							<tool id="com.ifx.xmc4000.appDebug.linker.1817220604" name="ARM-GCC C Linker" superClass="com.ifx.xmc4000.appDebug.linker.985952814"/>
-							<tool id="com.ifx.xmc4000.appDebug.cpplinker.1152594663" name="ARM-GCC C++ Linker" superClass="com.ifx.xmc4000.appDebug.cpplinker.787080843"/>
-							<tool id="com.ifx.xmc4000.libLinker.1173587689" name="ARM-GCC Archiver" superClass="com.ifx.xmc4000.libLinker.828991773"/>
-							<tool id="com.ifx.xmc4000.appDebug.createflash.987496052" name="ARM-GCC Create Flash Image" superClass="com.ifx.xmc4000.appDebug.createflash.2052152821"/>
-							<tool id="com.ifx.xmc4000.appDebug.createlisting.348847768" name="ARM-GCC Create Listing" superClass="com.ifx.xmc4000.appDebug.createlisting.58935261"/>
-							<tool id="com.ifx.xmc4000.printsize.1438836355" name="ARM-GCC Print Size" superClass="com.ifx.xmc4000.printsize.56007435"/>
-						</toolChain>
-					</folderInfo>
 					<sourceEntries>
-						<entry excluding="application_code/infineon_code/entropy_hardware_alt.c|libraries/abstractions/pkcs11/mbedtls/iot_pkcs11_mbedtls.c|vendors/infineon/boards/xmc4700_relaxkit/ports/pkcs11/iot_pkcs11_pal.c|Dave/Model" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="libraries/freertos_plus/aws/ota/test|vendors/infineon/boards/xmc4700_relaxkit/ports/pkcs11/iot_pkcs11_pal.c|libraries/3rdparty/http_parser/test.c|libraries/3rdparty/http_parser/bench.c|libraries/3rdparty/http_parser/contrib|libraries/abstractions/common_io|libraries/c_sdk/standard/ble|libraries/c_sdk/standard/https/test/access/iot_test_access_https_client.c|libraries/c_sdk/standard/mqtt/test/access/iot_test_access_mqtt_subscription.c|libraries/c_sdk/standard/mqtt/test/access/iot_test_access_mqtt_api.c|application_code/ports/pkcs11/iot_pkcs11_pal.c|application_code/infineon_code/entropy_hardware_alt.c|libraries/abstractions/pkcs11/mbedtls/iot_pkcs11_mbedtls.c|Dave/Model" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule moduleId="ilg.gnuarmeclipse.managedbuild.packs"/>
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">

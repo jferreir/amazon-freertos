@@ -85,6 +85,7 @@
  *
  * 2020-03-17:
  *     - Fixed XMC_CAN_MO_ReceiveData() according to description in the reference manual
+ *     - Fixed XMC_CAN_MO_SetAcceptanceMask(), checking for matching message IDE
  * 
  * @endcond
  *
@@ -581,20 +582,22 @@ uint32_t XMC_CAN_MO_GetAcceptanceMask(const XMC_CAN_MO_t *const can_mo)
   return identifier_mask;
 }
 
-/* Gets the acceptance mask of the MO */
+/* Sets the acceptance mask of the MO */
 void XMC_CAN_MO_SetAcceptanceMask(XMC_CAN_MO_t *const can_mo,const uint32_t can_id_mask)
 {
-  if (((can_mo->can_mo_ptr->MOAMR & CAN_MO_MOAMR_MIDE_Msk) != (uint32_t)CAN_MO_MOAMR_MIDE_Msk)
-          && ((can_mo->can_mo_ptr->MOAR & CAN_MO_MOAR_IDE_Msk) != (uint32_t)CAN_MO_MOAR_IDE_Msk))
+  if (((can_mo->can_mo_ptr->MOAMR & CAN_MO_MOAMR_MIDE_Msk) != 0)
+          && ((can_mo->can_mo_ptr->MOAR & CAN_MO_MOAR_IDE_Msk) == 0))
   {
-  can_mo->can_mo_ptr->MOAMR = ((can_mo->can_mo_ptr->MOAMR) & ~(uint32_t)(CAN_MO_MOAMR_AM_Msk)) |
-                  (can_id_mask << XMC_CAN_MO_MOAR_STDID_Pos);
+    /* Message object n receives frames only with matching IDE bit. */
+    can_mo->can_mo_ptr->MOAMR = ((can_mo->can_mo_ptr->MOAMR) & ~(uint32_t)(CAN_MO_MOAMR_AM_Msk)) |
+                                ((can_id_mask << XMC_CAN_MO_MOAR_STDID_Pos) & (uint32_t)XMC_CAN_MO_MOAR_STDID_Msk);
   }
   else
   {
-  can_mo->can_mo_ptr->MOAMR = ((can_mo->can_mo_ptr->MOAMR) & ~(uint32_t)(CAN_MO_MOAMR_AM_Msk)) |
-                  (can_id_mask & (uint32_t)CAN_MO_MOAMR_AM_Msk);
+    can_mo->can_mo_ptr->MOAMR = ((can_mo->can_mo_ptr->MOAMR) & ~(uint32_t)(CAN_MO_MOAMR_AM_Msk)) |
+                                (can_id_mask & (uint32_t)CAN_MO_MOAMR_AM_Msk);
   }
+
   can_mo->can_id_mask = can_id_mask;
 }
 

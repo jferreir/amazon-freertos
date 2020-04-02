@@ -110,7 +110,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1576733853076</id>
+			<id>1585303648556</id>
 			<name>libraries/3rdparty</name>
 			<type>10</type>
 			<matcher>
@@ -119,7 +119,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1576733853087</id>
+			<id>1585303648566</id>
 			<name>libraries/3rdparty</name>
 			<type>10</type>
 			<matcher>
@@ -128,7 +128,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1576733853099</id>
+			<id>1585303648577</id>
 			<name>libraries/3rdparty</name>
 			<type>10</type>
 			<matcher>
@@ -137,7 +137,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1576733853110</id>
+			<id>1585303648588</id>
 			<name>libraries/3rdparty</name>
 			<type>10</type>
 			<matcher>
@@ -146,12 +146,30 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1576733853121</id>
+			<id>1585303648600</id>
 			<name>libraries/3rdparty</name>
 			<type>10</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-unity</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1585303648614</id>
+			<name>libraries/3rdparty</name>
+			<type>10</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-lwip_osal</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1585303648627</id>
+			<name>libraries/3rdparty</name>
+			<type>10</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-CMock</arguments>
 			</matcher>
 		</filter>
 		<filter>
@@ -200,6 +218,15 @@
 			</matcher>
 		</filter>
 		<filter>
+			<id>1585303550583</id>
+			<name>libraries/abstractions/common_io</name>
+			<type>10</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-test</arguments>
+			</matcher>
+		</filter>
+		<filter>
 			<id>1576741205180</id>
 			<name>libraries/abstractions/pkcs11</name>
 			<type>10</type>
@@ -218,7 +245,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1576741231999</id>
+			<id>1585303516029</id>
 			<name>libraries/abstractions/secure_sockets</name>
 			<type>10</type>
 			<matcher>
@@ -227,12 +254,21 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1576741232010</id>
+			<id>1585303516062</id>
 			<name>libraries/abstractions/secure_sockets</name>
 			<type>10</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-test</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1585303516074</id>
+			<name>libraries/abstractions/secure_sockets</name>
+			<type>10</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-utest</arguments>
 			</matcher>
 		</filter>
 		<filter>

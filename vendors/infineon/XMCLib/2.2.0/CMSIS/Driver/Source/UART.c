@@ -101,12 +101,12 @@ static const ARM_DRIVER_VERSION DriverVersion =
 // Default UART initialization
 static const XMC_UART_CH_CONFIG_t uart_default_config =
 {
-.baudrate = 100000U,
-.data_bits = 8U,
-.frame_length = 8U,
-.stop_bits = 1U,
-.parity_mode = XMC_USIC_CH_PARITY_MODE_NONE,
-.normal_divider_mode = true
+  .baudrate = 100000U,
+  .data_bits = 8U,
+  .frame_length = 8U,
+  .stop_bits = 1U,
+  .parity_mode = XMC_USIC_CH_PARITY_MODE_NONE,
+  .normal_divider_mode = true
 };
 
 
@@ -120,12 +120,12 @@ static const ARM_USART_CAPABILITIES DriverCapabilities =
 /* UART0 */
 #if (RTE_UART0 != 0)
 
-static UART_INFO UART0_Info = {0};
+static UART_INFO UART0_Info;
 static XMC_GPIO_CONFIG_t UART0_rx_conf; 
 static XMC_GPIO_CONFIG_t UART0_tx_conf; 
 
 /* UART0 Resources */
-UART_RESOURCES UART0_Resources = 
+static const UART_RESOURCES UART0_Resources = 
 {
   {RTE_UART0_TX_PORT},
   &UART0_tx_conf,
@@ -147,12 +147,12 @@ UART_RESOURCES UART0_Resources =
 /* UART1 */
 #if (RTE_UART1 != 0)
 
-static UART_INFO UART1_Info = {0};
+static UART_INFO UART1_Info;
 static XMC_GPIO_CONFIG_t UART1_rx_conf; 
 static XMC_GPIO_CONFIG_t UART1_tx_conf; 
 
 /* UART1 Resources */
-UART_RESOURCES UART1_Resources = 
+static const UART_RESOURCES UART1_Resources = 
 {
   {RTE_UART1_TX_PORT},
   &UART1_tx_conf,
@@ -174,12 +174,12 @@ UART_RESOURCES UART1_Resources =
 /* UART2 */
 #if (RTE_UART2 != 0)
 
-static UART_INFO UART2_Info = {0};
+static UART_INFO UART2_Info;
 static XMC_GPIO_CONFIG_t UART2_rx_conf; 
 static XMC_GPIO_CONFIG_t UART2_tx_conf; 
 
 /* UART2 Resources */
-UART_RESOURCES UART2_Resources = 
+static const UART_RESOURCES UART2_Resources = 
 {
   {RTE_UART2_TX_PORT},
   &UART2_tx_conf,
@@ -202,12 +202,12 @@ UART_RESOURCES UART2_Resources =
 /* UART3 */
 #if (RTE_UART3 != 0)
 
-static UART_INFO UART3_Info = {0};
+static UART_INFO UART3_Info;
 static XMC_GPIO_CONFIG_t UART3_rx_conf; 
 static XMC_GPIO_CONFIG_t UART3_tx_conf; 
 
 /* UART3 Resources */
-UART_RESOURCES UART3_Resources = 
+static const UART_RESOURCES UART3_Resources = 
 {
   {RTE_UART3_TX_PORT},
   &UART3_tx_conf,
@@ -230,12 +230,12 @@ UART_RESOURCES UART3_Resources =
 /* UART4 */
 #if (RTE_UART4 != 0)
 
-static UART_INFO UART4_Info = {0};
+static UART_INFO UART4_Info;
 static XMC_GPIO_CONFIG_t UART4_rx_conf; 
 static XMC_GPIO_CONFIG_t UART4_tx_conf; 
 
 /* UART4 Resources */
-UART_RESOURCES UART4_Resources = 
+static const UART_RESOURCES UART4_Resources = 
 {
   {RTE_UART4_TX_PORT},
   &UART4_tx_conf,
@@ -258,12 +258,12 @@ UART_RESOURCES UART4_Resources =
 /* UART5 */
 #if (RTE_UART5 != 0)
 
-static UART_INFO UART5_Info = {0};
+static UART_INFO UART5_Info;
 static XMC_GPIO_CONFIG_t UART5_rx_conf; 
 static XMC_GPIO_CONFIG_t UART5_tx_conf; 
 
 /* UART5 Resources */
-UART_RESOURCES UART5_Resources = 
+static const UART_RESOURCES UART5_Resources = 
 {
   {RTE_UART5_TX_PORT},
   &UART5_tx_conf,
@@ -285,7 +285,7 @@ UART_RESOURCES UART5_Resources =
 
 
 /* UART Resources */
-static UART_RESOURCES  *uart[6] = 
+static const UART_RESOURCES  *uart[6] = 
 {
 #if (RTE_UART0 != 0)
   &UART0_Resources,

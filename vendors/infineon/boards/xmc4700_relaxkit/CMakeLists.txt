@@ -3,6 +3,7 @@ set(xmc4700_dir "${AFR_VENDORS_DIR}/infineon/boards/xmc4700_relaxkit")
 set(xmc4700_ports_dir "${xmc4700_dir}/ports")
 set(xmclib_dir "${AFR_VENDORS_DIR}/infineon/XMCLib/2.2.0")
 set(trustx_dir "${AFR_VENDORS_DIR}/infineon/secure_elements/optiga_trust_x")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(AFR_IS_TESTING)
     set(xmc4700_aws_dir "${xmc4700_dir}/aws_tests")
