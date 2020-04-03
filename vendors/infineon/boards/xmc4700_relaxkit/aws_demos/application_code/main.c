@@ -116,10 +116,8 @@ static void vMainTask(void* pvParameters)
 {
   (void)pvParameters;
 
-  if (vDevModeKeyProvisioning() == CKR_OK)
-  {
-	  vApplicationIPInit();
-  }
+  vDevModeKeyProvisioning();
+  vApplicationIPInit();
 
   vTaskDelete(NULL);
 }

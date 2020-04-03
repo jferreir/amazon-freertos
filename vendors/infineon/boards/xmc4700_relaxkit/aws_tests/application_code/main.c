@@ -172,15 +172,13 @@ static void vMainTask(void* pvParameters)
 {
   (void)pvParameters;
 
-  if (vDevModeKeyProvisioning() == CKR_OK)
-  {
-	    FreeRTOS_IPInit( ucIPAddress,
-	                     ucNetMask,
-	                     ucGatewayAddress,
-	                     ucDNSServerAddress,
-	                     ucMACAddress );
+  vDevModeKeyProvisioning();
 
-  }
+  FreeRTOS_IPInit( ucIPAddress,
+                   ucNetMask,
+                   ucGatewayAddress,
+                   ucDNSServerAddress,
+                   ucMACAddress );
 
   vTaskDelete(NULL);
 }
@@ -267,8 +265,6 @@ void vApplicationIPNetworkEventHook( eIPCallbackEvent_t eNetworkEvent )
     	/* Print out the network configuration, which may have come from a DHCP server. */
     	FreeRTOS_GetAddressConfiguration( &ulIPAddress, &ulNetMask, &ulGatewayAddress, &ulDNSServerAddress );
     	FreeRTOS_inet_ntoa( ulIPAddress, cBuffer );
-    	configPRINTF( ("\r\n\r\nIP Address: %s\r\n", cBuffer) );
-    	FreeRTOS_inet_ntoa( ulGatewayAddress, cBuffer );
     	configPRINTF( ("\r\n\r\nIP Address: %s\r\n", cBuffer) );
 
         if( ( xTasksAlreadyCreated == pdFALSE ) && ( SYSTEM_Init() == pdPASS ) )
